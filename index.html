@@ -1,27 +1,45 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-
+  <meta charset="UTF-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  >
-
-  <meta name="theme-color" content="#ffffff">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="nova-icon.png">
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
 
   <title>Nova List</title>
 
-  <style>
+  <meta
+    name="description"
+    content="Nova List - una APP de Incorova"
+  />
 
+  <meta name="theme-color" content="#ffffff" />
+
+  <link rel="manifest" href="manifest.json" />
+
+  <link
+    rel="apple-touch-icon"
+    href="nova-icon.png"
+  />
+
+  <style>
     /* =========================================================
-       RESET
-       ========================================================= */
+       NOVA LIST
+       GEOMETRIC SANS
+       BLACK / WHITE ONLY
+    ========================================================= */
+
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+    :root {
+      --black: #000000;
+      --white: #ffffff;
+      --gray: #707070;
+      --light-gray: #e8e8e8;
+      --very-light: #f6f6f6;
+      --red: #ff3b30;
+    }
 
     * {
       box-sizing: border-box;
@@ -30,22 +48,19 @@
     }
 
     html {
-      width: 100%;
-      min-height: 100%;
-      background: #ffffff;
-      -webkit-text-size-adjust: 100%;
-      text-size-adjust: 100%;
+      background: var(--white);
+      color: var(--black);
+      scroll-behavior: smooth;
     }
 
     body {
-      width: 100%;
+      margin: 0;
+      background: var(--white);
+      color: var(--black);
+      font-family: 'Montserrat', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
       min-height: 100vh;
-      min-height: 100dvh;
-      background: #ffffff;
-      color: #000000;
-      font-family: "GEOMETRIC SANS", "Montserrat", "Avenir Next",
-        "Helvetica Neue", Arial, sans-serif;
-      overflow-x: hidden;
     }
 
     button,
@@ -64,69 +79,70 @@
     }
 
     input,
-    textarea,
-    select {
-      -webkit-appearance: none;
-      appearance: none;
+    textarea {
+      outline: none;
+    }
+
+    input[type="date"],
+    input[type="time"] {
+      color-scheme: light;
     }
 
     /* =========================================================
        APP
-       ========================================================= */
+    ========================================================= */
 
     .app {
-      width: 100%;
-      max-width: 920px;
+      width: min(920px, 100%);
       min-height: 100vh;
-      min-height: 100dvh;
       margin: 0 auto;
-      padding: clamp(16px, 3vw, 24px);
-      padding-bottom: 100px;
+      padding:
+        clamp(22px, 4vw, 42px)
+        clamp(18px, 4vw, 42px)
+        100px;
     }
 
     /* =========================================================
        HEADER
-       ========================================================= */
+    ========================================================= */
 
     .main-header {
       position: relative;
       width: 100%;
-      min-height: 90px;
+      min-height: 92px;
       display: flex;
-      align-items: flex-start;
       justify-content: space-between;
-      margin-bottom: 22px;
-      z-index: 1000;
+      align-items: flex-start;
     }
 
     .header-left {
-      min-width: 0;
+      position: relative;
+      z-index: 2;
     }
 
-    .app-name {
-      font-size: clamp(22px, 3vw, 29px);
+    .brand {
+      font-size: clamp(25px, 4vw, 34px);
       font-weight: 600;
-      letter-spacing: -0.7px;
-      line-height: 1.05;
+      letter-spacing: -1.5px;
+      line-height: 1;
     }
 
-    .app-subtitle {
-      margin-top: 5px;
-      font-size: clamp(10px, 1.6vw, 12px);
-      font-weight: 400;
-      letter-spacing: 0.1px;
+    .brand-subtitle {
+      margin-top: 7px;
+      font-size: 10px;
+      letter-spacing: 0.4px;
+      font-weight: 500;
     }
 
     .greeting {
-      margin-top: 20px;
-      font-size: clamp(15px, 2vw, 18px);
+      margin-top: 22px;
+      font-size: 13px;
       font-weight: 500;
-      line-height: 1.1;
     }
 
     /* =========================================================
-       THREE DOT MENU
-       ========================================================= */
+       THREE DOTS MENU
+    ========================================================= */
 
     .menu-container {
       position: relative;
@@ -140,208 +156,181 @@
       position: absolute;
       top: 2px;
       right: 0;
-
       width: 34px;
       height: 34px;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       z-index: 1110;
     }
 
     .dots {
       display: flex;
+      flex-direction: row;
       align-items: center;
+      justify-content: center;
       gap: 4px;
+      width: 20px;
+      height: 10px;
     }
 
     .dot {
+      position: relative;
       width: 4px;
       height: 4px;
+      flex: 0 0 4px;
       border-radius: 50%;
       background: #000000;
-
       transition:
         transform 0.28s ease,
         opacity 0.2s ease;
     }
 
-    /* =========================================================
-       MENU OPTIONS
-       ========================================================= */
+    /*
+      IMPORTANTE:
+      Los puntos empiezan horizontales.
+      Al abrirse se desplazan ligeramente hacia abajo
+      y hacia la izquierda.
+    */
+
+    .menu-container.open .dot:nth-child(1) {
+      transform: translate(-5px, 0);
+    }
+
+    .menu-container.open .dot:nth-child(2) {
+      transform: translate(-5px, 27px);
+    }
+
+    .menu-container.open .dot:nth-child(3) {
+      transform: translate(-5px, 54px);
+    }
+
+    .menu-close {
+      position: absolute;
+      top: 1px;
+      right: 0;
+      width: 34px;
+      height: 34px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      font-weight: 400;
+      z-index: 1120;
+    }
+
+    .menu-container.open .menu-close {
+      display: flex;
+    }
+
+    .menu-container.open .dots-button {
+      pointer-events: none;
+    }
 
     .menu-option {
       position: absolute;
-
-      right: 3px;
-
-      height: 24px;
-
+      right: 27px;
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 7px;
-
+      gap: 9px;
       white-space: nowrap;
-
       opacity: 0;
-      visibility: hidden;
       pointer-events: none;
-
-      transform: translateX(8px);
-
-      transition:
-        opacity 0.2s ease,
-        transform 0.2s ease,
-        visibility 0s linear 0.25s;
-
+      transition: opacity 0.18s ease;
       z-index: 1105;
     }
 
     .menu-option:nth-child(1) {
-      top: 4px;
-    }
-
-    .menu-option:nth-child(2) {
       top: 34px;
     }
 
-    .menu-option:nth-child(3) {
+    .menu-option:nth-child(2) {
       top: 64px;
     }
 
-    .menu-option span {
-      font-size: 12px;
-      line-height: 1;
+    .menu-option:nth-child(3) {
+      top: 94px;
     }
 
     .menu-line {
       width: 0;
       height: 1px;
       background: #000000;
-
       transition: width 0.25s ease;
-      flex: 0 0 auto;
+      flex-shrink: 0;
     }
 
-    /* =========================================================
-       OPEN MENU
-       ========================================================= */
-
-    .menu-container.open .dot:nth-child(1) {
-      transform: translate(-7px, 0);
-    }
-
-    .menu-container.open .dot:nth-child(2) {
-      transform: translate(-7px, 30px);
-    }
-
-    .menu-container.open .dot:nth-child(3) {
-      transform: translate(-7px, 60px);
+    .menu-option-text {
+      font-size: 11px;
+      font-weight: 500;
+      opacity: 0;
+      transform: translateX(5px);
+      transition:
+        opacity 0.18s ease,
+        transform 0.18s ease;
     }
 
     .menu-container.open .menu-option {
       opacity: 1;
-      visibility: visible;
       pointer-events: auto;
-
-      transform: translateX(0);
-
-      transition-delay: 0.22s;
     }
 
     .menu-container.open .menu-line {
-      width: 25px;
+      width: 30px;
     }
 
-    /* =========================================================
-       CLOSE BUTTON
-       ========================================================= */
-
-    .close-menu {
-      position: absolute;
-      top: 0;
-      right: 0;
-
-      width: 34px;
-      height: 34px;
-
-      display: none;
-      align-items: center;
-      justify-content: center;
-
-      font-size: 18px;
-      font-weight: 300;
-
-      z-index: 1120;
-    }
-
-    .menu-container.open .dots-button {
-      display: none;
-    }
-
-    .menu-container.open .close-menu {
-      display: flex;
+    .menu-container.open .menu-option-text {
+      opacity: 1;
+      transform: translateX(0);
+      transition-delay: 0.25s;
     }
 
     /* =========================================================
        QUICK ACTIONS
-       ========================================================= */
+    ========================================================= */
 
     .quick-actions {
-      width: 100%;
+      margin-top: 48px;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: clamp(10px, 2vw, 18px);
-      margin-bottom: 18px;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
     }
 
     .quick-action {
-      min-width: 0;
-      min-height: 108px;
-
-      border: 1px solid #000000;
-      padding: clamp(14px, 3vw, 20px);
-
+      min-height: 105px;
+      border: 1px solid var(--black);
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-
-      text-align: center;
-
-      transition:
-        background 0.15s ease,
-        transform 0.15s ease;
+      transition: background 0.2s ease;
     }
 
-    .quick-action:active {
-      transform: scale(0.98);
+    .quick-action:hover {
+      background: var(--very-light);
     }
 
     .quick-action-icon {
-      height: 35px;
+      height: 32px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      margin-bottom: 9px;
+      margin-bottom: 10px;
     }
 
     .quick-action-title {
-      font-size: clamp(11px, 1.7vw, 13px);
-      line-height: 1.25;
-      font-weight: 500;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.3;
     }
 
     /* Post-it */
-
     .post-it {
-      width: 27px;
-      height: 27px;
-      border: 1.5px solid #000000;
       position: relative;
+      width: 24px;
+      height: 24px;
+      border: 1.5px solid #000;
     }
 
     .post-it::after {
@@ -351,573 +340,393 @@
       bottom: -1.5px;
       width: 8px;
       height: 8px;
-      border-top: 1.5px solid #000000;
-      border-left: 1.5px solid #000000;
-      background: #ffffff;
+      background: #fff;
+      border-left: 1.5px solid #000;
+      border-top: 1.5px solid #000;
     }
 
     /* Star */
-
     .star-circle {
-      width: 30px;
-      height: 30px;
-      border: 1.5px solid #000000;
+      width: 27px;
+      height: 27px;
+      border: 1.4px solid #000;
       border-radius: 50%;
-
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .star {
-      position: relative;
-      width: 11px;
-      height: 11px;
-    }
-
-    .star::before,
-    .star::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 14px;
-      height: 1px;
-      background: #000000;
-      transform-origin: center;
-    }
-
-    .star::before {
-      transform: translate(-50%, -50%) rotate(45deg);
-    }
-
-    .star::after {
-      transform: translate(-50%, -50%) rotate(-45deg);
+      font-size: 15px;
+      line-height: 1;
     }
 
     /* =========================================================
-       REMINDER PANEL
-       ========================================================= */
+       REMINDER FORM
+    ========================================================= */
 
     .reminder-panel {
       display: none;
-      width: 100%;
-      border: 1px solid #000000;
-      padding: clamp(17px, 3vw, 24px);
-      margin-bottom: 18px;
+      margin-top: 28px;
+      border-top: 1px solid #000;
+      border-bottom: 1px solid #000;
+      padding: 25px 0;
     }
 
-    .reminder-panel.active {
+    .reminder-panel.visible {
       display: block;
     }
 
     .panel-title {
-      font-size: clamp(17px, 2.5vw, 21px);
+      font-size: 17px;
       font-weight: 600;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+      letter-spacing: -0.3px;
     }
 
     .form-group {
-      width: 100%;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
     .form-label {
       display: block;
-      font-size: clamp(12px, 1.8vw, 14px);
-      font-weight: 500;
-      margin-bottom: 9px;
+      margin-bottom: 10px;
+      font-size: 11px;
+      font-weight: 600;
     }
 
-    .text-input,
-    .date-input,
-    .time-input {
+    .text-input {
       width: 100%;
-      min-width: 0;
-
-      height: 46px;
-
-      border: 1px solid #000000;
+      border: none;
+      border-bottom: 1px solid #000;
       border-radius: 0;
-
-      padding: 0 13px;
-
-      background: #ffffff;
-      color: #000000;
-
-      font-size: 16px;
-      line-height: 1.2;
-
-      outline: none;
+      padding: 10px 0;
+      font-size: 14px;
+      background: transparent;
+      color: #000;
     }
 
-    .text-input:focus,
-    .date-input:focus,
-    .time-input:focus {
-      outline: 1px solid #000000;
-      outline-offset: -1px;
+    .text-input::placeholder {
+      color: #8b8b8b;
     }
 
     /* =========================================================
        LIST SELECTOR
-       ========================================================= */
+    ========================================================= */
 
     .list-selector {
-      width: 100%;
-      border: 1px solid #000000;
+      position: relative;
     }
 
-    .list-selector-main {
-      min-height: 46px;
-      padding: 0 13px;
-
+    .selected-list-row {
+      min-height: 40px;
+      border-bottom: 1px solid #000;
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       cursor: pointer;
     }
 
     .selected-list {
-      font-size: 16px;
-      min-width: 0;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      font-size: 13px;
+      color: #000;
     }
 
     .list-arrow {
-      width: 18px;
-      height: 18px;
-      flex: 0 0 18px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      font-size: 16px;
-
-      transition: transform 0.2s ease;
+      font-size: 17px;
+      line-height: 1;
+      transition: transform 0.25s ease;
     }
 
-    .list-selector.open .list-arrow {
+    .list-selector.expanded .list-arrow {
       transform: rotate(90deg);
     }
 
     .list-options {
       display: none;
-      border-top: 1px solid #000000;
+      border-bottom: 1px solid #000;
     }
 
-    .list-selector.open .list-options {
+    .list-selector.expanded .list-options {
       display: block;
     }
 
     .list-option {
-      width: 100%;
-      min-height: 42px;
-
-      padding: 10px 13px;
-
-      display: flex;
-      align-items: center;
-
-      border-bottom: 1px solid #000000;
-
-      font-size: 14px;
-      text-align: left;
+      padding: 11px 0;
+      font-size: 12px;
+      border-bottom: 1px solid var(--light-gray);
+      cursor: pointer;
     }
 
     .list-option:last-child {
       border-bottom: none;
     }
 
-    .create-list-button {
-      width: 100%;
-      min-height: 42px;
+    .list-option:hover {
+      font-weight: 600;
+    }
 
-      padding: 10px 13px;
-
-      display: flex;
-      align-items: center;
-
-      font-size: 13px;
-      text-align: left;
-
-      border-top: 1px solid #000000;
+    .create-list-option {
+      padding: 12px 0;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
     }
 
     /* =========================================================
-       DATE + TIME
-       ========================================================= */
+       DATE / TIME
+    ========================================================= */
 
-    .date-row {
+    .date-input,
+    .time-input {
       width: 100%;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: clamp(12px, 2vw, 18px);
-    }
-
-    .date-column {
-      min-width: 0;
-    }
-
-    .time-question {
-      width: 100%;
-    }
-
-    .toggle-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .toggle-button {
-      min-width: 54px;
-      height: 38px;
-
-      padding: 0 13px;
-
-      border: 1px solid #000000;
-
+      height: 42px;
+      border: 1px solid #000;
+      border-radius: 0;
+      background: #fff;
+      padding: 0 12px;
       font-size: 13px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
-    .toggle-button.active {
-      background: #000000;
-      color: #ffffff;
-    }
-
-    .time-field {
+    .time-wrapper {
       display: none;
-      margin-top: 10px;
+      margin-top: 13px;
     }
 
-    .time-field.active {
+    .time-wrapper.visible {
       display: block;
     }
 
     /* =========================================================
-       ALARM
-       ========================================================= */
+       YES / NO
+    ========================================================= */
 
-    .alarm-options {
+    .choice-row {
+      display: flex;
+      gap: 22px;
+    }
+
+    .choice-button {
       display: flex;
       align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .choice-circle {
+      width: 17px;
+      height: 17px;
+      border: 1px solid #000;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .choice-button.selected .choice-circle::after {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      background: #000;
+      border-radius: 50%;
     }
 
     .save-reminder {
       width: 100%;
-      height: 46px;
+      height: 45px;
+      border: 1px solid #000;
+      margin-top: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
 
-      margin-top: 5px;
-
-      background: #000000;
-      color: #ffffff;
-
-      font-size: 13px;
-      font-weight: 500;
+    .save-reminder:hover {
+      background: #000;
+      color: #fff;
     }
 
     .cancel-reminder {
       width: 100%;
-      height: 42px;
-
+      height: 40px;
       margin-top: 8px;
-
-      border: 1px solid #000000;
-
-      font-size: 13px;
+      font-size: 11px;
+      color: #666;
     }
 
     /* =========================================================
-       CALENDAR + LISTS
-       ========================================================= */
+       MAIN CONTENT
+    ========================================================= */
 
-    .dashboard-top {
-      width: 100%;
-
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-
-      gap: clamp(10px, 2vw, 18px);
-
-      margin-bottom: 18px;
+    .main-content {
+      margin-top: 46px;
     }
 
-    .dashboard-card {
-      min-width: 0;
-      width: 100%;
-
-      border: 1px solid #000000;
-
-      padding: clamp(12px, 2.5vw, 18px);
-    }
-
-    .card-title {
-      font-size: clamp(12px, 1.8vw, 14px);
+    .section-title {
+      font-size: 11px;
       font-weight: 600;
-      margin-bottom: 14px;
+      letter-spacing: 0.2px;
+      margin-bottom: 16px;
     }
 
     /* =========================================================
        CALENDAR
-       ========================================================= */
+    ========================================================= */
+
+    .calendar-section {
+      margin-top: 34px;
+    }
+
+    .calendar-box {
+      border: 1px solid #000;
+      padding: 18px;
+    }
 
     .calendar-header {
-      width: 100%;
-
       display: flex;
-      align-items: center;
       justify-content: space-between;
-
-      margin-bottom: 10px;
+      align-items: center;
+      margin-bottom: 18px;
     }
 
     .calendar-month {
-      font-size: clamp(11px, 1.7vw, 13px);
-      font-weight: 500;
+      font-size: 13px;
+      font-weight: 600;
     }
 
-    .calendar-nav {
+    .calendar-controls {
       display: flex;
-      gap: 4px;
+      gap: 10px;
     }
 
-    .calendar-nav button {
+    .calendar-control {
       width: 25px;
       height: 25px;
-
       display: flex;
-      align-items: center;
       justify-content: center;
-
-      font-size: 15px;
+      align-items: center;
+      font-size: 14px;
     }
 
     .calendar-weekdays,
-    .calendar-grid {
-      width: 100%;
-
+    .calendar-days {
       display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
-      gap: clamp(2px, 0.6vw, 5px);
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
     }
 
-    .calendar-weekdays {
-      margin-bottom: 5px;
-    }
-
-    .weekday {
+    .calendar-weekday {
       text-align: center;
-      font-size: clamp(8px, 1.3vw, 10px);
-      font-weight: 500;
+      font-size: 8px;
+      color: #666;
+      padding-bottom: 8px;
     }
 
     .calendar-day {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-
-      min-width: 0;
-
+      min-height: 31px;
       display: flex;
       align-items: center;
       justify-content: center;
-
-      font-size: clamp(9px, 1.6vw, 12px);
-
       position: relative;
+      font-size: 10px;
+      cursor: pointer;
+      border: 1px solid transparent;
     }
 
-    .calendar-day.empty {
-      pointer-events: none;
+    .calendar-day:hover {
+      border-color: #000;
     }
 
     .calendar-day.today {
-      border: 1px solid #000000;
+      border: 1px solid #000;
+      font-weight: 700;
     }
 
     .calendar-day.selected {
-      background: #000000;
-      color: #ffffff;
+      background: #000;
+      color: #fff;
     }
 
     .calendar-day.has-items::after {
       content: "";
       position: absolute;
-
-      bottom: 3px;
-      left: 50%;
-
+      bottom: 4px;
       width: 3px;
       height: 3px;
-
+      background: #000;
       border-radius: 50%;
-      background: currentColor;
-
-      transform: translateX(-50%);
     }
 
-    /* =========================================================
-       LISTS
-       ========================================================= */
-
-    .lists-container {
-      width: 100%;
+    .calendar-day.selected.has-items::after {
+      background: #fff;
     }
 
-    .list-item {
-      width: 100%;
-      min-width: 0;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 9px 0;
-
-      border-bottom: 1px solid #e5e5e5;
-
-      cursor: pointer;
-    }
-
-    .list-item:last-child {
-      border-bottom: none;
-    }
-
-    .list-left {
-      min-width: 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .list-marker {
-      width: 6px;
-      height: 6px;
-
-      border: 1px solid #000000;
-      border-radius: 50%;
-
-      flex: 0 0 6px;
-    }
-
-    .list-name {
-      min-width: 0;
-
-      font-size: clamp(10px, 1.7vw, 13px);
-
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .list-count {
-      flex: 0 0 auto;
-
-      font-size: 10px;
-      min-width: 18px;
-      text-align: right;
-    }
-
-    .create-list-small {
-      width: 100%;
-
-      margin-top: 8px;
-
-      padding-top: 10px;
-
-      border-top: 1px solid #000000;
-
-      text-align: left;
-
-      font-size: 11px;
+    .calendar-day.empty {
+      cursor: default;
     }
 
     /* =========================================================
        TODAY / UPCOMING
-       ========================================================= */
+    ========================================================= */
 
-    .main-sections {
-      width: 100%;
+    .day-navigation {
+      margin-top: 32px;
       display: flex;
       flex-direction: column;
-      gap: 9px;
+      gap: 10px;
     }
 
-    .section-button {
-      width: 100%;
-      min-height: 54px;
-
-      border: 1px solid #000000;
-
-      padding: 0 15px;
-
+    .day-button {
+      min-height: 62px;
+      border-top: 1px solid #000;
+      border-bottom: 1px solid #000;
       display: flex;
       align-items: center;
       justify-content: space-between;
-
+      padding: 0 5px;
       text-align: left;
     }
 
-    .section-left {
-      min-width: 0;
-
+    .day-button-left {
       display: flex;
       align-items: center;
       gap: 9px;
     }
 
-    .section-title {
+    .day-button-title {
       font-size: 13px;
-      font-weight: 500;
-    }
-
-    .section-arrow {
-      font-size: 16px;
-    }
-
-    /* =========================================================
-       OVERDUE BADGE
-       ========================================================= */
-
-    .overdue-badge {
-      min-width: 17px;
-      height: 17px;
-
-      padding: 0 5px;
-
-      border-radius: 999px;
-
-      background: #ff3b30;
-      color: #ffffff;
-
-      font-size: 10px;
       font-weight: 600;
+    }
 
+    .day-arrow {
+      font-size: 18px;
+      font-weight: 400;
+    }
+
+    /* iPhone-style overdue badge */
+    .notification-badge {
       display: none;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      background: #ff3b30;
+      color: #fff;
+      border-radius: 999px;
+      font-size: 9px;
+      font-weight: 700;
       align-items: center;
       justify-content: center;
     }
 
-    .overdue-badge.visible {
-      display: flex;
+    .notification-badge.visible {
+      display: inline-flex;
     }
 
     /* =========================================================
        VIEWS
-       ========================================================= */
+    ========================================================= */
 
     .view {
       display: none;
-      width: 100%;
+      margin-top: 35px;
     }
 
     .view.active {
@@ -925,57 +734,56 @@
     }
 
     .view-header {
-      width: 100%;
-
       display: flex;
       align-items: center;
-      justify-content: space-between;
-
-      margin-bottom: 18px;
+      gap: 12px;
+      margin-bottom: 24px;
     }
 
     .back-button {
-      font-size: 13px;
+      width: 30px;
+      height: 30px;
+      font-size: 19px;
     }
 
     .view-title {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 600;
     }
 
-    /* =========================================================
-       TASK CARDS
-       ========================================================= */
-
-    .task-list {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
+    .view-date {
+      font-size: 10px;
+      color: #666;
+      margin-top: 4px;
     }
 
-    .task-card {
-      width: 100%;
+    /* =========================================================
+       TASK ITEMS
+    ========================================================= */
 
-      border: 1px solid #000000;
-
-      padding: 14px;
-
+    .items-container {
       display: flex;
-      align-items: flex-start;
-      gap: 12px;
+      flex-direction: column;
+    }
+
+    .task-item {
+      min-height: 67px;
+      border-top: 1px solid #000;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 10px 3px;
+    }
+
+    .task-item:last-child {
+      border-bottom: 1px solid #000;
     }
 
     .task-check {
       width: 18px;
       height: 18px;
-
-      border: 1px solid #000000;
-
+      border: 1px solid #000;
       flex: 0 0 18px;
-
-      margin-top: 1px;
-
       display: flex;
       align-items: center;
       justify-content: center;
@@ -983,7 +791,7 @@
 
     .task-check.completed::after {
       content: "✓";
-      font-size: 12px;
+      font-size: 11px;
     }
 
     .task-content {
@@ -992,114 +800,173 @@
     }
 
     .task-title {
-      font-size: 13px;
-      line-height: 1.35;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .task-item.completed .task-title {
+      text-decoration: line-through;
+      color: #777;
     }
 
     .task-meta {
-      margin-top: 5px;
-
       display: flex;
+      gap: 9px;
       flex-wrap: wrap;
-      gap: 7px;
-
-      font-size: 10px;
+      margin-top: 4px;
+      font-size: 8px;
+      color: #777;
     }
 
-    .task-overdue {
-      color: #ff3b30;
+    .task-delete {
+      font-size: 15px;
+      width: 25px;
+      height: 25px;
+      color: #777;
     }
 
-    /* =========================================================
-       LIST DETAIL
-       ========================================================= */
-
-    .list-detail-header {
-      width: 100%;
-
-      display: flex;
-      align-items: center;
-      gap: 12px;
-
-      margin-bottom: 18px;
+    .reminder-mark {
+      font-size: 8px;
+      border: 1px solid #000;
+      padding: 2px 5px;
     }
-
-    .list-detail-title {
-      min-width: 0;
-
-      font-size: 20px;
-      font-weight: 600;
-
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    /* =========================================================
-       EMPTY STATE
-       ========================================================= */
 
     .empty-state {
-      width: 100%;
-
-      padding: 45px 20px;
-
+      padding: 35px 5px;
       text-align: center;
-
-      border: 1px solid #000000;
+      font-size: 11px;
+      color: #777;
+      border-top: 1px solid #000;
+      border-bottom: 1px solid #000;
     }
 
-    .empty-state-title {
-      font-size: 14px;
+    /* =========================================================
+       LISTS
+    ========================================================= */
+
+    .lists-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .list-card {
+      min-height: 61px;
+      border-top: 1px solid #000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 5px;
+      cursor: pointer;
+    }
+
+    .list-card:last-child {
+      border-bottom: 1px solid #000;
+    }
+
+    .list-card-name {
+      font-size: 12px;
       font-weight: 500;
     }
 
-    .empty-state-text {
-      margin-top: 7px;
+    .list-card-count {
+      font-size: 9px;
+      color: #777;
+    }
+
+    .new-list-button {
+      width: 100%;
+      height: 48px;
+      border: 1px solid #000;
+      margin-top: 16px;
       font-size: 11px;
+      font-weight: 600;
     }
 
     /* =========================================================
-       BOTTOM NAV
-       ========================================================= */
+       QUICK NOTES
+    ========================================================= */
+
+    .notes-area {
+      width: 100%;
+      min-height: 240px;
+      border: 1px solid #000;
+      padding: 15px;
+      font-size: 13px;
+      line-height: 1.6;
+      resize: vertical;
+      background: #fff;
+    }
+
+    .save-notes {
+      width: 100%;
+      height: 44px;
+      border: 1px solid #000;
+      margin-top: 10px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .save-notes:hover {
+      background: #000;
+      color: #fff;
+    }
+
+    /* =========================================================
+       DASHBOARD
+    ========================================================= */
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .dashboard-item {
+      border: 1px solid #000;
+      min-height: 105px;
+      padding: 17px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .dashboard-number {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -1px;
+    }
+
+    .dashboard-label {
+      font-size: 9px;
+      font-weight: 500;
+    }
+
+    /* =========================================================
+       BOTTOM NAVIGATION
+    ========================================================= */
 
     .bottom-nav {
       position: fixed;
-
-      left: 50%;
       bottom: 0;
-
+      left: 50%;
       transform: translateX(-50%);
-
       width: min(920px, 100%);
-
-      padding:
-        10px
-        max(16px, env(safe-area-inset-left))
-        calc(10px + env(safe-area-inset-bottom))
-        max(16px, env(safe-area-inset-right));
-
-      background: rgba(255,255,255,0.96);
-
-      border-top: 1px solid #000000;
-
+      height: 66px;
+      background: rgba(255,255,255,0.97);
+      border-top: 1px solid #000;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-
-      z-index: 900;
+      z-index: 1000;
     }
 
     .bottom-nav-button {
-      min-height: 42px;
-
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-
-      gap: 3px;
-
-      font-size: 9px;
+      gap: 5px;
     }
 
     .bottom-nav-icon {
@@ -1107,390 +974,157 @@
       line-height: 1;
     }
 
-    /* =========================================================
-       RESPONSIVE - TABLET
-       ========================================================= */
+    .bottom-nav-label {
+      font-size: 8px;
+      font-weight: 500;
+    }
 
-    @media screen and (max-width: 700px) {
-
-      .app {
-        padding-inline: clamp(14px, 4vw, 20px);
-      }
-
-      .main-header {
-        min-height: 86px;
-      }
-
-      .dashboard-card {
-        padding: 13px;
-      }
-
-      .quick-action {
-        min-height: 102px;
-      }
+    .bottom-nav-button.active .bottom-nav-label {
+      font-weight: 700;
     }
 
     /* =========================================================
-       RESPONSIVE - PHONE
-       ========================================================= */
+       MODALS
+    ========================================================= */
 
-    @media screen and (max-width: 600px) {
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.94);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 3000;
+    }
 
-      /* -------------------------------------------------------
-         EVITAR ZOOM AUTOMÁTICO DE IOS
-         ------------------------------------------------------- */
+    .modal-overlay.visible {
+      display: flex;
+    }
 
-      input,
-      textarea,
-      select,
-      button {
-        font-size: 16px;
-      }
+    .modal {
+      width: min(420px, 100%);
+      border: 1px solid #000;
+      background: #fff;
+      padding: 25px;
+    }
 
-      .text-input,
-      .date-input,
-      .time-input {
-        font-size: 16px !important;
-      }
+    .modal-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
 
-      /* -------------------------------------------------------
-         APP
-         ------------------------------------------------------- */
+    .modal-input {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid #000;
+      padding: 10px 0;
+      font-size: 13px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .modal-button {
+      flex: 1;
+      height: 42px;
+      border: 1px solid #000;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .modal-button.primary {
+      background: #000;
+      color: #fff;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @media (max-width: 600px) {
 
       .app {
-        width: 100%;
-        padding-top: 16px;
-        padding-left: clamp(12px, 4vw, 18px);
-        padding-right: clamp(12px, 4vw, 18px);
-        padding-bottom: 95px;
+        padding:
+          22px
+          18px
+          90px;
       }
-
-      /* -------------------------------------------------------
-         HEADER
-         ------------------------------------------------------- */
 
       .main-header {
-        min-height: 82px;
-        margin-bottom: 17px;
+        min-height: 88px;
       }
-
-      .app-name {
-        font-size: 23px;
-      }
-
-      .app-subtitle {
-        font-size: 10px;
-      }
-
-      .greeting {
-        margin-top: 17px;
-        font-size: 15px;
-      }
-
-      /* -------------------------------------------------------
-         MENU
-         ------------------------------------------------------- */
-
-      .menu-container {
-        width: 38px;
-        flex-basis: 38px;
-        height: 70px;
-      }
-
-      .dots-button,
-      .close-menu {
-        width: 32px;
-        height: 32px;
-      }
-
-      .menu-container.open .dot:nth-child(1) {
-        transform: translate(-5px, 0);
-      }
-
-      .menu-container.open .dot:nth-child(2) {
-        transform: translate(-5px, 27px);
-      }
-
-      .menu-container.open .dot:nth-child(3) {
-        transform: translate(-5px, 54px);
-      }
-
-      .menu-option {
-        height: 22px;
-        gap: 6px;
-      }
-
-      .menu-option:nth-child(1) {
-        top: 3px;
-      }
-
-      .menu-option:nth-child(2) {
-        top: 30px;
-      }
-
-      .menu-option:nth-child(3) {
-        top: 57px;
-      }
-
-      .menu-option span {
-        font-size: 11px;
-      }
-
-      .menu-container.open .menu-line {
-        width: 20px;
-      }
-
-      /* -------------------------------------------------------
-         QUICK ACTIONS
-         ------------------------------------------------------- */
 
       .quick-actions {
-        gap: 9px;
+        gap: 10px;
+        margin-top: 38px;
       }
 
       .quick-action {
         min-height: 100px;
-        padding: 12px 8px;
+        padding: 16px;
       }
 
       .quick-action-title {
-        font-size: 11px;
-      }
-
-      /* -------------------------------------------------------
-         REMINDER
-         ------------------------------------------------------- */
-
-      .reminder-panel {
-        padding: 15px;
-      }
-
-      .panel-title {
-        margin-bottom: 18px;
-      }
-
-      .form-group {
-        margin-bottom: 18px;
-      }
-
-      /*
-        IMPORTANTE:
-        En teléfono fecha y "¿Deseas agregar hora?"
-        van uno debajo del otro para que nunca se encimen.
-      */
-
-      .date-row {
-        grid-template-columns: 1fr;
-        gap: 18px;
-      }
-
-      .time-question {
-        margin-top: 1px;
-      }
-
-      .toggle-row,
-      .alarm-options {
-        gap: 8px;
-      }
-
-      .toggle-button {
-        min-width: 58px;
-        height: 40px;
-        font-size: 13px;
-      }
-
-      /* -------------------------------------------------------
-         CALENDAR + LISTS
-         ------------------------------------------------------- */
-
-      .dashboard-top {
-        grid-template-columns:
-          minmax(0, 1fr)
-          minmax(0, 1fr);
-
-        gap: 8px;
-      }
-
-      .dashboard-card {
-        width: 100%;
-        min-width: 0;
-        padding: 10px;
-      }
-
-      .card-title {
-        font-size: 11px;
-        margin-bottom: 11px;
-      }
-
-      .calendar-header {
-        margin-bottom: 8px;
-      }
-
-      .calendar-month {
         font-size: 10px;
       }
 
-      .calendar-nav button {
-        width: 21px;
-        height: 21px;
-        font-size: 13px;
-      }
-
-      .calendar-weekdays,
-      .calendar-grid {
-        gap: 2px;
-      }
-
-      .weekday {
-        font-size: 7px;
+      .calendar-box {
+        padding: 14px 10px;
       }
 
       .calendar-day {
-        font-size: 9px;
+        min-height: 30px;
       }
 
-      .calendar-day.has-items::after {
-        bottom: 2px;
-        width: 2px;
-        height: 2px;
+      .dashboard-grid {
+        grid-template-columns: 1fr 1fr;
       }
 
-      .list-item {
-        padding: 8px 0;
-      }
-
-      .list-left {
-        gap: 6px;
-      }
-
-      .list-marker {
-        width: 5px;
-        height: 5px;
-        flex-basis: 5px;
-      }
-
-      .list-name {
-        font-size: 9px;
-      }
-
-      .list-count {
-        font-size: 8px;
-        min-width: 15px;
-      }
-
-      .create-list-small {
-        font-size: 9px;
-        margin-top: 5px;
-        padding-top: 8px;
-      }
-
-      /* -------------------------------------------------------
-         TODAY / UPCOMING
-         ------------------------------------------------------- */
-
-      .main-sections {
-        gap: 8px;
-      }
-
-      .section-button {
-        min-height: 51px;
-        padding: 0 13px;
-      }
-
-      .section-title {
-        font-size: 12px;
-      }
-
-      /* -------------------------------------------------------
-         TASKS
-         ------------------------------------------------------- */
-
-      .task-card {
-        padding: 12px;
-      }
-
-      .task-title {
-        font-size: 12px;
-      }
-
-      .task-meta {
-        font-size: 9px;
-      }
-
-      /* -------------------------------------------------------
-         BOTTOM NAV
-         ------------------------------------------------------- */
-
-      .bottom-nav-button {
-        font-size: 8px;
+      input[type="text"],
+      input[type="date"],
+      input[type="time"],
+      textarea {
+        font-size: 16px;
       }
     }
 
-    /* =========================================================
-       PHONE MUY PEQUEÑO
-       ========================================================= */
+    @media (max-width: 390px) {
 
-    @media screen and (max-width: 390px) {
-
-      .app {
-        padding-left: 11px;
-        padding-right: 11px;
+      .brand {
+        font-size: 24px;
       }
 
-      .app-name {
-        font-size: 21px;
+      .brand-subtitle {
+        font-size: 9px;
       }
 
       .greeting {
-        font-size: 14px;
+        font-size: 12px;
       }
 
-      .dashboard-top {
-        gap: 7px;
+      .quick-action {
+        min-height: 94px;
+        padding: 13px;
       }
 
-      .dashboard-card {
-        padding: 8px;
-      }
-
-      .card-title {
-        font-size: 10px;
-      }
-
-      .calendar-month {
+      .quick-action-title {
         font-size: 9px;
       }
 
-      .calendar-nav button {
-        width: 19px;
-        height: 19px;
-      }
-
-      .weekday {
-        font-size: 6px;
-      }
-
       .calendar-day {
-        font-size: 8px;
+        min-height: 27px;
+        font-size: 9px;
       }
 
-      .list-name {
-        font-size: 8px;
-      }
-
-      .list-count {
+      .bottom-nav-label {
         font-size: 7px;
       }
-
-      .menu-option span {
-        font-size: 10px;
-      }
-
-      .menu-container.open .menu-line {
-        width: 17px;
-      }
     }
-
   </style>
 </head>
 
@@ -1498,19 +1132,19 @@
 
   <div class="app">
 
-    <!-- =====================================================
+    <!-- =======================================================
          HEADER
-         ===================================================== -->
+    ======================================================== -->
 
     <header class="main-header" id="mainHeader">
 
       <div class="header-left">
 
-        <div class="app-name">
+        <div class="brand">
           Nova-List
         </div>
 
-        <div class="app-subtitle">
+        <div class="brand-subtitle">
           una APP de Incorova
         </div>
 
@@ -1521,7 +1155,7 @@
       </div>
 
 
-      <!-- MENU -->
+      <!-- THREE DOT MENU -->
 
       <div class="menu-container" id="menuContainer">
 
@@ -1530,47 +1164,43 @@
           id="dotsButton"
           aria-label="Abrir menú"
         >
-          <span class="dots">
+          <div class="dots">
             <span class="dot"></span>
             <span class="dot"></span>
             <span class="dot"></span>
-          </span>
+          </div>
         </button>
 
-
         <button
-          class="close-menu"
-          id="closeMenu"
+          class="menu-close"
+          id="menuClose"
           aria-label="Cerrar menú"
         >
           ×
         </button>
 
-
         <button
           class="menu-option"
-          id="menuListas"
+          data-menu="lists"
         >
           <span class="menu-line"></span>
-          <span>Listas</span>
+          <span class="menu-option-text">Listas</span>
         </button>
 
-
         <button
           class="menu-option"
-          id="menuNotas"
+          data-menu="notes"
         >
           <span class="menu-line"></span>
-          <span>Notas</span>
+          <span class="menu-option-text">Notas</span>
         </button>
 
-
         <button
           class="menu-option"
-          id="menuDashboard"
+          data-menu="dashboard"
         >
           <span class="menu-line"></span>
-          <span>Dashboard</span>
+          <span class="menu-option-text">Dashboard</span>
         </button>
 
       </div>
@@ -1578,14 +1208,11 @@
     </header>
 
 
-    <!-- =====================================================
+    <!-- =======================================================
          HOME
-         ===================================================== -->
+    ======================================================== -->
 
-    <main
-      class="view active"
-      id="homeView"
-    >
+    <main id="homeView">
 
       <!-- QUICK ACTIONS -->
 
@@ -1615,7 +1242,7 @@
           <div class="quick-action-icon">
 
             <div class="star-circle">
-              <div class="star"></div>
+              <span class="star">✦</span>
             </div>
 
           </div>
@@ -1629,9 +1256,9 @@
       </section>
 
 
-      <!-- ===================================================
-           REMINDER FORM
-           =================================================== -->
+      <!-- =====================================================
+           REMINDER CREATION
+      ====================================================== -->
 
       <section
         class="reminder-panel"
@@ -1643,29 +1270,26 @@
         </div>
 
 
-        <!-- RECORDATORIO -->
+        <!-- TITLE -->
 
         <div class="form-group">
 
-          <label
-            class="form-label"
-            for="reminderTitle"
-          >
+          <label class="form-label">
             ¿Cuál es el recordatorio?
           </label>
 
           <input
-            id="reminderTitle"
-            class="text-input"
             type="text"
-            placeholder="Escribe aquí..."
+            class="text-input"
+            id="reminderTitle"
+            placeholder="Escribe el recordatorio"
             autocomplete="off"
-          >
+          />
 
         </div>
 
 
-        <!-- LISTA -->
+        <!-- LIST -->
 
         <div class="form-group">
 
@@ -1678,23 +1302,26 @@
             id="reminderListSelector"
           >
 
-            <button
-              class="list-selector-main"
-              id="reminderListMain"
+            <div
+              class="selected-list-row"
+              id="selectedListRow"
             >
 
               <span
                 class="selected-list"
                 id="selectedListName"
               >
-                Personal
+                Seleccionar lista
               </span>
 
-              <span class="list-arrow">
-                ›
+              <span
+                class="list-arrow"
+                id="listArrow"
+              >
+                →
               </span>
 
-            </button>
+            </div>
 
 
             <div
@@ -1703,91 +1330,77 @@
             >
             </div>
 
+
+            <div
+              class="create-list-option"
+              id="createListFromReminder"
+            >
+              + Crear nueva lista
+            </div>
+
           </div>
 
         </div>
 
 
-        <!-- DATE + TIME -->
+        <!-- DATE -->
 
-        <div class="date-row">
+        <div class="form-group">
 
-          <!-- DATE -->
+          <label class="form-label">
+            ¿Qué día?
+          </label>
 
-          <div class="date-column">
+          <input
+            type="date"
+            class="date-input"
+            id="reminderDate"
+          />
 
-            <div class="form-group">
+        </div>
 
-              <label
-                class="form-label"
-                for="reminderDate"
-              >
-                ¿Qué día?
-              </label>
 
-              <input
-                id="reminderDate"
-                class="date-input"
-                type="date"
-              >
+        <!-- TIME -->
 
-            </div>
+        <div class="form-group">
+
+          <label class="form-label">
+            ¿Deseas agregar hora?
+          </label>
+
+          <div class="choice-row">
+
+            <button
+              class="choice-button"
+              data-time-choice="yes"
+              id="timeYes"
+            >
+              <span class="choice-circle"></span>
+              Sí
+            </button>
+
+            <button
+              class="choice-button"
+              data-time-choice="no"
+              id="timeNo"
+            >
+              <span class="choice-circle"></span>
+              No
+            </button>
 
           </div>
 
 
-          <!-- TIME -->
+          <div
+            class="time-wrapper"
+            id="timeWrapper"
+          >
 
-          <div class="date-column time-question">
-
-            <div class="form-group">
-
-              <label class="form-label">
-                ¿Deseas agregar hora?
-              </label>
-
-              <div class="toggle-row">
-
-                <button
-                  class="toggle-button"
-                  id="timeYes"
-                  type="button"
-                >
-                  Sí
-                </button>
-
-                <button
-                  class="toggle-button active"
-                  id="timeNo"
-                  type="button"
-                >
-                  No
-                </button>
-
-              </div>
-
-
-              <div
-                class="time-field"
-                id="timeField"
-              >
-
-                <label
-                  class="form-label"
-                  for="reminderTime"
-                >
-                  Hora
-                </label>
-
-                <input
-                  id="reminderTime"
-                  class="time-input"
-                  type="time"
-                >
-
-              </div>
-
-            </div>
+            <input
+              type="time"
+              class="time-input"
+              id="reminderTime"
+            />
 
           </div>
 
@@ -1802,21 +1415,23 @@
             ¿Deseas poner una alarma para el recordatorio?
           </label>
 
-          <div class="alarm-options">
+          <div class="choice-row">
 
             <button
-              class="toggle-button"
+              class="choice-button"
+              data-alarm-choice="yes"
               id="alarmYes"
-              type="button"
             >
+              <span class="choice-circle"></span>
               Sí
             </button>
 
             <button
-              class="toggle-button active"
+              class="choice-button"
+              data-alarm-choice="no"
               id="alarmNo"
-              type="button"
             >
+              <span class="choice-circle"></span>
               No
             </button>
 
@@ -1832,7 +1447,6 @@
           Guardar recordatorio
         </button>
 
-
         <button
           class="cancel-reminder"
           id="cancelReminder"
@@ -1843,20 +1457,17 @@
       </section>
 
 
-      <!-- ===================================================
-           CALENDAR + LISTS
-           =================================================== -->
+      <!-- =====================================================
+           CALENDAR
+      ====================================================== -->
 
-      <section class="dashboard-top">
+      <section class="calendar-section">
 
-        <!-- CALENDAR -->
+        <div class="section-title">
+          Calendario
+        </div>
 
-        <div class="dashboard-card">
-
-          <div class="card-title">
-            Calendario
-          </div>
-
+        <div class="calendar-box">
 
           <div class="calendar-header">
 
@@ -1864,23 +1475,23 @@
               class="calendar-month"
               id="calendarMonth"
             >
-              Enero 2026
+              Octubre 2026
             </div>
 
-            <div class="calendar-nav">
+            <div class="calendar-controls">
 
               <button
-                id="prevMonth"
-                aria-label="Mes anterior"
+                class="calendar-control"
+                id="previousMonth"
               >
-                ‹
+                ←
               </button>
 
               <button
+                class="calendar-control"
                 id="nextMonth"
-                aria-label="Mes siguiente"
               >
-                ›
+                →
               </button>
 
             </div>
@@ -1890,73 +1501,47 @@
 
           <div class="calendar-weekdays">
 
-            <div class="weekday">L</div>
-            <div class="weekday">M</div>
-            <div class="weekday">X</div>
-            <div class="weekday">J</div>
-            <div class="weekday">V</div>
-            <div class="weekday">S</div>
-            <div class="weekday">D</div>
+            <div class="calendar-weekday">L</div>
+            <div class="calendar-weekday">M</div>
+            <div class="calendar-weekday">X</div>
+            <div class="calendar-weekday">J</div>
+            <div class="calendar-weekday">V</div>
+            <div class="calendar-weekday">S</div>
+            <div class="calendar-weekday">D</div>
 
           </div>
 
 
           <div
-            class="calendar-grid"
-            id="calendarGrid"
+            class="calendar-days"
+            id="calendarDays"
           >
           </div>
-
-        </div>
-
-
-        <!-- LISTS -->
-
-        <div class="dashboard-card">
-
-          <div class="card-title">
-            Listas
-          </div>
-
-
-          <div
-            class="lists-container"
-            id="listsContainer"
-          >
-          </div>
-
-
-          <button
-            class="create-list-small"
-            id="createListSmall"
-          >
-            + Crear nueva lista
-          </button>
 
         </div>
 
       </section>
 
 
-      <!-- ===================================================
+      <!-- =====================================================
            TODAY / UPCOMING
-           =================================================== -->
+      ====================================================== -->
 
-      <section class="main-sections">
+      <section class="day-navigation">
 
         <button
-          class="section-button"
+          class="day-button"
           id="todayButton"
         >
 
-          <div class="section-left">
+          <div class="day-button-left">
 
-            <span class="section-title">
+            <span class="day-button-title">
               Hoy
             </span>
 
             <span
-              class="overdue-badge"
+              class="notification-badge"
               id="overdueBadge"
             >
               0
@@ -1964,28 +1549,28 @@
 
           </div>
 
-          <span class="section-arrow">
-            ›
+          <span class="day-arrow">
+            →
           </span>
 
         </button>
 
 
         <button
-          class="section-button"
+          class="day-button"
           id="upcomingButton"
         >
 
-          <div class="section-left">
+          <div class="day-button-left">
 
-            <span class="section-title">
+            <span class="day-button-title">
               Próximamente
             </span>
 
           </div>
 
-          <span class="section-arrow">
-            ›
+          <span class="day-arrow">
+            →
           </span>
 
         </button>
@@ -1995,9 +1580,9 @@
     </main>
 
 
-    <!-- =====================================================
+    <!-- =======================================================
          TODAY VIEW
-         ===================================================== -->
+    ======================================================== -->
 
     <section
       class="view"
@@ -2008,32 +1593,40 @@
 
         <button
           class="back-button"
-          data-back
+          data-back-home
         >
-          ← Volver
+          ←
         </button>
 
-        <div class="view-title">
-          Hoy
-        </div>
+        <div>
 
-        <div></div>
+          <div class="view-title">
+            Hoy
+          </div>
+
+          <div
+            class="view-date"
+            id="todayViewDate"
+          >
+          </div>
+
+        </div>
 
       </div>
 
 
       <div
-        class="task-list"
-        id="todayTaskList"
+        class="items-container"
+        id="todayItems"
       >
       </div>
 
     </section>
 
 
-    <!-- =====================================================
+    <!-- =======================================================
          UPCOMING VIEW
-         ===================================================== -->
+    ======================================================== -->
 
     <section
       class="view"
@@ -2044,61 +1637,255 @@
 
         <button
           class="back-button"
-          data-back
+          data-back-home
         >
-          ← Volver
+          ←
         </button>
 
-        <div class="view-title">
-          Próximamente
-        </div>
+        <div>
 
-        <div></div>
+          <div class="view-title">
+            Próximamente
+          </div>
+
+          <div class="view-date">
+            Próximas 48 horas
+          </div>
+
+        </div>
 
       </div>
 
 
       <div
-        class="task-list"
-        id="upcomingTaskList"
+        class="items-container"
+        id="upcomingItems"
       >
       </div>
 
     </section>
 
 
-    <!-- =====================================================
-         LIST DETAIL
-         ===================================================== -->
+    <!-- =======================================================
+         LISTS VIEW
+    ======================================================== -->
 
     <section
       class="view"
-      id="listDetailView"
+      id="listsView"
     >
 
-      <div class="list-detail-header">
+      <div class="view-header">
 
         <button
           class="back-button"
-          data-back
+          data-back-home
         >
-          ← Volver
+          ←
         </button>
 
-        <div
-          class="list-detail-title"
-          id="listDetailTitle"
-        >
-          Lista
+        <div class="view-title">
+          Listas
         </div>
 
       </div>
 
 
       <div
-        class="task-list"
-        id="listDetailTasks"
+        class="lists-container"
+        id="listsContainer"
       >
+      </div>
+
+
+      <button
+        class="new-list-button"
+        id="newListButton"
+      >
+        + Crear nueva lista
+      </button>
+
+    </section>
+
+
+    <!-- =======================================================
+         LIST DETAIL
+    ======================================================== -->
+
+    <section
+      class="view"
+      id="listDetailView"
+    >
+
+      <div class="view-header">
+
+        <button
+          class="back-button"
+          id="backFromListDetail"
+        >
+          ←
+        </button>
+
+        <div>
+
+          <div
+            class="view-title"
+            id="listDetailTitle"
+          >
+          </div>
+
+          <div
+            class="view-date"
+            id="listDetailCount"
+          >
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="items-container"
+        id="listDetailItems"
+      >
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         NOTES VIEW
+    ======================================================== -->
+
+    <section
+      class="view"
+      id="notesView"
+    >
+
+      <div class="view-header">
+
+        <button
+          class="back-button"
+          data-back-home
+        >
+          ←
+        </button>
+
+        <div class="view-title">
+          Notas
+        </div>
+
+      </div>
+
+
+      <textarea
+        class="notes-area"
+        id="notesArea"
+        placeholder="Escribe aquí tus notas..."
+      ></textarea>
+
+
+      <button
+        class="save-notes"
+        id="saveNotes"
+      >
+        Guardar notas
+      </button>
+
+    </section>
+
+
+    <!-- =======================================================
+         DASHBOARD VIEW
+    ======================================================== -->
+
+    <section
+      class="view"
+      id="dashboardView"
+    >
+
+      <div class="view-header">
+
+        <button
+          class="back-button"
+          data-back-home
+        >
+          ←
+        </button>
+
+        <div class="view-title">
+          Dashboard
+        </div>
+
+      </div>
+
+
+      <div class="dashboard-grid">
+
+        <div class="dashboard-item">
+
+          <div
+            class="dashboard-number"
+            id="dashboardPending"
+          >
+            0
+          </div>
+
+          <div class="dashboard-label">
+            Pendientes
+          </div>
+
+        </div>
+
+
+        <div class="dashboard-item">
+
+          <div
+            class="dashboard-number"
+            id="dashboardToday"
+          >
+            0
+          </div>
+
+          <div class="dashboard-label">
+            Para hoy
+          </div>
+
+        </div>
+
+
+        <div class="dashboard-item">
+
+          <div
+            class="dashboard-number"
+            id="dashboardOverdue"
+          >
+            0
+          </div>
+
+          <div class="dashboard-label">
+            Vencidos
+          </div>
+
+        </div>
+
+
+        <div class="dashboard-item">
+
+          <div
+            class="dashboard-number"
+            id="dashboardLists"
+          >
+            0
+          </div>
+
+          <div class="dashboard-label">
+            Listas
+          </div>
+
+        </div>
+
       </div>
 
     </section>
@@ -2106,22 +1893,22 @@
   </div>
 
 
-  <!-- =======================================================
-       BOTTOM NAV
-       ======================================================= -->
+  <!-- =========================================================
+       BOTTOM NAVIGATION
+  ========================================================== -->
 
   <nav class="bottom-nav">
 
     <button
-      class="bottom-nav-button"
-      id="navHome"
+      class="bottom-nav-button active"
+      data-bottom="home"
     >
 
       <span class="bottom-nav-icon">
-        ○
+        ⌂
       </span>
 
-      <span>
+      <span class="bottom-nav-label">
         Inicio
       </span>
 
@@ -2130,14 +1917,14 @@
 
     <button
       class="bottom-nav-button"
-      id="navLists"
+      data-bottom="lists"
     >
 
       <span class="bottom-nav-icon">
         ≡
       </span>
 
-      <span>
+      <span class="bottom-nav-label">
         Listas
       </span>
 
@@ -2146,14 +1933,14 @@
 
     <button
       class="bottom-nav-button"
-      id="navNotes"
+      data-bottom="notes"
     >
 
       <span class="bottom-nav-icon">
         □
       </span>
 
-      <span>
+      <span class="bottom-nav-label">
         Notas
       </span>
 
@@ -2162,14 +1949,14 @@
 
     <button
       class="bottom-nav-button"
-      id="navDashboard"
+      data-bottom="dashboard"
     >
 
       <span class="bottom-nav-icon">
-        ◇
+        ···
       </span>
 
-      <span>
+      <span class="bottom-nav-label">
         Dashboard
       </span>
 
@@ -2178,149 +1965,82 @@
   </nav>
 
 
+  <!-- =========================================================
+       MODAL CREATE LIST
+  ========================================================== -->
+
+  <div
+    class="modal-overlay"
+    id="listModal"
+  >
+
+    <div class="modal">
+
+      <div class="modal-title">
+        Crear nueva lista
+      </div>
+
+      <input
+        type="text"
+        class="modal-input"
+        id="newListName"
+        placeholder="Nombre de la lista"
+        autocomplete="off"
+      />
+
+      <div class="modal-buttons">
+
+        <button
+          class="modal-button"
+          id="cancelListModal"
+        >
+          Cancelar
+        </button>
+
+        <button
+          class="modal-button primary"
+          id="saveNewList"
+        >
+          Crear
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
   <script>
 
     /* =========================================================
-       DATA
-       ========================================================= */
+       NOVA LIST
+       JAVASCRIPT
+    ========================================================== */
 
-    const defaultLists = [
-      {
-        id: "trabajo",
-        name: "Trabajo"
-      },
-      {
-        id: "personal",
-        name: "Personal"
-      },
-      {
-        id: "compras",
-        name: "Compras"
-      },
-      {
-        id: "proyectos",
-        name: "Proyectos"
-      }
-    ];
+    const STORAGE_KEY = "novaListData";
 
-
-    const todayDate = new Date();
-
-    const formatDate = (date) => {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-
-      return `${year}-${month}-${day}`;
+    let data = {
+      lists: [],
+      tasks: [],
+      notes: ""
     };
 
+    let selectedReminderList = null;
 
-    const yesterday = new Date(todayDate);
-    yesterday.setDate(yesterday.getDate() - 1);
+    let reminderHasTime = false;
+    let reminderHasAlarm = false;
 
+    let currentCalendarDate = new Date();
 
-    const tomorrow = new Date(todayDate);
-    tomorrow.setDate(tomorrow.getDate() + 1);
+    let selectedCalendarDate = new Date();
 
-
-    const defaultTasks = [
-      {
-        id: crypto.randomUUID(),
-        type: "todo",
-        title: "Revisar documentos pendientes",
-        listId: "trabajo",
-        date: formatDate(yesterday),
-        priority: "normal",
-        completed: false
-      },
-
-      {
-        id: crypto.randomUUID(),
-        type: "todo",
-        title: "Enviar seguimiento",
-        listId: "trabajo",
-        date: formatDate(todayDate),
-        priority: "normal",
-        completed: false
-      },
-
-      {
-        id: crypto.randomUUID(),
-        type: "todo",
-        title: "Comprar concentrado",
-        listId: "compras",
-        date: formatDate(tomorrow),
-        priority: "normal",
-        completed: false
-      }
-    ];
-
-
-    let lists =
-      JSON.parse(localStorage.getItem("novaLists")) ||
-      defaultLists;
-
-
-    let tasks =
-      JSON.parse(localStorage.getItem("novaTasks")) ||
-      defaultTasks;
-
-
-    let selectedReminderList =
-      lists[0]?.id || "personal";
-
-
-    let calendarDate = new Date();
-
-
-    let selectedCalendarDate =
-      formatDate(todayDate);
+    let currentListId = null;
 
 
     /* =========================================================
-       SAVE
-       ========================================================= */
-
-    function saveData() {
-
-      localStorage.setItem(
-        "novaLists",
-        JSON.stringify(lists)
-      );
-
-      localStorage.setItem(
-        "novaTasks",
-        JSON.stringify(tasks)
-      );
-    }
-
-
-    /* =========================================================
-       GREETING
-       ========================================================= */
-
-    function updateGreeting() {
-
-      const hour = new Date().getHours();
-
-      let greeting = "Buenos días";
-
-      if (hour >= 12 && hour < 19) {
-        greeting = "Buenas tardes";
-      }
-
-      if (hour >= 19) {
-        greeting = "Buenas noches";
-      }
-
-      document.getElementById("greeting").textContent =
-        greeting;
-    }
-
-
-    /* =========================================================
-       MENU
-       ========================================================= */
+       DOM
+    ========================================================== */
 
     const menuContainer =
       document.getElementById("menuContainer");
@@ -2328,290 +2048,51 @@
     const dotsButton =
       document.getElementById("dotsButton");
 
-    const closeMenu =
-      document.getElementById("closeMenu");
+    const menuClose =
+      document.getElementById("menuClose");
 
 
-    dotsButton.addEventListener("click", () => {
+    const greeting =
+      document.getElementById("greeting");
 
-      menuContainer.classList.add("open");
-
-    });
-
-
-    closeMenu.addEventListener("click", () => {
-
-      menuContainer.classList.remove("open");
-
-    });
-
-
-    document
-      .getElementById("menuListas")
-      .addEventListener("click", () => {
-
-        showLists();
-
-      });
-
-
-    document
-      .getElementById("menuNotas")
-      .addEventListener("click", () => {
-
-        alert("Notas próximamente.");
-
-      });
-
-
-    document
-      .getElementById("menuDashboard")
-      .addEventListener("click", () => {
-
-        alert("Dashboard próximamente.");
-
-      });
-
-
-    /* =========================================================
-       VIEW CONTROL
-       ========================================================= */
-
-    const views = {
-      home: document.getElementById("homeView"),
-      today: document.getElementById("todayView"),
-      upcoming: document.getElementById("upcomingView"),
-      listDetail: document.getElementById("listDetailView")
-    };
-
-
-    function showView(name) {
-
-      Object.values(views).forEach(view => {
-        view.classList.remove("active");
-      });
-
-      if (views[name]) {
-        views[name].classList.add("active");
-      }
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    }
-
-
-    document.querySelectorAll("[data-back]")
-      .forEach(button => {
-
-        button.addEventListener("click", () => {
-          showView("home");
-        });
-
-      });
-
-
-    /* =========================================================
-       QUICK NOTES
-       ========================================================= */
-
-    document
-      .getElementById("quickNotesButton")
-      .addEventListener("click", () => {
-
-        alert("Notas rápidas próximamente.");
-
-      });
-
-
-    /* =========================================================
-       REMINDER PANEL
-       ========================================================= */
 
     const reminderPanel =
       document.getElementById("reminderPanel");
 
+    const newReminderButton =
+      document.getElementById("newReminderButton");
 
-    document
-      .getElementById("newReminderButton")
-      .addEventListener("click", () => {
+    const cancelReminder =
+      document.getElementById("cancelReminder");
 
-        reminderPanel.classList.add("active");
-
-        reminderPanel.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-
-      });
+    const saveReminder =
+      document.getElementById("saveReminder");
 
 
-    document
-      .getElementById("cancelReminder")
-      .addEventListener("click", () => {
+    const reminderTitle =
+      document.getElementById("reminderTitle");
 
-        resetReminderForm();
+    const reminderDate =
+      document.getElementById("reminderDate");
 
-      });
+    const reminderTime =
+      document.getElementById("reminderTime");
 
-
-    function resetReminderForm() {
-
-      reminderPanel.classList.remove("active");
-
-      document.getElementById("reminderTitle").value = "";
-
-      document.getElementById("reminderDate").value =
-        formatDate(new Date());
-
-      document.getElementById("reminderTime").value = "";
-
-      document
-        .getElementById("timeNo")
-        .classList.add("active");
-
-      document
-        .getElementById("timeYes")
-        .classList.remove("active");
-
-      document
-        .getElementById("alarmNo")
-        .classList.add("active");
-
-      document
-        .getElementById("alarmYes")
-        .classList.remove("active");
-
-      document
-        .getElementById("timeField")
-        .classList.remove("active");
-
-    }
-
-
-    /* =========================================================
-       LIST SELECTOR
-       ========================================================= */
-
-    const listSelector =
+    const reminderListSelector =
       document.getElementById("reminderListSelector");
 
-    const listOptions =
-      document.getElementById("reminderListOptions");
+    const selectedListRow =
+      document.getElementById("selectedListRow");
 
     const selectedListName =
       document.getElementById("selectedListName");
 
+    const reminderListOptions =
+      document.getElementById("reminderListOptions");
 
-    document
-      .getElementById("reminderListMain")
-      .addEventListener("click", () => {
+    const createListFromReminder =
+      document.getElementById("createListFromReminder");
 
-        listSelector.classList.toggle("open");
-
-        renderReminderLists();
-
-      });
-
-
-    function renderReminderLists() {
-
-      listOptions.innerHTML = "";
-
-      lists.forEach(list => {
-
-        const button =
-          document.createElement("button");
-
-        button.className = "list-option";
-
-        button.textContent = list.name;
-
-        button.addEventListener("click", () => {
-
-          selectedReminderList = list.id;
-
-          selectedListName.textContent =
-            list.name;
-
-          listSelector.classList.remove("open");
-
-        });
-
-        listOptions.appendChild(button);
-
-      });
-
-
-      const createButton =
-        document.createElement("button");
-
-      createButton.className =
-        "create-list-button";
-
-      createButton.textContent =
-        "+ Crear nueva lista";
-
-      createButton.addEventListener("click", () => {
-
-        createNewList();
-
-      });
-
-      listOptions.appendChild(createButton);
-
-    }
-
-
-    /* =========================================================
-       CREATE LIST
-       ========================================================= */
-
-    function createNewList() {
-
-      const name =
-        prompt("Nombre de la nueva lista:");
-
-      if (!name || !name.trim()) {
-        return;
-      }
-
-      const newList = {
-        id: crypto.randomUUID(),
-        name: name.trim()
-      };
-
-      lists.push(newList);
-
-      selectedReminderList = newList.id;
-
-      selectedListName.textContent =
-        newList.name;
-
-      saveData();
-
-      renderLists();
-
-      renderReminderLists();
-
-      listSelector.classList.remove("open");
-
-    }
-
-
-    document
-      .getElementById("createListSmall")
-      .addEventListener("click", () => {
-
-        createNewList();
-
-      });
-
-
-    /* =========================================================
-       TIME YES / NO
-       ========================================================= */
 
     const timeYes =
       document.getElementById("timeYes");
@@ -2619,33 +2100,9 @@
     const timeNo =
       document.getElementById("timeNo");
 
-    const timeField =
-      document.getElementById("timeField");
+    const timeWrapper =
+      document.getElementById("timeWrapper");
 
-
-    timeYes.addEventListener("click", () => {
-
-      timeYes.classList.add("active");
-      timeNo.classList.remove("active");
-
-      timeField.classList.add("active");
-
-    });
-
-
-    timeNo.addEventListener("click", () => {
-
-      timeNo.classList.add("active");
-      timeYes.classList.remove("active");
-
-      timeField.classList.remove("active");
-
-    });
-
-
-    /* =========================================================
-       ALARM
-       ========================================================= */
 
     const alarmYes =
       document.getElementById("alarmYes");
@@ -2654,56 +2111,599 @@
       document.getElementById("alarmNo");
 
 
-    alarmYes.addEventListener("click", () => {
+    const calendarMonth =
+      document.getElementById("calendarMonth");
 
-      alarmYes.classList.add("active");
-      alarmNo.classList.remove("active");
-
-    });
+    const calendarDays =
+      document.getElementById("calendarDays");
 
 
-    alarmNo.addEventListener("click", () => {
+    const previousMonth =
+      document.getElementById("previousMonth");
 
-      alarmNo.classList.add("active");
-      alarmYes.classList.remove("active");
+    const nextMonth =
+      document.getElementById("nextMonth");
 
-    });
+
+    const overdueBadge =
+      document.getElementById("overdueBadge");
+
+
+    const todayButton =
+      document.getElementById("todayButton");
+
+    const upcomingButton =
+      document.getElementById("upcomingButton");
+
+
+    const todayItems =
+      document.getElementById("todayItems");
+
+    const upcomingItems =
+      document.getElementById("upcomingItems");
+
+
+    const listsContainer =
+      document.getElementById("listsContainer");
+
+
+    const listDetailItems =
+      document.getElementById("listDetailItems");
+
+    const listDetailTitle =
+      document.getElementById("listDetailTitle");
+
+    const listDetailCount =
+      document.getElementById("listDetailCount");
+
+
+    const notesArea =
+      document.getElementById("notesArea");
+
+
+    const dashboardPending =
+      document.getElementById("dashboardPending");
+
+    const dashboardToday =
+      document.getElementById("dashboardToday");
+
+    const dashboardOverdue =
+      document.getElementById("dashboardOverdue");
+
+    const dashboardLists =
+      document.getElementById("dashboardLists");
+
+
+    const listModal =
+      document.getElementById("listModal");
+
+    const newListName =
+      document.getElementById("newListName");
+
+
+    /* =========================================================
+       INITIALIZE
+    ========================================================== */
+
+    function initialize() {
+
+      loadData();
+
+      updateGreeting();
+
+      selectedReminderList = null;
+
+      selectedListName.textContent =
+        "Seleccionar lista";
+
+      setDefaultReminderDate();
+
+      notesArea.value = data.notes || "";
+
+      renderCalendar();
+
+      renderLists();
+
+      updateOverdueBadge();
+
+      updateDashboard();
+
+      showHome();
+
+    }
+
+
+    /* =========================================================
+       LOCAL STORAGE
+    ========================================================== */
+
+    function loadData() {
+
+      const saved =
+        localStorage.getItem(STORAGE_KEY);
+
+      if (!saved) {
+
+        data.lists = [
+          {
+            id: createId(),
+            name: "Personal"
+          },
+          {
+            id: createId(),
+            name: "Trabajo"
+          }
+        ];
+
+        data.tasks = [];
+
+        data.notes = "";
+
+        saveData();
+
+        return;
+      }
+
+      try {
+
+        const parsed =
+          JSON.parse(saved);
+
+        data = {
+          lists: Array.isArray(parsed.lists)
+            ? parsed.lists
+            : [],
+
+          tasks: Array.isArray(parsed.tasks)
+            ? parsed.tasks
+            : [],
+
+          notes:
+            typeof parsed.notes === "string"
+              ? parsed.notes
+              : ""
+        };
+
+      } catch (error) {
+
+        console.error(
+          "No se pudo cargar Nova List.",
+          error
+        );
+
+      }
+
+    }
+
+
+    function saveData() {
+
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(data)
+      );
+
+    }
+
+
+    function createId() {
+
+      return (
+        Date.now().toString(36) +
+        Math.random()
+          .toString(36)
+          .substring(2, 8)
+      );
+
+    }
+
+
+    /* =========================================================
+       GREETING
+    ========================================================== */
+
+    function updateGreeting() {
+
+      const hour =
+        new Date().getHours();
+
+      if (hour < 12) {
+
+        greeting.textContent =
+          "Buenos días";
+
+      } else if (hour < 19) {
+
+        greeting.textContent =
+          "Buenas tardes";
+
+      } else {
+
+        greeting.textContent =
+          "Buenas noches";
+
+      }
+
+    }
+
+
+    /* =========================================================
+       MENU
+    ========================================================== */
+
+    dotsButton.addEventListener(
+      "click",
+      function() {
+
+        menuContainer.classList.add(
+          "open"
+        );
+
+      }
+    );
+
+
+    menuClose.addEventListener(
+      "click",
+      function() {
+
+        menuContainer.classList.remove(
+          "open"
+        );
+
+      }
+    );
+
+
+    document
+      .querySelectorAll(".menu-option")
+      .forEach(function(option) {
+
+        option.addEventListener(
+          "click",
+          function() {
+
+            const menu =
+              option.dataset.menu;
+
+            menuContainer.classList.remove(
+              "open"
+            );
+
+            if (menu === "lists") {
+
+              showView("listsView");
+
+              setBottomActive("lists");
+
+            }
+
+            if (menu === "notes") {
+
+              showView("notesView");
+
+              setBottomActive("notes");
+
+            }
+
+            if (menu === "dashboard") {
+
+              updateDashboard();
+
+              showView("dashboardView");
+
+              setBottomActive("dashboard");
+
+            }
+
+          }
+        );
+
+      });
+
+
+    /* =========================================================
+       REMINDER PANEL
+    ========================================================== */
+
+    newReminderButton.addEventListener(
+      "click",
+      function() {
+
+        reminderPanel.classList.add(
+          "visible"
+        );
+
+        reminderTitle.focus();
+
+        renderReminderLists();
+
+      }
+    );
+
+
+    cancelReminder.addEventListener(
+      "click",
+      function() {
+
+        closeReminderPanel();
+
+      }
+    );
+
+
+    function closeReminderPanel() {
+
+      reminderPanel.classList.remove(
+        "visible"
+      );
+
+      reminderTitle.value = "";
+
+      selectedReminderList = null;
+
+      selectedListName.textContent =
+        "Seleccionar lista";
+
+      reminderListSelector.classList.remove(
+        "expanded"
+      );
+
+      reminderHasTime = false;
+
+      reminderHasAlarm = false;
+
+      reminderTime.value = "";
+
+      timeWrapper.classList.remove(
+        "visible"
+      );
+
+      setChoice(
+        timeYes,
+        false
+      );
+
+      setChoice(
+        timeNo,
+        false
+      );
+
+      setChoice(
+        alarmYes,
+        false
+      );
+
+      setChoice(
+        alarmNo,
+        false
+      );
+
+      setDefaultReminderDate();
+
+    }
+
+
+    function setDefaultReminderDate() {
+
+      const today =
+        new Date();
+
+      reminderDate.value =
+        formatDate(today);
+
+    }
+
+
+    /* =========================================================
+       LIST SELECTOR
+    ========================================================== */
+
+    selectedListRow.addEventListener(
+      "click",
+      function() {
+
+        reminderListSelector.classList.toggle(
+          "expanded"
+        );
+
+        renderReminderLists();
+
+      }
+    );
+
+
+    function renderReminderLists() {
+
+      reminderListOptions.innerHTML = "";
+
+      data.lists.forEach(
+        function(list) {
+
+          const button =
+            document.createElement("div");
+
+          button.className =
+            "list-option";
+
+          button.textContent =
+            list.name;
+
+          button.addEventListener(
+            "click",
+            function(event) {
+
+              event.stopPropagation();
+
+              selectedReminderList =
+                list.id;
+
+              selectedListName.textContent =
+                list.name;
+
+              reminderListSelector.classList.remove(
+                "expanded"
+              );
+
+            }
+          );
+
+          reminderListOptions.appendChild(
+            button
+          );
+
+        }
+      );
+
+    }
+
+
+    /* =========================================================
+       CREATE LIST FROM REMINDER
+    ========================================================== */
+
+    createListFromReminder.addEventListener(
+      "click",
+      function() {
+
+        openListModal(
+          true
+        );
+
+      }
+    );
+
+
+    /* =========================================================
+       TIME CHOICE
+    ========================================================== */
+
+    timeYes.addEventListener(
+      "click",
+      function() {
+
+        reminderHasTime = true;
+
+        setChoice(
+          timeYes,
+          true
+        );
+
+        setChoice(
+          timeNo,
+          false
+        );
+
+        timeWrapper.classList.add(
+          "visible"
+        );
+
+      }
+    );
+
+
+    timeNo.addEventListener(
+      "click",
+      function() {
+
+        reminderHasTime = false;
+
+        setChoice(
+          timeYes,
+          false
+        );
+
+        setChoice(
+          timeNo,
+          true
+        );
+
+        timeWrapper.classList.remove(
+          "visible"
+        );
+
+        reminderTime.value = "";
+
+      }
+    );
+
+
+    /* =========================================================
+       ALARM CHOICE
+    ========================================================== */
+
+    alarmYes.addEventListener(
+      "click",
+      function() {
+
+        reminderHasAlarm = true;
+
+        setChoice(
+          alarmYes,
+          true
+        );
+
+        setChoice(
+          alarmNo,
+          false
+        );
+
+      }
+    );
+
+
+    alarmNo.addEventListener(
+      "click",
+      function() {
+
+        reminderHasAlarm = false;
+
+        setChoice(
+          alarmYes,
+          false
+        );
+
+        setChoice(
+          alarmNo,
+          true
+        );
+
+      }
+    );
+
+
+    function setChoice(
+      button,
+      active
+    ) {
+
+      if (active) {
+
+        button.classList.add(
+          "selected"
+        );
+
+      } else {
+
+        button.classList.remove(
+          "selected"
+        );
+
+      }
+
+    }
 
 
     /* =========================================================
        SAVE REMINDER
-       ========================================================= */
+    ========================================================== */
 
-    document
-      .getElementById("saveReminder")
-      .addEventListener("click", () => {
+    saveReminder.addEventListener(
+      "click",
+      function() {
 
         const title =
-          document
-            .getElementById("reminderTitle")
-            .value
-            .trim();
-
-
-        const date =
-          document
-            .getElementById("reminderDate")
-            .value;
-
-
-        const hasTime =
-          timeYes.classList.contains("active");
-
-
-        const time =
-          document
-            .getElementById("reminderTime")
-            .value;
-
-
-        const alarm =
-          alarmYes.classList.contains("active");
-
+          reminderTitle.value.trim();
 
         if (!title) {
 
@@ -2711,319 +2711,571 @@
             "Escribe cuál es el recordatorio."
           );
 
+          reminderTitle.focus();
+
           return;
+
         }
 
 
-        if (!date) {
+        if (!selectedReminderList) {
+
+          alert(
+            "Selecciona una lista para el recordatorio."
+          );
+
+          return;
+
+        }
+
+
+        if (!reminderDate.value) {
 
           alert(
             "Selecciona el día del recordatorio."
           );
 
           return;
+
         }
 
 
-        if (hasTime && !time) {
+        if (
+          reminderHasTime &&
+          !reminderTime.value
+        ) {
 
           alert(
-            "Selecciona la hora."
+            "Selecciona una hora."
           );
 
           return;
+
         }
 
 
         const reminder = {
 
-          id: crypto.randomUUID(),
+          id: createId(),
 
           type: "reminder",
 
-          title,
+          title: title,
 
-          listId: selectedReminderList,
+          listId:
+            selectedReminderList,
 
-          date,
+          date:
+            reminderDate.value,
 
-          time: hasTime ? time : null,
+          time:
+            reminderHasTime
+              ? reminderTime.value
+              : null,
 
-          alarm,
+          alarm:
+            reminderHasAlarm,
 
-          completed: false
+          completed: false,
+
+          createdAt:
+            new Date().toISOString()
 
         };
 
 
-        tasks.push(reminder);
+        data.tasks.push(
+          reminder
+        );
 
         saveData();
+
+        closeReminderPanel();
 
         renderCalendar();
 
         updateOverdueBadge();
 
-        resetReminderForm();
+        updateDashboard();
 
         alert(
           "Recordatorio guardado."
         );
 
-      });
+      }
+    );
 
 
     /* =========================================================
-       LISTS RENDER
-       ========================================================= */
+       CALENDAR
+    ========================================================== */
 
-    function renderLists() {
+    function renderCalendar() {
 
-      const container =
-        document.getElementById("listsContainer");
+      const year =
+        currentCalendarDate.getFullYear();
 
-      container.innerHTML = "";
-
-
-      lists.forEach(list => {
-
-        const count =
-          tasks.filter(task =>
-            task.listId === list.id &&
-            !task.completed
-          ).length;
+      const month =
+        currentCalendarDate.getMonth();
 
 
-        const item =
-          document.createElement("button");
+      const monthNames = [
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre"
+      ];
 
-        item.className = "list-item";
+
+      calendarMonth.textContent =
+        `${monthNames[month]} ${year}`;
 
 
-        const left =
+      calendarDays.innerHTML = "";
+
+
+      const firstDay =
+        new Date(
+          year,
+          month,
+          1
+        );
+
+
+      /*
+        JS:
+        Sunday = 0
+        Monday = 1
+        ...
+      */
+
+      let startDay =
+        firstDay.getDay();
+
+      startDay =
+        startDay === 0
+          ? 6
+          : startDay - 1;
+
+
+      const daysInMonth =
+        new Date(
+          year,
+          month + 1,
+          0
+        ).getDate();
+
+
+      for (
+        let i = 0;
+        i < startDay;
+        i++
+      ) {
+
+        const empty =
           document.createElement("div");
 
-        left.className = "list-left";
+        empty.className =
+          "calendar-day empty";
+
+        calendarDays.appendChild(
+          empty
+        );
+
+      }
 
 
-        const marker =
-          document.createElement("span");
-
-        marker.className = "list-marker";
+      const today =
+        new Date();
 
 
-        const name =
-          document.createElement("span");
+      for (
+        let day = 1;
+        day <= daysInMonth;
+        day++
+      ) {
 
-        name.className = "list-name";
+        const cell =
+          document.createElement("button");
 
-        name.textContent = list.name;
+        cell.className =
+          "calendar-day";
 
-
-        left.appendChild(marker);
-        left.appendChild(name);
-
-
-        const countElement =
-          document.createElement("span");
-
-        countElement.className =
-          "list-count";
-
-        countElement.textContent =
-          count;
+        cell.textContent =
+          day;
 
 
-        item.appendChild(left);
-        item.appendChild(countElement);
+        const date =
+          new Date(
+            year,
+            month,
+            day
+          );
 
 
-        item.addEventListener("click", () => {
-
-          showListDetail(list.id);
-
-        });
+        const dateString =
+          formatDate(date);
 
 
-        container.appendChild(item);
+        if (
+          formatDate(today) ===
+          dateString
+        ) {
 
-      });
+          cell.classList.add(
+            "today"
+          );
+
+        }
+
+
+        if (
+          formatDate(selectedCalendarDate) ===
+          dateString
+        ) {
+
+          cell.classList.add(
+            "selected"
+          );
+
+        }
+
+
+        const hasItems =
+          data.tasks.some(
+            function(task) {
+
+              return (
+                task.date ===
+                dateString
+              );
+
+            }
+          );
+
+
+        if (hasItems) {
+
+          cell.classList.add(
+            "has-items"
+          );
+
+        }
+
+
+        cell.addEventListener(
+          "click",
+          function() {
+
+            selectedCalendarDate =
+              date;
+
+            renderCalendar();
+
+            openDateView(
+              dateString
+            );
+
+          }
+        );
+
+
+        calendarDays.appendChild(
+          cell
+        );
+
+      }
 
     }
 
 
+    previousMonth.addEventListener(
+      "click",
+      function() {
+
+        currentCalendarDate =
+          new Date(
+            currentCalendarDate.getFullYear(),
+            currentCalendarDate.getMonth() - 1,
+            1
+          );
+
+        renderCalendar();
+
+      }
+    );
+
+
+    nextMonth.addEventListener(
+      "click",
+      function() {
+
+        currentCalendarDate =
+          new Date(
+            currentCalendarDate.getFullYear(),
+            currentCalendarDate.getMonth() + 1,
+            1
+          );
+
+        renderCalendar();
+
+      }
+    );
+
+
     /* =========================================================
-       TODAY VIEW
-       ========================================================= */
+       TODAY
+    ========================================================== */
 
-    document
-      .getElementById("todayButton")
-      .addEventListener("click", () => {
+    todayButton.addEventListener(
+      "click",
+      function() {
 
-        renderTodayTasks();
+        openDateView(
+          formatDate(
+            new Date()
+          )
+        );
 
-        showView("today");
+      }
+    );
 
-      });
+
+    function openDateView(
+      dateString
+    ) {
+
+      renderDateItems(
+        dateString,
+        todayItems
+      );
 
 
-    function renderTodayTasks() {
+      document.getElementById(
+        "todayViewDate"
+      ).textContent =
+        formatReadableDate(
+          dateString
+        );
 
-      const container =
-        document.getElementById("todayTaskList");
+
+      showView(
+        "todayView"
+      );
+
+    }
+
+
+    function renderDateItems(
+      dateString,
+      container
+    ) {
 
       container.innerHTML = "";
 
 
-      const today =
-        formatDate(new Date());
+      const items =
+        data.tasks
+          .filter(
+            function(task) {
+
+              return (
+                task.date ===
+                dateString
+              );
+
+            }
+          )
+          .sort(
+            sortTasks
+          );
 
 
-      const todayTasks =
-        tasks.filter(task =>
-          task.type === "todo" &&
-          task.date === today
-        );
+      if (items.length === 0) {
 
-
-      if (!todayTasks.length) {
-
-        showEmptyState(
-          container,
-          "Nada pendiente para hoy",
-          "Tu día está limpio."
-        );
+        container.innerHTML = `
+          <div class="empty-state">
+            No hay elementos para este día.
+          </div>
+        `;
 
         return;
 
       }
 
 
-      todayTasks.forEach(task => {
+      items.forEach(
+        function(task) {
 
-        container.appendChild(
-          createTaskCard(task)
-        );
+          container.appendChild(
+            createTaskElement(
+              task
+            )
+          );
 
-      });
+        }
+      );
 
     }
 
 
     /* =========================================================
        UPCOMING
-       ========================================================= */
+    ========================================================== */
 
-    document
-      .getElementById("upcomingButton")
-      .addEventListener("click", () => {
+    upcomingButton.addEventListener(
+      "click",
+      function() {
 
-        renderUpcomingTasks();
+        renderUpcoming();
 
-        showView("upcoming");
+        showView(
+          "upcomingView"
+        );
 
-      });
+      }
+    );
 
 
-    function renderUpcomingTasks() {
+    function renderUpcoming() {
 
-      const container =
-        document.getElementById("upcomingTaskList");
-
-      container.innerHTML = "";
+      upcomingItems.innerHTML = "";
 
 
       const now =
         new Date();
 
-
-      const limit =
-        new Date(now);
-
-      limit.setHours(
-        limit.getHours() + 48
-      );
+      const end =
+        new Date(
+          now.getTime() +
+          48 * 60 * 60 * 1000
+        );
 
 
-      const upcoming =
-        tasks.filter(task => {
+      const items =
+        data.tasks
+          .filter(
+            function(task) {
 
-          if (
-            task.type !== "todo" ||
-            task.completed
-          ) {
-            return false;
-          }
+              if (
+                task.completed ||
+                !task.date
+              ) {
+
+                return false;
+
+              }
 
 
-          const taskDate =
-            new Date(task.date + "T23:59:59");
+              const date =
+                parseDate(
+                  task.date
+                );
 
 
-          return (
-            taskDate > now &&
-            taskDate <= limit
+              return (
+                date >= startOfToday() &&
+                date <= end
+              );
+
+            }
+          )
+          .sort(
+            sortTasks
           );
 
-        });
 
+      if (items.length === 0) {
 
-      if (!upcoming.length) {
-
-        showEmptyState(
-          container,
-          "Nada próximamente",
-          "No tienes pendientes dentro de las próximas 48 horas."
-        );
+        upcomingItems.innerHTML = `
+          <div class="empty-state">
+            No hay pendientes para las próximas 48 horas.
+          </div>
+        `;
 
         return;
 
       }
 
 
-      upcoming.forEach(task => {
+      items.forEach(
+        function(task) {
 
-        container.appendChild(
-          createTaskCard(task)
-        );
+          upcomingItems.appendChild(
+            createTaskElement(
+              task,
+              true
+            )
+          );
 
-      });
+        }
+      );
 
     }
 
 
     /* =========================================================
-       TASK CARD
-       ========================================================= */
+       TASK ELEMENT
+    ========================================================== */
 
-    function createTaskCard(task) {
+    function createTaskElement(
+      task,
+      showDate = false
+    ) {
 
-      const card =
+      const item =
         document.createElement("div");
 
-      card.className = "task-card";
+      item.className =
+        "task-item";
+
+
+      if (task.completed) {
+
+        item.classList.add(
+          "completed"
+        );
+
+      }
 
 
       const check =
         document.createElement("button");
 
-      check.className = "task-check";
+      check.className =
+        "task-check";
+
 
       if (task.completed) {
-        check.classList.add("completed");
+
+        check.classList.add(
+          "completed"
+        );
+
       }
 
 
-      check.addEventListener("click", () => {
+      check.addEventListener(
+        "click",
+        function() {
 
-        task.completed =
-          !task.completed;
+          task.completed =
+            !task.completed;
 
-        saveData();
+          saveData();
 
-        renderAll();
+          refreshEverything();
 
-      });
+        }
+      );
 
 
       const content =
@@ -3051,109 +3303,267 @@
 
 
       const list =
-        lists.find(
-          item => item.id === task.listId
+        data.lists.find(
+          function(l) {
+
+            return l.id === task.listId;
+
+          }
         );
 
 
-      const listText =
-        document.createElement("span");
+      if (list) {
 
-      listText.textContent =
-        list ? list.name : "Sin lista";
+        const listMeta =
+          document.createElement("span");
 
+        listMeta.textContent =
+          list.name;
 
-      const dateText =
-        document.createElement("span");
-
-      dateText.textContent =
-        task.date;
-
-
-      meta.appendChild(listText);
-      meta.appendChild(dateText);
-
-
-      if (
-        task.type === "todo" &&
-        task.date < formatDate(new Date()) &&
-        !task.completed
-      ) {
-
-        dateText.classList.add(
-          "task-overdue"
+        meta.appendChild(
+          listMeta
         );
 
       }
 
 
-      content.appendChild(title);
-      content.appendChild(meta);
+      if (
+        task.type ===
+        "reminder"
+      ) {
+
+        const reminderMark =
+          document.createElement("span");
+
+        reminderMark.className =
+          "reminder-mark";
+
+        reminderMark.textContent =
+          "RECORDATORIO";
+
+        meta.appendChild(
+          reminderMark
+        );
 
 
-      card.appendChild(check);
-      card.appendChild(content);
+        if (task.time) {
+
+          const time =
+            document.createElement("span");
+
+          time.textContent =
+            task.time;
+
+          meta.appendChild(
+            time
+          );
+
+        }
+
+      }
 
 
-      return card;
+      if (showDate) {
+
+        const date =
+          document.createElement("span");
+
+        date.textContent =
+          formatReadableDate(
+            task.date
+          );
+
+        meta.appendChild(
+          date
+        );
+
+      }
+
+
+      content.appendChild(
+        title
+      );
+
+      content.appendChild(
+        meta
+      );
+
+
+      const deleteButton =
+        document.createElement("button");
+
+      deleteButton.className =
+        "task-delete";
+
+      deleteButton.textContent =
+        "×";
+
+
+      deleteButton.addEventListener(
+        "click",
+        function() {
+
+          const confirmed =
+            confirm(
+              "¿Eliminar este elemento?"
+            );
+
+          if (!confirmed) {
+            return;
+          }
+
+          data.tasks =
+            data.tasks.filter(
+              function(t) {
+
+                return t.id !== task.id;
+
+              }
+            );
+
+          saveData();
+
+          refreshEverything();
+
+        }
+      );
+
+
+      item.appendChild(
+        check
+      );
+
+      item.appendChild(
+        content
+      );
+
+      item.appendChild(
+        deleteButton
+      );
+
+
+      return item;
 
     }
 
 
     /* =========================================================
-       EMPTY STATE
-       ========================================================= */
+       LISTS
+    ========================================================== */
 
-    function showEmptyState(
-      container,
-      title,
-      text
-    ) {
+    function renderLists() {
 
-      const empty =
-        document.createElement("div");
-
-      empty.className =
-        "empty-state";
+      listsContainer.innerHTML = "";
 
 
-      const titleElement =
-        document.createElement("div");
+      if (data.lists.length === 0) {
 
-      titleElement.className =
-        "empty-state-title";
+        listsContainer.innerHTML = `
+          <div class="empty-state">
+            Todavía no tienes listas.
+          </div>
+        `;
 
-      titleElement.textContent =
-        title;
+        return;
 
-
-      const textElement =
-        document.createElement("div");
-
-      textElement.className =
-        "empty-state-text";
-
-      textElement.textContent =
-        text;
+      }
 
 
-      empty.appendChild(titleElement);
-      empty.appendChild(textElement);
+      data.lists.forEach(
+        function(list) {
 
-      container.appendChild(empty);
+          const card =
+            document.createElement("div");
+
+          card.className =
+            "list-card";
+
+
+          const name =
+            document.createElement("div");
+
+          name.className =
+            "list-card-name";
+
+          name.textContent =
+            list.name;
+
+
+          const count =
+            document.createElement("div");
+
+          count.className =
+            "list-card-count";
+
+
+          const total =
+            data.tasks.filter(
+              function(task) {
+
+                return (
+                  task.listId ===
+                  list.id &&
+                  !task.completed
+                );
+
+              }
+            ).length;
+
+
+          count.textContent =
+            `${total} pendiente${total === 1 ? "" : "s"}`;
+
+
+          card.appendChild(
+            name
+          );
+
+          card.appendChild(
+            count
+          );
+
+
+          card.addEventListener(
+            "click",
+            function() {
+
+              openListDetail(
+                list.id
+              );
+
+            }
+          );
+
+
+          listsContainer.appendChild(
+            card
+          );
+
+        }
+      );
 
     }
 
 
     /* =========================================================
        LIST DETAIL
-       ========================================================= */
+    ========================================================== */
 
-    function showListDetail(listId) {
+    function openListDetail(
+      listId
+    ) {
+
+      currentListId =
+        listId;
+
 
       const list =
-        lists.find(
-          item => item.id === listId
+        data.lists.find(
+          function(item) {
+
+            return item.id === listId;
+
+          }
         );
 
 
@@ -3162,441 +3572,993 @@
       }
 
 
-      document
-        .getElementById("listDetailTitle")
-        .textContent = list.name;
+      listDetailTitle.textContent =
+        list.name;
 
 
-      const container =
-        document.getElementById(
-          "listDetailTasks"
-        );
+      renderListDetail(
+        listId
+      );
 
 
-      container.innerHTML = "";
-
-
-      const listTasks =
-        tasks.filter(
-          task => task.listId === listId
-        );
-
-
-      if (!listTasks.length) {
-
-        showEmptyState(
-          container,
-          "Lista vacía",
-          "Todavía no hay elementos aquí."
-        );
-
-      } else {
-
-        listTasks.forEach(task => {
-
-          container.appendChild(
-            createTaskCard(task)
-          );
-
-        });
-
-      }
-
-
-      showView("listDetail");
+      showView(
+        "listDetailView"
+      );
 
     }
 
 
-    function showLists() {
+    function renderListDetail(
+      listId
+    ) {
 
-      menuContainer.classList.remove("open");
+      listDetailItems.innerHTML = "";
 
-      renderLists();
 
-      showView("home");
+      const items =
+        data.tasks
+          .filter(
+            function(task) {
 
-    }
-
-
-    /* =========================================================
-       OVERDUE BADGE
-       ========================================================= */
-
-    function updateOverdueBadge() {
-
-      const badge =
-        document.getElementById(
-          "overdueBadge"
-        );
-
-
-      const today =
-        formatDate(new Date());
-
-
-      const overdue =
-        tasks.filter(task => {
-
-          return (
-            task.type === "todo" &&
-            !task.completed &&
-            task.date < today
-          );
-
-        }).length;
-
-
-      if (overdue > 0) {
-
-        badge.textContent =
-          overdue;
-
-        badge.classList.add(
-          "visible"
-        );
-
-      } else {
-
-        badge.classList.remove(
-          "visible"
-        );
-
-      }
-
-    }
-
-
-    /* =========================================================
-       CALENDAR
-       ========================================================= */
-
-    function renderCalendar() {
-
-      const grid =
-        document.getElementById(
-          "calendarGrid"
-        );
-
-
-      const monthLabel =
-        document.getElementById(
-          "calendarMonth"
-        );
-
-
-      grid.innerHTML = "";
-
-
-      const year =
-        calendarDate.getFullYear();
-
-
-      const month =
-        calendarDate.getMonth();
-
-
-      const monthName =
-        calendarDate.toLocaleDateString(
-          "es-GT",
-          {
-            month: "long",
-            year: "numeric"
-          }
-        );
-
-
-      monthLabel.textContent =
-        monthName.charAt(0).toUpperCase() +
-        monthName.slice(1);
-
-
-      const firstDay =
-        new Date(
-          year,
-          month,
-          1
-        );
-
-
-      let startingDay =
-        firstDay.getDay();
-
-
-      /*
-        JavaScript:
-        Domingo = 0
-        Lunes = 1
-
-        Nuestro calendario:
-        Lunes = 0
-      */
-
-      startingDay =
-        startingDay === 0
-          ? 6
-          : startingDay - 1;
-
-
-      const daysInMonth =
-        new Date(
-          year,
-          month + 1,
-          0
-        ).getDate();
-
-
-      for (
-        let i = 0;
-        i < startingDay;
-        i++
-      ) {
-
-        const empty =
-          document.createElement("div");
-
-        empty.className =
-          "calendar-day empty";
-
-        grid.appendChild(empty);
-
-      }
-
-
-      for (
-        let day = 1;
-        day <= daysInMonth;
-        day++
-      ) {
-
-        const date =
-          new Date(
-            year,
-            month,
-            day
-          );
-
-
-        const dateString =
-          formatDate(date);
-
-
-        const button =
-          document.createElement("button");
-
-        button.className =
-          "calendar-day";
-
-
-        button.textContent =
-          day;
-
-
-        if (
-          dateString ===
-          formatDate(new Date())
-        ) {
-
-          button.classList.add(
-            "today"
-          );
-
-        }
-
-
-        if (
-          dateString ===
-          selectedCalendarDate
-        ) {
-
-          button.classList.add(
-            "selected"
-          );
-
-        }
-
-
-        const hasItems =
-          tasks.some(task =>
-            task.date === dateString
-          );
-
-
-        if (hasItems) {
-
-          button.classList.add(
-            "has-items"
-          );
-
-        }
-
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            selectedCalendarDate =
-              dateString;
-
-            renderCalendar();
-
-          }
-        );
-
-
-        grid.appendChild(button);
-
-      }
-
-    }
-
-
-    /* =========================================================
-       MONTH NAVIGATION
-       ========================================================= */
-
-    document
-      .getElementById("prevMonth")
-      .addEventListener("click", () => {
-
-        calendarDate.setMonth(
-          calendarDate.getMonth() - 1
-        );
-
-        renderCalendar();
-
-      });
-
-
-    document
-      .getElementById("nextMonth")
-      .addEventListener("click", () => {
-
-        calendarDate.setMonth(
-          calendarDate.getMonth() + 1
-        );
-
-        renderCalendar();
-
-      });
-
-
-    /* =========================================================
-       BOTTOM NAV
-       ========================================================= */
-
-    document
-      .getElementById("navHome")
-      .addEventListener("click", () => {
-
-        showView("home");
-
-      });
-
-
-    document
-      .getElementById("navLists")
-      .addEventListener("click", () => {
-
-        showLists();
-
-      });
-
-
-    document
-      .getElementById("navNotes")
-      .addEventListener("click", () => {
-
-        alert("Notas próximamente.");
-
-      });
-
-
-    document
-      .getElementById("navDashboard")
-      .addEventListener("click", () => {
-
-        alert("Dashboard próximamente.");
-
-      });
-
-
-    /* =========================================================
-       RENDER ALL
-       ========================================================= */
-
-    function renderAll() {
-
-      renderLists();
-
-      renderCalendar();
-
-      updateOverdueBadge();
-
-    }
-
-
-    /* =========================================================
-       INITIALIZE
-       ========================================================= */
-
-    function initialize() {
-
-      updateGreeting();
-
-      document
-        .getElementById("reminderDate")
-        .value =
-        formatDate(new Date());
-
-
-      selectedReminderList =
-        lists[0]?.id || null;
-
-
-      if (lists[0]) {
-
-        selectedListName.textContent =
-          lists[0].name;
-
-      }
-
-
-      renderReminderLists();
-
-      renderAll();
-
-    }
-
-
-    initialize();
-
-
-    /* =========================================================
-       SERVICE WORKER
-       ========================================================= */
-
-    if ("serviceWorker" in navigator) {
-
-      window.addEventListener(
-        "load",
-        () => {
-
-          navigator.serviceWorker
-            .register("sw.js")
-            .catch(error => {
-
-              console.log(
-                "Service Worker error:",
-                error
+              return (
+                task.listId ===
+                listId
               );
 
-            });
+            }
+          )
+          .sort(
+            sortTasks
+          );
+
+
+      const pending =
+        items.filter(
+          function(item) {
+
+            return !item.completed;
+
+          }
+        ).length;
+
+
+      listDetailCount.textContent =
+        `${pending} pendiente${pending === 1 ? "" : "s"}`;
+
+
+      if (items.length === 0) {
+
+        listDetailItems.innerHTML = `
+          <div class="empty-state">
+            Esta lista está vacía.
+          </div>
+        `;
+
+        return;
+
+      }
+
+
+      items.forEach(
+        function(task) {
+
+          listDetailItems.appendChild(
+            createTaskElement(
+              task
+            )
+          );
 
         }
       );
 
     }
+
+
+    document
+      .getElementById(
+        "backFromListDetail"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          showView(
+            "listsView"
+          );
+
+          renderLists();
+
+        }
+      );
+
+
+    /* =========================================================
+       CREATE LIST
+    ========================================================== */
+
+    const newListButton =
+      document.getElementById(
+        "newListButton"
+      );
+
+    const cancelListModal =
+      document.getElementById(
+        "cancelListModal"
+      );
+
+    const saveNewList =
+      document.getElementById(
+        "saveNewList"
+      );
+
+
+    newListButton.addEventListener(
+      "click",
+      function() {
+
+        openListModal(
+          false
+        );
+
+      }
+    );
+
+
+    function openListModal(
+      fromReminder
+    ) {
+
+      listModal.classList.add(
+        "visible"
+      );
+
+      newListName.value = "";
+
+      newListName.focus();
+
+      listModal.dataset.fromReminder =
+        fromReminder
+          ? "true"
+          : "false";
+
+    }
+
+
+    cancelListModal.addEventListener(
+      "click",
+      function() {
+
+        closeListModal();
+
+      }
+    );
+
+
+    saveNewList.addEventListener(
+      "click",
+      function() {
+
+        const name =
+          newListName.value.trim();
+
+
+        if (!name) {
+
+          alert(
+            "Escribe un nombre para la lista."
+          );
+
+          return;
+
+        }
+
+
+        const exists =
+          data.lists.some(
+            function(list) {
+
+              return (
+                list.name.toLowerCase() ===
+                name.toLowerCase()
+              );
+
+            }
+          );
+
+
+        if (exists) {
+
+          alert(
+            "Ya existe una lista con ese nombre."
+          );
+
+          return;
+
+        }
+
+
+        const newList = {
+
+          id: createId(),
+
+          name: name
+
+        };
+
+
+        data.lists.push(
+          newList
+        );
+
+        saveData();
+
+
+        const fromReminder =
+          listModal.dataset.fromReminder ===
+          "true";
+
+
+        closeListModal();
+
+        renderLists();
+
+        renderReminderLists();
+
+
+        if (fromReminder) {
+
+          selectedReminderList =
+            newList.id;
+
+          selectedListName.textContent =
+            newList.name;
+
+        }
+
+
+        updateDashboard();
+
+      }
+    );
+
+
+    function closeListModal() {
+
+      listModal.classList.remove(
+        "visible"
+      );
+
+      newListName.value = "";
+
+    }
+
+
+    /* =========================================================
+       NOTES
+    ========================================================== */
+
+    const quickNotesButton =
+      document.getElementById(
+        "quickNotesButton"
+      );
+
+
+    quickNotesButton.addEventListener(
+      "click",
+      function() {
+
+        notesArea.value =
+          data.notes || "";
+
+        showView(
+          "notesView"
+        );
+
+        setBottomActive(
+          "notes"
+        );
+
+      }
+    );
+
+
+    document
+      .getElementById(
+        "saveNotes"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          data.notes =
+            notesArea.value;
+
+          saveData();
+
+          alert(
+            "Notas guardadas."
+          );
+
+        }
+      );
+
+
+    /* =========================================================
+       DASHBOARD
+    ========================================================== */
+
+    function updateDashboard() {
+
+      const pending =
+        data.tasks.filter(
+          function(task) {
+
+            return (
+              task.type === "todo" &&
+              !task.completed
+            );
+
+          }
+        ).length;
+
+
+      const today =
+        formatDate(
+          new Date()
+        );
+
+
+      const todayCount =
+        data.tasks.filter(
+          function(task) {
+
+            return (
+              task.date === today &&
+              !task.completed
+            );
+
+          }
+        ).length;
+
+
+      const overdue =
+        getOverdueTasks().length;
+
+
+      dashboardPending.textContent =
+        pending;
+
+      dashboardToday.textContent =
+        todayCount;
+
+      dashboardOverdue.textContent =
+        overdue;
+
+      dashboardLists.textContent =
+        data.lists.length;
+
+    }
+
+
+    /* =========================================================
+       OVERDUE
+       SOLO CUENTA TO-DO
+    ========================================================== */
+
+    function getOverdueTasks() {
+
+      const today =
+        startOfToday();
+
+
+      return data.tasks.filter(
+        function(task) {
+
+          if (
+            task.type !== "todo"
+          ) {
+
+            return false;
+
+          }
+
+
+          if (
+            task.completed
+          ) {
+
+            return false;
+
+          }
+
+
+          if (
+            !task.date
+          ) {
+
+            return false;
+
+          }
+
+
+          return (
+            parseDate(
+              task.date
+            ) < today
+          );
+
+        }
+      );
+
+    }
+
+
+    function updateOverdueBadge() {
+
+      const count =
+        getOverdueTasks().length;
+
+
+      if (count > 0) {
+
+        overdueBadge.textContent =
+          count > 99
+            ? "99+"
+            : count;
+
+        overdueBadge.classList.add(
+          "visible"
+        );
+
+      } else {
+
+        overdueBadge.classList.remove(
+          "visible"
+        );
+
+      }
+
+    }
+
+
+    /* =========================================================
+       VIEWS
+    ========================================================== */
+
+    function hideAllViews() {
+
+      document
+        .querySelectorAll(".view")
+        .forEach(
+          function(view) {
+
+            view.classList.remove(
+              "active"
+            );
+
+          }
+        );
+
+      document
+        .getElementById(
+          "homeView"
+        )
+        .style.display =
+        "none";
+
+    }
+
+
+    function showHome() {
+
+      hideAllViews();
+
+      document
+        .getElementById(
+          "homeView"
+        )
+        .style.display =
+        "block";
+
+      setBottomActive(
+        "home"
+      );
+
+      renderCalendar();
+
+      updateOverdueBadge();
+
+      updateDashboard();
+
+    }
+
+
+    function showView(
+      id
+    ) {
+
+      hideAllViews();
+
+      const view =
+        document.getElementById(
+          id
+        );
+
+      if (view) {
+
+        view.classList.add(
+          "active"
+        );
+
+      }
+
+    }
+
+
+    function setBottomActive(
+      name
+    ) {
+
+      document
+        .querySelectorAll(
+          ".bottom-nav-button"
+        )
+        .forEach(
+          function(button) {
+
+            button.classList.remove(
+              "active"
+            );
+
+            if (
+              button.dataset.bottom ===
+              name
+            ) {
+
+              button.classList.add(
+                "active"
+              );
+
+            }
+
+          }
+        );
+
+    }
+
+
+    /* =========================================================
+       BOTTOM NAV
+    ========================================================== */
+
+    document
+      .querySelectorAll(
+        ".bottom-nav-button"
+      )
+      .forEach(
+        function(button) {
+
+          button.addEventListener(
+            "click",
+            function() {
+
+              const target =
+                button.dataset.bottom;
+
+
+              if (
+                target ===
+                "home"
+              ) {
+
+                showHome();
+
+              }
+
+
+              if (
+                target ===
+                "lists"
+              ) {
+
+                renderLists();
+
+                showView(
+                  "listsView"
+                );
+
+                setBottomActive(
+                  "lists"
+                );
+
+              }
+
+
+              if (
+                target ===
+                "notes"
+              ) {
+
+                notesArea.value =
+                  data.notes || "";
+
+                showView(
+                  "notesView"
+                );
+
+                setBottomActive(
+                  "notes"
+                );
+
+              }
+
+
+              if (
+                target ===
+                "dashboard"
+              ) {
+
+                updateDashboard();
+
+                showView(
+                  "dashboardView"
+                );
+
+                setBottomActive(
+                  "dashboard"
+                );
+
+              }
+
+            }
+          );
+
+        }
+      );
+
+
+    /* =========================================================
+       BACK BUTTONS
+    ========================================================== */
+
+    document
+      .querySelectorAll(
+        "[data-back-home]"
+      )
+      .forEach(
+        function(button) {
+
+          button.addEventListener(
+            "click",
+            function() {
+
+              showHome();
+
+            }
+          );
+
+        }
+      );
+
+
+    /* =========================================================
+       REFRESH
+    ========================================================== */
+
+    function refreshEverything() {
+
+      saveData();
+
+      renderCalendar();
+
+      renderLists();
+
+      updateOverdueBadge();
+
+      updateDashboard();
+
+
+      if (
+        currentListId
+      ) {
+
+        renderListDetail(
+          currentListId
+        );
+
+      }
+
+
+      const today =
+        formatDate(
+          new Date()
+        );
+
+
+      if (
+        document
+          .getElementById(
+            "todayView"
+          )
+          .classList.contains(
+            "active"
+          )
+      ) {
+
+        renderDateItems(
+          today,
+          todayItems
+        );
+
+      }
+
+
+      if (
+        document
+          .getElementById(
+            "upcomingView"
+          )
+          .classList.contains(
+            "active"
+          )
+      ) {
+
+        renderUpcoming();
+
+      }
+
+    }
+
+
+    /* =========================================================
+       SORT TASKS
+    ========================================================== */
+
+    function sortTasks(
+      a,
+      b
+    ) {
+
+      const dateA =
+        a.date || "9999-12-31";
+
+      const dateB =
+        b.date || "9999-12-31";
+
+
+      if (
+        dateA !== dateB
+      ) {
+
+        return dateA.localeCompare(
+          dateB
+        );
+
+      }
+
+
+      const timeA =
+        a.time || "99:99";
+
+      const timeB =
+        b.time || "99:99";
+
+
+      return timeA.localeCompare(
+        timeB
+      );
+
+    }
+
+
+    /* =========================================================
+       DATE HELPERS
+    ========================================================== */
+
+    function formatDate(
+      date
+    ) {
+
+      const year =
+        date.getFullYear();
+
+      const month =
+        String(
+          date.getMonth() + 1
+        ).padStart(
+          2,
+          "0"
+        );
+
+      const day =
+        String(
+          date.getDate()
+        ).padStart(
+          2,
+          "0"
+        );
+
+
+      return `${year}-${month}-${day}`;
+
+    }
+
+
+    function parseDate(
+      dateString
+    ) {
+
+      const [
+        year,
+        month,
+        day
+      ] =
+        dateString
+          .split("-")
+          .map(Number);
+
+
+      return new Date(
+        year,
+        month - 1,
+        day
+      );
+
+    }
+
+
+    function startOfToday() {
+
+      const today =
+        new Date();
+
+      today.setHours(
+        0,
+        0,
+        0,
+        0
+      );
+
+      return today;
+
+    }
+
+
+    function formatReadableDate(
+      dateString
+    ) {
+
+      const date =
+        parseDate(
+          dateString
+        );
+
+
+      const days = [
+        "Domingo",
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado"
+      ];
+
+
+      const months = [
+        "enero",
+        "febrero",
+        "marzo",
+        "abril",
+        "mayo",
+        "junio",
+        "julio",
+        "agosto",
+        "septiembre",
+        "octubre",
+        "noviembre",
+        "diciembre"
+      ];
+
+
+      return `
+        ${days[date.getDay()]}
+        ${date.getDate()}
+        de
+        ${months[date.getMonth()]}
+        de
+        ${date.getFullYear()}
+      `;
+
+    }
+
+
+    /* =========================================================
+       CLOSE MENU WHEN CLICKING OUTSIDE
+    ========================================================== */
+
+    document.addEventListener(
+      "click",
+      function(event) {
+
+        if (
+          !menuContainer.contains(
+            event.target
+          )
+        ) {
+
+          menuContainer.classList.remove(
+            "open"
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =========================================================
+       CLOSE LIST SELECTOR OUTSIDE
+    ========================================================== */
+
+    document.addEventListener(
+      "click",
+      function(event) {
+
+        if (
+          !reminderListSelector.contains(
+            event.target
+          )
+        ) {
+
+          reminderListSelector.classList.remove(
+            "expanded"
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =========================================================
+       SERVICE WORKER
+    ========================================================== */
+
+    if (
+      "serviceWorker" in navigator
+    ) {
+
+      window.addEventListener(
+        "load",
+        function() {
+
+          navigator.serviceWorker
+            .register(
+              "service-worker.js"
+            )
+            .catch(
+              function(error) {
+
+                console.log(
+                  "Service Worker no disponible:",
+                  error
+                );
+
+              }
+            );
+
+        }
+      );
+
+    }
+
+
+    /* =========================================================
+       START
+    ========================================================== */
+
+    initialize();
 
   </script>
 
