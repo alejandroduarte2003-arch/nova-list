@@ -10,6 +10,7 @@
   <link rel="apple-touch-icon" href="/nova-icon.png">
 
   <style>
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -17,8 +18,8 @@
     }
 
     body {
-      background: #ffffff;
-      color: #000000;
+      background: #fff;
+      color: #000;
       font-family:
         "Avenir Next",
         "Montserrat",
@@ -42,6 +43,7 @@
       padding-bottom: 100px;
     }
 
+
     /* =========================
        HEADER
     ========================= */
@@ -50,6 +52,11 @@
       position: relative;
       padding-top: 30px;
       padding-bottom: 34px;
+      transition: padding-bottom 0.45s ease;
+    }
+
+    header.menu-open {
+      padding-bottom: 185px;
     }
 
     .header-info {
@@ -70,14 +77,13 @@
       font-size: 11px;
       letter-spacing: 1.4px;
       text-transform: uppercase;
-      font-weight: 400;
     }
 
     .greeting {
       margin-top: 13px;
       font-size: 13px;
-      font-weight: 400;
     }
+
 
     /* =========================
        MENU
@@ -88,19 +94,22 @@
       top: 31px;
       right: 14px;
       width: 220px;
-      min-height: 180px;
+      min-height: 170px;
       pointer-events: none;
+      z-index: 20;
     }
 
     .menu-dots {
       position: absolute;
       top: 3px;
       right: 0;
+
       display: flex;
       gap: 5px;
       align-items: center;
+
       pointer-events: auto;
-      z-index: 10;
+      z-index: 30;
     }
 
     .dot {
@@ -108,64 +117,78 @@
       height: 5px;
       background: #000;
       border-radius: 50%;
+
       transition:
-        transform 0.45s cubic-bezier(.22,1,.36,1),
-        opacity 0.3s ease;
+        transform 0.55s cubic-bezier(.22,1,.36,1),
+        opacity 0.25s ease;
     }
 
+    /*
+      Cada punto se convierte en su propia opción.
+      Las posiciones quedan dentro del espacio
+      ampliado del header.
+    */
+
     .menu-container.open .dot:nth-child(1) {
-      transform: translate(-110px, 48px);
+      transform: translate(-105px, 45px);
     }
 
     .menu-container.open .dot:nth-child(2) {
-      transform: translate(-110px, 90px);
+      transform: translate(-105px, 87px);
     }
 
     .menu-container.open .dot:nth-child(3) {
-      transform: translate(-110px, 132px);
+      transform: translate(-105px, 129px);
     }
 
     .menu-options {
       position: absolute;
       top: 0;
       right: 0;
+
       width: 180px;
       height: 170px;
+
       pointer-events: none;
     }
 
     .menu-option {
       position: absolute;
       right: 0;
+
       width: 165px;
+
       display: flex;
       align-items: center;
       gap: 11px;
+
       opacity: 0;
       transform: translateX(-10px);
+
       transition:
         opacity 0.25s ease,
         transform 0.25s ease;
     }
 
     .menu-option:nth-child(1) {
-      top: 46px;
+      top: 44px;
     }
 
     .menu-option:nth-child(2) {
-      top: 88px;
+      top: 86px;
     }
 
     .menu-option:nth-child(3) {
-      top: 130px;
+      top: 128px;
     }
 
     .menu-line {
       width: 0;
       height: 1px;
       background: #000;
-      transition: width 0.35s ease;
       flex-shrink: 0;
+
+      transition: width 0.35s ease;
     }
 
     .menu-text {
@@ -180,15 +203,15 @@
     }
 
     .menu-container.open .menu-option:nth-child(1) {
-      transition-delay: 0.48s;
+      transition-delay: 0.50s;
     }
 
     .menu-container.open .menu-option:nth-child(2) {
-      transition-delay: 0.58s;
+      transition-delay: 0.60s;
     }
 
     .menu-container.open .menu-option:nth-child(3) {
-      transition-delay: 0.68s;
+      transition-delay: 0.70s;
     }
 
     .menu-container.open .menu-line {
@@ -199,12 +222,16 @@
       position: absolute;
       top: 3px;
       right: 0;
+
       font-size: 17px;
       line-height: 1;
+
       opacity: 0;
       pointer-events: none;
+
+      z-index: 40;
+
       transition: opacity 0.25s ease;
-      z-index: 20;
     }
 
     .menu-container.open .close-menu {
@@ -220,6 +247,7 @@
       opacity: 0;
     }
 
+
     /* =========================
        OVERVIEW
     ========================= */
@@ -228,8 +256,10 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
+
       border-top: 1px solid #000;
       border-bottom: 1px solid #000;
+
       padding: 18px 0;
       margin-bottom: 28px;
     }
@@ -251,18 +281,27 @@
       letter-spacing: 1px;
     }
 
+
+    /* =========================
+       CALENDAR + LISTS
+    ========================= */
+
+    .dashboard-top {
+      display: grid;
+      grid-template-columns: 44% 1fr;
+      gap: 18px;
+      align-items: stretch;
+
+      margin-bottom: 34px;
+    }
+
+
     /* =========================
        CALENDAR
     ========================= */
 
-    .calendar-section {
-      margin-bottom: 34px;
-    }
-
     .calendar {
-      width: 44%;
-      min-width: 245px;
-      max-width: 310px;
+      width: 100%;
       border: 1px solid #000;
       padding: 14px;
     }
@@ -271,6 +310,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       margin-bottom: 13px;
     }
 
@@ -283,9 +323,11 @@
     .calendar-arrow {
       width: 25px;
       height: 25px;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       font-size: 15px;
     }
 
@@ -309,10 +351,13 @@
 
     .calendar-day {
       height: 29px;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       position: relative;
+
       font-size: 10px;
       cursor: pointer;
     }
@@ -332,10 +377,13 @@
 
     .calendar-day.has-task::after {
       content: "";
+
       position: absolute;
       bottom: 3px;
+
       width: 3px;
       height: 3px;
+
       background: #000;
       border-radius: 50%;
     }
@@ -343,6 +391,84 @@
     .calendar-day.selected.has-task::after {
       background: #fff;
     }
+
+
+    /* =========================
+       LIST PANEL
+    ========================= */
+
+    .lists-panel {
+      border: 1px solid #000;
+      padding: 14px;
+
+      min-width: 0;
+    }
+
+    .lists-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      margin-bottom: 12px;
+    }
+
+    .lists-title h2 {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .lists-title span {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .list-item {
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      border-top: 1px solid #ddd;
+
+      padding: 10px 0;
+
+      text-align: left;
+
+      transition:
+        padding-left 0.2s ease;
+    }
+
+    .list-item:first-of-type {
+      border-top: 1px solid #000;
+    }
+
+    .list-item:hover {
+      padding-left: 5px;
+    }
+
+    .list-name {
+      font-size: 11px;
+    }
+
+    .list-count {
+      font-size: 9px;
+      min-width: 18px;
+      text-align: right;
+    }
+
+    .create-list {
+      border-top: 1px solid #ddd;
+
+      padding-top: 10px;
+      margin-top: 1px;
+
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
 
     /* =========================
        SECTIONS
@@ -356,13 +482,13 @@
       display: flex;
       justify-content: space-between;
       align-items: baseline;
+
       margin-bottom: 13px;
     }
 
     .section-title h2 {
       font-size: 13px;
       font-weight: 500;
-      letter-spacing: 0.2px;
     }
 
     .section-title span {
@@ -370,6 +496,7 @@
       text-transform: uppercase;
       letter-spacing: 1px;
     }
+
 
     /* =========================
        TASKS
@@ -380,7 +507,9 @@
       grid-template-columns: 1fr auto;
       gap: 20px;
       align-items: center;
+
       border-top: 1px solid #ddd;
+
       padding: 13px 0;
     }
 
@@ -408,11 +537,64 @@
 
     .more {
       border-top: 1px solid #ddd;
+
       padding-top: 13px;
+
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
+
+
+    /* =========================
+       LIST DETAIL VIEW
+    ========================= */
+
+    #listView {
+      display: none;
+    }
+
+    .list-detail-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+
+      border-bottom: 1px solid #000;
+
+      padding-bottom: 15px;
+      margin-bottom: 18px;
+    }
+
+    .back-button {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .list-detail-title {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .list-detail-task {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      border-bottom: 1px solid #ddd;
+
+      padding: 15px 0;
+    }
+
+    .list-detail-task-name {
+      font-size: 13px;
+    }
+
+    .list-detail-task-date {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
 
     /* =========================
        BOTTOM NAV
@@ -420,22 +602,31 @@
 
     .bottom-nav {
       position: fixed;
+
       left: 50%;
       bottom: 18px;
+
       transform: translateX(-50%);
+
       width: min(680px, calc(100% - 40px));
+
       background: #fff;
+
       border: 1px solid #000;
+
       display: grid;
       grid-template-columns: repeat(4, 1fr);
+
       z-index: 30;
     }
 
     .nav-item {
       height: 48px;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.8px;
@@ -450,8 +641,9 @@
       color: #fff;
     }
 
+
     /* =========================
-       RESPONSIVE
+       MOBILE
     ========================= */
 
     @media (max-width: 600px) {
@@ -468,14 +660,25 @@
         font-size: 24px;
       }
 
+      .dashboard-top {
+        grid-template-columns: 44% 1fr;
+        gap: 12px;
+      }
+
       .calendar {
-        width: 44%;
-        min-width: 225px;
-        padding: 12px;
+        padding: 11px;
       }
 
       .calendar-day {
         height: 27px;
+      }
+
+      .lists-panel {
+        padding: 11px;
+      }
+
+      .list-name {
+        font-size: 10px;
       }
 
       .overview-number {
@@ -487,11 +690,41 @@
       }
     }
 
-    @media (max-width: 400px) {
+
+    @media (max-width: 430px) {
+
+      .dashboard-top {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
 
       .calendar {
-        width: 48%;
-        min-width: 215px;
+        padding: 9px;
+      }
+
+      .lists-panel {
+        padding: 9px;
+      }
+
+      .calendar-day {
+        height: 25px;
+        font-size: 9px;
+      }
+
+      .calendar-month {
+        font-size: 11px;
+      }
+
+      .calendar-weekday {
+        font-size: 7px;
+      }
+
+      .list-name {
+        font-size: 9px;
+      }
+
+      .list-count {
+        font-size: 8px;
       }
 
       .overview-number {
@@ -502,6 +735,23 @@
         font-size: 8px;
       }
     }
+
+
+    @media (max-width: 350px) {
+
+      .dashboard-top {
+        grid-template-columns: 1fr;
+      }
+
+      .calendar {
+        width: 48%;
+      }
+
+      .lists-panel {
+        width: 100%;
+      }
+    }
+
   </style>
 </head>
 
@@ -509,43 +759,72 @@
 
   <div class="app">
 
-    <!-- HEADER -->
-    <header>
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header id="mainHeader">
 
       <div class="header-info">
-        <div class="logo-title">Nova-List</div>
-        <div class="incorova">una APP de Incorova</div>
+
+        <div class="logo-title">
+          Nova-List
+        </div>
+
+        <div class="incorova">
+          una APP de Incorova
+        </div>
+
         <div class="greeting" id="greeting"></div>
+
       </div>
 
+
       <!-- MENU -->
+
       <div class="menu-container" id="menuContainer">
 
-        <button class="menu-dots" id="menuButton" aria-label="Abrir menú">
+        <button
+          class="menu-dots"
+          id="menuButton"
+          aria-label="Abrir menú"
+        >
           <span class="dot"></span>
           <span class="dot"></span>
           <span class="dot"></span>
         </button>
 
-        <button class="close-menu" id="closeMenu" aria-label="Cerrar menú">
+
+        <button
+          class="close-menu"
+          id="closeMenu"
+          aria-label="Cerrar menú"
+        >
           ×
         </button>
+
 
         <div class="menu-options">
 
           <button class="menu-option">
             <span class="menu-line"></span>
-            <span class="menu-text">Listas</span>
+            <span class="menu-text">
+              Listas
+            </span>
           </button>
 
           <button class="menu-option">
             <span class="menu-line"></span>
-            <span class="menu-text">Notas</span>
+            <span class="menu-text">
+              Notas
+            </span>
           </button>
 
           <button class="menu-option">
             <span class="menu-line"></span>
-            <span class="menu-text">Dashboard</span>
+            <span class="menu-text">
+              Dashboard
+            </span>
           </button>
 
         </div>
@@ -555,155 +834,366 @@
     </header>
 
 
-    <!-- OVERVIEW -->
-    <section class="overview">
+    <!-- =========================
+         HOME
+    ========================== -->
 
-      <div class="overview-item">
-        <span class="overview-number">12</span>
-        <span class="overview-label">Pendientes</span>
-      </div>
-
-      <div class="overview-item">
-        <span class="overview-number">4</span>
-        <span class="overview-label">Para hoy</span>
-      </div>
-
-      <div class="overview-item">
-        <span class="overview-number">2</span>
-        <span class="overview-label">Próximos</span>
-      </div>
-
-    </section>
+    <main id="homeView">
 
 
-    <!-- CALENDAR -->
-    <section class="calendar-section">
+      <!-- OVERVIEW -->
 
-      <div class="calendar">
+      <section class="overview">
 
-        <div class="calendar-header">
+        <div class="overview-item">
 
-          <button class="calendar-arrow" id="prevMonth">
-            ‹
+          <span class="overview-number">
+            12
+          </span>
+
+          <span class="overview-label">
+            Pendientes
+          </span>
+
+        </div>
+
+
+        <div class="overview-item">
+
+          <span class="overview-number">
+            4
+          </span>
+
+          <span class="overview-label">
+            Para hoy
+          </span>
+
+        </div>
+
+
+        <div class="overview-item">
+
+          <span class="overview-number">
+            2
+          </span>
+
+          <span class="overview-label">
+            Próximos
+          </span>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           CALENDAR + LISTS
+      ========================== -->
+
+      <section class="dashboard-top">
+
+
+        <!-- CALENDAR -->
+
+        <div class="calendar">
+
+          <div class="calendar-header">
+
+            <button
+              class="calendar-arrow"
+              id="prevMonth"
+            >
+              ‹
+            </button>
+
+            <div
+              class="calendar-month"
+              id="calendarMonth"
+            ></div>
+
+            <button
+              class="calendar-arrow"
+              id="nextMonth"
+            >
+              ›
+            </button>
+
+          </div>
+
+
+          <div class="calendar-weekdays">
+
+            <div class="calendar-weekday">L</div>
+            <div class="calendar-weekday">M</div>
+            <div class="calendar-weekday">X</div>
+            <div class="calendar-weekday">J</div>
+            <div class="calendar-weekday">V</div>
+            <div class="calendar-weekday">S</div>
+            <div class="calendar-weekday">D</div>
+
+          </div>
+
+
+          <div
+            class="calendar-days"
+            id="calendarDays"
+          ></div>
+
+        </div>
+
+
+        <!-- LIST PANEL -->
+
+        <div class="lists-panel">
+
+          <div class="lists-title">
+
+            <h2>
+              Mis listas
+            </h2>
+
+            <span>
+              4
+            </span>
+
+          </div>
+
+
+          <button
+            class="list-item"
+            data-list="Trabajo"
+          >
+
+            <span class="list-name">
+              Trabajo
+            </span>
+
+            <span class="list-count">
+              5
+            </span>
+
           </button>
 
-          <div class="calendar-month" id="calendarMonth"></div>
 
-          <button class="calendar-arrow" id="nextMonth">
-            ›
+          <button
+            class="list-item"
+            data-list="Personal"
+          >
+
+            <span class="list-name">
+              Personal
+            </span>
+
+            <span class="list-count">
+              3
+            </span>
+
+          </button>
+
+
+          <button
+            class="list-item"
+            data-list="Compras"
+          >
+
+            <span class="list-name">
+              Compras
+            </span>
+
+            <span class="list-count">
+              2
+            </span>
+
+          </button>
+
+
+          <button
+            class="list-item"
+            data-list="Proyectos"
+          >
+
+            <span class="list-name">
+              Proyectos
+            </span>
+
+            <span class="list-count">
+              2
+            </span>
+
+          </button>
+
+
+          <button
+            class="create-list"
+            id="createList"
+          >
+            + Nueva lista
           </button>
 
         </div>
 
-        <div class="calendar-weekdays">
-          <div class="calendar-weekday">L</div>
-          <div class="calendar-weekday">M</div>
-          <div class="calendar-weekday">X</div>
-          <div class="calendar-weekday">J</div>
-          <div class="calendar-weekday">V</div>
-          <div class="calendar-weekday">S</div>
-          <div class="calendar-weekday">D</div>
+      </section>
+
+
+      <!-- =========================
+           TODAY
+      ========================== -->
+
+      <section class="section">
+
+        <div class="section-title">
+
+          <h2>
+            Hoy
+          </h2>
+
+          <span>
+            03 OCT
+          </span>
+
         </div>
 
-        <div class="calendar-days" id="calendarDays"></div>
+
+        <div class="task">
+
+          <div class="task-name">
+            Enviar documentos
+          </div>
+
+          <div class="task-overdue">
+            Vencido
+          </div>
+
+        </div>
+
+
+        <div class="task">
+
+          <div class="task-name">
+            Revisar propuesta
+          </div>
+
+          <div class="task-meta">
+            16:00
+          </div>
+
+        </div>
+
+
+        <div class="task">
+
+          <div class="task-name">
+            Comprar concentrado
+          </div>
+
+          <div class="task-meta">
+            Hoy
+          </div>
+
+        </div>
+
+
+        <div class="task">
+
+          <div class="task-name">
+            Llamar a cliente
+          </div>
+
+          <div class="task-meta">
+            18:30
+          </div>
+
+        </div>
+
+
+        <div class="more">
+          + 8 pendientes más
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           UPCOMING
+      ========================== -->
+
+      <section class="section">
+
+        <div class="section-title">
+
+          <h2>
+            Próximamente
+          </h2>
+
+        </div>
+
+
+        <div class="task">
+
+          <div class="task-name">
+            Pago mensual
+          </div>
+
+          <div class="task-meta">
+            06 OCT
+          </div>
+
+        </div>
+
+
+        <div class="task">
+
+          <div class="task-name">
+            Reunión de trabajo
+          </div>
+
+          <div class="task-meta">
+            08 OCT · 09:00
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <!-- =========================
+         LIST DETAIL
+    ========================== -->
+
+    <section id="listView">
+
+      <div class="list-detail-header">
+
+        <button
+          class="back-button"
+          id="backToHome"
+        >
+          ‹
+        </button>
+
+        <div
+          class="list-detail-title"
+          id="listDetailTitle"
+        >
+        </div>
 
       </div>
+
+
+      <div id="listTasks"></div>
 
     </section>
 
-
-    <!-- TODAY -->
-    <section class="section">
-
-      <div class="section-title">
-        <h2>Hoy</h2>
-        <span>03 OCT</span>
-      </div>
-
-      <div class="task">
-        <div class="task-name">
-          Enviar documentos
-        </div>
-
-        <div class="task-overdue">
-          Vencido
-        </div>
-      </div>
-
-      <div class="task">
-        <div class="task-name">
-          Revisar propuesta
-        </div>
-
-        <div class="task-meta">
-          16:00
-        </div>
-      </div>
-
-      <div class="task">
-        <div class="task-name">
-          Comprar concentrado
-        </div>
-
-        <div class="task-meta">
-          Hoy
-        </div>
-      </div>
-
-      <div class="task">
-        <div class="task-name">
-          Llamar a cliente
-        </div>
-
-        <div class="task-meta">
-          18:30
-        </div>
-      </div>
-
-      <div class="more">
-        + 8 pendientes más
-      </div>
-
-    </section>
-
-
-    <!-- UPCOMING -->
-    <section class="section">
-
-      <div class="section-title">
-        <h2>Próximamente</h2>
-      </div>
-
-      <div class="task">
-
-        <div class="task-name">
-          Pago mensual
-        </div>
-
-        <div class="task-meta">
-          06 OCT
-        </div>
-
-      </div>
-
-      <div class="task">
-
-        <div class="task-name">
-          Reunión de trabajo
-        </div>
-
-        <div class="task-meta">
-          08 OCT · 09:00
-        </div>
-
-      </div>
-
-    </section>
 
   </div>
 
 
-  <!-- BOTTOM NAV -->
+  <!-- =========================
+       BOTTOM NAV
+  ========================== -->
+
   <nav class="bottom-nav">
 
     <button class="nav-item active">
@@ -727,25 +1217,36 @@
 
   <script>
 
+
     /* =========================
        GREETING
-    ========================= */
+    ========================== */
 
     function updateGreeting() {
 
-      const hour = new Date().getHours();
+      const hour =
+        new Date().getHours();
 
       let greeting;
 
       if (hour >= 5 && hour < 12) {
+
         greeting = "Buenos días";
+
       } else if (hour >= 12 && hour < 19) {
+
         greeting = "Buenas tardes";
+
       } else {
+
         greeting = "Buenas noches";
+
       }
 
-      document.getElementById("greeting").textContent = greeting;
+      document.getElementById(
+        "greeting"
+      ).textContent = greeting;
+
     }
 
     updateGreeting();
@@ -753,44 +1254,88 @@
 
     /* =========================
        MENU
-    ========================= */
+    ========================== */
 
     const menuContainer =
-      document.getElementById("menuContainer");
+      document.getElementById(
+        "menuContainer"
+      );
 
     const menuButton =
-      document.getElementById("menuButton");
+      document.getElementById(
+        "menuButton"
+      );
 
     const closeMenu =
-      document.getElementById("closeMenu");
+      document.getElementById(
+        "closeMenu"
+      );
 
-    menuButton.addEventListener("click", () => {
-      menuContainer.classList.add("open");
-    });
+    const mainHeader =
+      document.getElementById(
+        "mainHeader"
+      );
 
-    closeMenu.addEventListener("click", () => {
-      menuContainer.classList.remove("open");
-    });
+
+    menuButton.addEventListener(
+      "click",
+      () => {
+
+        menuContainer.classList.add(
+          "open"
+        );
+
+        mainHeader.classList.add(
+          "menu-open"
+        );
+
+      }
+    );
+
+
+    closeMenu.addEventListener(
+      "click",
+      () => {
+
+        menuContainer.classList.remove(
+          "open"
+        );
+
+        mainHeader.classList.remove(
+          "menu-open"
+        );
+
+      }
+    );
 
 
     /* =========================
        CALENDAR
-    ========================= */
+    ========================== */
 
     const calendarMonth =
-      document.getElementById("calendarMonth");
+      document.getElementById(
+        "calendarMonth"
+      );
 
     const calendarDays =
-      document.getElementById("calendarDays");
+      document.getElementById(
+        "calendarDays"
+      );
 
     const prevMonth =
-      document.getElementById("prevMonth");
+      document.getElementById(
+        "prevMonth"
+      );
 
     const nextMonth =
-      document.getElementById("nextMonth");
+      document.getElementById(
+        "nextMonth"
+      );
 
 
-    const today = new Date();
+    const today =
+      new Date();
 
     let currentMonth =
       today.getMonth();
@@ -798,29 +1343,37 @@
     let currentYear =
       today.getFullYear();
 
-
     let selectedDate =
       today.getDate();
 
 
     const taskDays = {
+
       "2026-10-03": true,
       "2026-10-06": true,
       "2026-10-08": true,
       "2026-10-13": true,
       "2026-10-17": true
+
     };
 
 
-    function formatDate(year, month, day) {
+    function formatDate(
+      year,
+      month,
+      day
+    ) {
 
       const monthString =
-        String(month + 1).padStart(2, "0");
+        String(month + 1)
+          .padStart(2, "0");
 
       const dayString =
-        String(day).padStart(2, "0");
+        String(day)
+          .padStart(2, "0");
 
       return `${year}-${monthString}-${dayString}`;
+
     }
 
 
@@ -828,12 +1381,14 @@
 
       calendarDays.innerHTML = "";
 
+
       const firstDay =
         new Date(
           currentYear,
           currentMonth,
           1
         ).getDay();
+
 
       const daysInMonth =
         new Date(
@@ -844,7 +1399,9 @@
 
 
       const adjustedFirstDay =
-        firstDay === 0 ? 6 : firstDay - 1;
+        firstDay === 0
+          ? 6
+          : firstDay - 1;
 
 
       const monthName =
@@ -872,12 +1429,17 @@
       ) {
 
         const empty =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
         empty.className =
           "calendar-day empty";
 
-        calendarDays.appendChild(empty);
+        calendarDays.appendChild(
+          empty
+        );
+
       }
 
 
@@ -888,7 +1450,9 @@
       ) {
 
         const dayElement =
-          document.createElement("button");
+          document.createElement(
+            "button"
+          );
 
         dayElement.className =
           "calendar-day";
@@ -911,7 +1475,9 @@
           currentYear === today.getFullYear()
         ) {
 
-          dayElement.classList.add("today");
+          dayElement.classList.add(
+            "today"
+          );
 
         }
 
@@ -922,14 +1488,20 @@
           currentYear === today.getFullYear()
         ) {
 
-          dayElement.classList.add("selected");
+          dayElement.classList.add(
+            "selected"
+          );
 
         }
 
 
-        if (taskDays[dateKey]) {
+        if (
+          taskDays[dateKey]
+        ) {
 
-          dayElement.classList.add("has-task");
+          dayElement.classList.add(
+            "has-task"
+          );
 
         }
 
@@ -946,7 +1518,9 @@
         );
 
 
-        calendarDays.appendChild(dayElement);
+        calendarDays.appendChild(
+          dayElement
+        );
 
       }
 
@@ -960,8 +1534,10 @@
         currentMonth--;
 
         if (currentMonth < 0) {
+
           currentMonth = 11;
           currentYear--;
+
         }
 
         selectedDate = 1;
@@ -979,8 +1555,10 @@
         currentMonth++;
 
         if (currentMonth > 11) {
+
           currentMonth = 0;
           currentYear++;
+
         }
 
         selectedDate = 1;
@@ -995,17 +1573,215 @@
 
 
     /* =========================
-       SERVICE WORKER
-    ========================= */
+       LISTAS
+    ========================== */
 
-    if ("serviceWorker" in navigator) {
+    const listData = {
+
+      "Trabajo": [
+        ["Enviar documentos", "HOY"],
+        ["Revisar propuesta", "16:00"],
+        ["Llamar a cliente", "18:30"],
+        ["Dar seguimiento", "06 OCT"],
+        ["Preparar informe", "08 OCT"]
+      ],
+
+      "Personal": [
+        ["Comprar concentrado", "HOY"],
+        ["Ir al gimnasio", "18:00"],
+        ["Organizar habitación", "05 OCT"]
+      ],
+
+      "Compras": [
+        ["Concentrado", "HOY"],
+        ["Comprar artículos", "07 OCT"]
+      ],
+
+      "Proyectos": [
+        ["Revisar Nova List", "HOY"],
+        ["Actualizar INCOROVA", "10 OCT"]
+      ]
+
+    };
+
+
+    const homeView =
+      document.getElementById(
+        "homeView"
+      );
+
+    const listView =
+      document.getElementById(
+        "listView"
+      );
+
+    const listDetailTitle =
+      document.getElementById(
+        "listDetailTitle"
+      );
+
+    const listTasks =
+      document.getElementById(
+        "listTasks"
+      );
+
+
+    function openList(
+      listName
+    ) {
+
+      listDetailTitle.textContent =
+        listName;
+
+      listTasks.innerHTML = "";
+
+
+      const tasks =
+        listData[listName] || [];
+
+
+      tasks.forEach(
+        task => {
+
+          const taskElement =
+            document.createElement(
+              "div"
+            );
+
+          taskElement.className =
+            "list-detail-task";
+
+
+          taskElement.innerHTML = `
+
+            <span class="list-detail-task-name">
+              ${task[0]}
+            </span>
+
+            <span class="list-detail-task-date">
+              ${task[1]}
+            </span>
+
+          `;
+
+
+          listTasks.appendChild(
+            taskElement
+          );
+
+        }
+      );
+
+
+      homeView.style.display =
+        "none";
+
+      listView.style.display =
+        "block";
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+    }
+
+
+    document
+      .querySelectorAll(
+        ".list-item"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              const listName =
+                button.dataset.list;
+
+              openList(
+                listName
+              );
+
+            }
+          );
+
+        }
+      );
+
+
+    /* =========================
+       VOLVER
+    ========================== */
+
+    document
+      .getElementById(
+        "backToHome"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          listView.style.display =
+            "none";
+
+          homeView.style.display =
+            "block";
+
+        }
+      );
+
+
+    /* =========================
+       NUEVA LISTA
+    ========================== */
+
+    document
+      .getElementById(
+        "createList"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          const name =
+            prompt(
+              "Nombre de la nueva lista:"
+            );
+
+          if (
+            name &&
+            name.trim()
+          ) {
+
+            alert(
+              `La lista "${name.trim()}" se creará aquí.`
+            );
+
+          }
+
+        }
+      );
+
+
+    /* =========================
+       SERVICE WORKER
+    ========================== */
+
+    if (
+      "serviceWorker" in navigator
+    ) {
 
       window.addEventListener(
         "load",
         () => {
 
           navigator.serviceWorker
-            .register("/service-worker.js")
+            .register(
+              "/service-worker.js"
+            )
             .catch(() => {});
 
         }
