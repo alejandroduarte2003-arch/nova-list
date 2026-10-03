@@ -10,1379 +10,798 @@
   <link rel="apple-touch-icon" href="/nova-icon.png">
 
   <style>
-
-    /* =====================================================
-       BASE
-    ===================================================== */
-
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    html,
     body {
-      width: 100%;
-      min-height: 100%;
       background: #ffffff;
       color: #000000;
-    }
-
-    body {
       font-family:
-        "Geometric Sans",
-        "Century Gothic",
         "Avenir Next",
-        Avenir,
-        Montserrat,
+        "Montserrat",
+        "Helvetica Neue",
         Arial,
         sans-serif;
-
-      overflow-x: hidden;
+      min-height: 100vh;
     }
 
     button {
-      font-family: inherit;
+      font: inherit;
+      color: inherit;
+      background: none;
+      border: none;
+      cursor: pointer;
     }
 
+    .app {
+      width: min(720px, calc(100% - 40px));
+      margin: 0 auto;
+      padding-bottom: 100px;
+    }
 
-    /* =====================================================
-       ENCABEZADO
-    ===================================================== */
+    /* =========================
+       HEADER
+    ========================= */
 
-    .header {
+    header {
       position: relative;
-
-      width: 100%;
-
-      padding-top: 28px;
-
-      text-align: center;
+      padding-top: 30px;
+      padding-bottom: 34px;
     }
 
-    .brand-name {
-      font-size: 24px;
-
-      font-weight: 500;
-
-      letter-spacing: 0.08em;
+    .header-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
 
-    .brand-subtitle {
-      margin-top: 5px;
+    .logo-title {
+      font-size: 27px;
+      font-weight: 600;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
 
-      font-size: 9px;
-
-      letter-spacing: 0.18em;
-
-      opacity: 0.55;
+    .incorova {
+      margin-top: 8px;
+      font-size: 11px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      font-weight: 400;
     }
 
     .greeting {
-      margin-top: 15px;
-
-      font-size: 12px;
-
-      letter-spacing: 0.06em;
-
-      opacity: 0.65;
+      margin-top: 13px;
+      font-size: 13px;
+      font-weight: 400;
     }
 
+    /* =========================
+       MENU
+    ========================= */
 
-    /* =====================================================
-       MENU SUPERIOR DERECHO
-    ===================================================== */
-
-    .menu {
-
+    .menu-container {
       position: absolute;
-
-      top: 28px;
-
-      right: 24px;
-
-      width: 330px;
-
-      height: 190px;
-
-      z-index: 30;
-    }
-
-    .menu-trigger {
-
-      position: absolute;
-
-      top: 0;
-
-      right: 0;
-
-      width: 45px;
-
-      height: 35px;
-
-      border: none;
-
-      background: transparent;
-
-      cursor: pointer;
-
-      padding: 0;
-    }
-
-    .trigger-dots {
-
-      position: absolute;
-
-      top: 14px;
-
-      right: 0;
-
-      display: flex;
-
-      gap: 5px;
-
-      transition: opacity 0.2s ease;
-    }
-
-    .trigger-dot {
-
-      width: 5px;
-
-      height: 5px;
-
-      background: #000;
-
-      border-radius: 50%;
-
-      transition:
-        transform 0.8s cubic-bezier(.65,0,.35,1),
-        opacity 0.3s ease;
-    }
-
-
-    /* =====================================================
-       OPCIONES DEL MENU
-    ===================================================== */
-
-    .options {
-
-      position: absolute;
-
-      top: 0;
-
-      right: 0;
-
-      width: 320px;
-
-      height: 180px;
-
+      top: 31px;
+      right: 14px;
+      width: 220px;
+      min-height: 180px;
       pointer-events: none;
     }
 
-    .option {
-
+    .menu-dots {
       position: absolute;
-
+      top: 3px;
       right: 0;
-
-      height: 25px;
-
       display: flex;
-
+      gap: 5px;
       align-items: center;
-
-      opacity: 0;
+      pointer-events: auto;
+      z-index: 10;
     }
 
-    .option:nth-child(1) {
-      top: 43px;
-    }
-
-    .option:nth-child(2) {
-      top: 82px;
-    }
-
-    .option:nth-child(3) {
-      top: 121px;
-    }
-
-    .option-dot {
-
-      position: absolute;
-
-      right: 0;
-
+    .dot {
       width: 5px;
-
       height: 5px;
-
+      background: #000;
       border-radius: 50%;
-
-      background: #000;
-
-      opacity: 0;
-
-      transform: translateY(-40px);
-
       transition:
-        transform 0.7s cubic-bezier(.65,0,.35,1),
-        opacity 0.25s ease;
+        transform 0.45s cubic-bezier(.22,1,.36,1),
+        opacity 0.3s ease;
     }
 
-    .option-line {
-
-      position: absolute;
-
-      right: 10px;
-
-      top: 50%;
-
-      width: 0;
-
-      height: 1px;
-
-      background: #000;
-
-      transform: translateY(-50%);
-
-      transition:
-        width 0.45s cubic-bezier(.65,0,.35,1);
+    .menu-container.open .dot:nth-child(1) {
+      transform: translate(-110px, 48px);
     }
 
-    .option-text {
+    .menu-container.open .dot:nth-child(2) {
+      transform: translate(-110px, 90px);
+    }
 
+    .menu-container.open .dot:nth-child(3) {
+      transform: translate(-110px, 132px);
+    }
+
+    .menu-options {
       position: absolute;
+      top: 0;
+      right: 0;
+      width: 180px;
+      height: 170px;
+      pointer-events: none;
+    }
 
-      right: 43px;
-
-      font-size: 11px;
-
-      letter-spacing: 0.08em;
-
-      white-space: nowrap;
-
+    .menu-option {
+      position: absolute;
+      right: 0;
+      width: 165px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
       opacity: 0;
-
-      transform: translateX(5px);
-
+      transform: translateX(-10px);
       transition:
         opacity 0.25s ease,
         transform 0.25s ease;
     }
 
+    .menu-option:nth-child(1) {
+      top: 46px;
+    }
 
-    /* =====================================================
-       BOTON X
-    ===================================================== */
+    .menu-option:nth-child(2) {
+      top: 88px;
+    }
+
+    .menu-option:nth-child(3) {
+      top: 130px;
+    }
+
+    .menu-line {
+      width: 0;
+      height: 1px;
+      background: #000;
+      transition: width 0.35s ease;
+      flex-shrink: 0;
+    }
+
+    .menu-text {
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .menu-container.open .menu-option {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    .menu-container.open .menu-option:nth-child(1) {
+      transition-delay: 0.48s;
+    }
+
+    .menu-container.open .menu-option:nth-child(2) {
+      transition-delay: 0.58s;
+    }
+
+    .menu-container.open .menu-option:nth-child(3) {
+      transition-delay: 0.68s;
+    }
+
+    .menu-container.open .menu-line {
+      width: 45px;
+    }
 
     .close-menu {
-
       position: absolute;
-
-      top: 0;
-
+      top: 3px;
       right: 0;
-
-      width: 24px;
-
-      height: 24px;
-
-      border: none;
-
-      background: transparent;
-
-      cursor: pointer;
-
+      font-size: 17px;
+      line-height: 1;
       opacity: 0;
-
       pointer-events: none;
-
       transition: opacity 0.25s ease;
+      z-index: 20;
     }
 
-    .close-menu::before,
-    .close-menu::after {
-
-      content: "";
-
-      position: absolute;
-
-      top: 11px;
-
-      right: 5px;
-
-      width: 13px;
-
-      height: 1px;
-
-      background: #000;
-    }
-
-    .close-menu::before {
-      transform: rotate(45deg);
-    }
-
-    .close-menu::after {
-      transform: rotate(-45deg);
-    }
-
-
-    /* =====================================================
-       ANIMACION MENU ABIERTO
-    ===================================================== */
-
-    .menu.open .trigger-dots {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .menu.open .option {
-      opacity: 1;
-    }
-
-    .menu.open .option:nth-child(1) .option-dot {
-      opacity: 1;
-      transform: translateY(0);
-      transition-delay: 0.05s;
-    }
-
-    .menu.open .option:nth-child(2) .option-dot {
-      opacity: 1;
-      transform: translateY(0);
-      transition-delay: 0.28s;
-    }
-
-    .menu.open .option:nth-child(3) .option-dot {
-      opacity: 1;
-      transform: translateY(0);
-      transition-delay: 0.51s;
-    }
-
-    .menu.open .option:nth-child(1) .option-line {
-      width: 22px;
-      transition-delay: 0.72s;
-    }
-
-    .menu.open .option:nth-child(2) .option-line {
-      width: 22px;
-      transition-delay: 0.95s;
-    }
-
-    .menu.open .option:nth-child(3) .option-line {
-      width: 22px;
-      transition-delay: 1.18s;
-    }
-
-    .menu.open .option:nth-child(1) .option-text {
-      opacity: 1;
-      transform: translateX(0);
-      transition-delay: 1.17s;
-    }
-
-    .menu.open .option:nth-child(2) .option-text {
-      opacity: 1;
-      transform: translateX(0);
-      transition-delay: 1.40s;
-    }
-
-    .menu.open .option:nth-child(3) .option-text {
-      opacity: 1;
-      transform: translateX(0);
-      transition-delay: 1.63s;
-    }
-
-    .menu.open .close-menu {
+    .menu-container.open .close-menu {
       opacity: 1;
       pointer-events: auto;
-      transition-delay: 1.75s;
     }
 
-
-    /* =====================================================
-       ANIMACION CIERRE
-    ===================================================== */
-
-    .menu.closing .option-text {
-      opacity: 0;
-      transform: translateX(5px);
-      transition-delay: 0s;
-    }
-
-    .menu.closing .option-line {
-      width: 0;
-      transition-delay: 0.08s;
-    }
-
-    .menu.closing .option-dot {
-      opacity: 0;
-      transform: translateY(-40px);
-      transition-delay: 0.25s;
-    }
-
-    .menu.closing .close-menu {
-      opacity: 0;
+    .menu-container.open .menu-dots {
       pointer-events: none;
     }
 
-    .menu.closing .trigger-dots {
-      opacity: 1;
-      transition-delay: 0.65s;
+    .menu-container.open .menu-dots .dot {
+      opacity: 0;
     }
 
-
-    /* =====================================================
-       CONTENIDO PRINCIPAL
-    ===================================================== */
-
-    .main {
-
-      width: min(720px, calc(100% - 40px));
-
-      margin: 55px auto 60px;
-    }
-
-
-    /* =====================================================
-       RESUMEN
-    ===================================================== */
+    /* =========================
+       OVERVIEW
+    ========================= */
 
     .overview {
-
-      display: grid;
-
-      grid-template-columns: 1fr auto;
-
-      align-items: end;
-
-      gap: 20px;
-
-      padding-bottom: 24px;
-
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 1px solid #000;
       border-bottom: 1px solid #000;
+      padding: 18px 0;
+      margin-bottom: 28px;
     }
 
-    .overview-label {
-
-      font-size: 9px;
-
-      letter-spacing: 0.16em;
-
-      text-transform: uppercase;
-
-      opacity: 0.55;
-
-      margin-bottom: 8px;
+    .overview-item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
     }
 
     .overview-number {
-
-      font-size: 38px;
-
-      font-weight: 400;
-
-      line-height: 1;
+      font-size: 22px;
+      font-weight: 500;
     }
 
-    .overview-number span {
-
+    .overview-label {
       font-size: 10px;
-
-      letter-spacing: 0.08em;
-
-      opacity: 0.55;
-
-      margin-left: 7px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
-    .today-summary {
-
-      text-align: right;
-
-      font-size: 10px;
-
-      line-height: 1.7;
-
-      letter-spacing: 0.04em;
-    }
-
-
-    /* =====================================================
-       CALENDARIO
-    ===================================================== */
+    /* =========================
+       CALENDAR
+    ========================= */
 
     .calendar-section {
+      margin-bottom: 34px;
+    }
 
-      padding: 27px 0 25px;
-
-      border-bottom: 1px solid #ddd;
+    .calendar {
+      width: 44%;
+      min-width: 245px;
+      max-width: 310px;
+      border: 1px solid #000;
+      padding: 14px;
     }
 
     .calendar-header {
-
       display: flex;
-
-      justify-content: space-between;
-
       align-items: center;
-
-      margin-bottom: 17px;
+      justify-content: space-between;
+      margin-bottom: 13px;
     }
 
-    .calendar-title {
+    .calendar-month {
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: capitalize;
+    }
 
-      font-size: 10px;
+    .calendar-arrow {
+      width: 25px;
+      height: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+    }
 
-      letter-spacing: 0.14em;
+    .calendar-weekdays,
+    .calendar-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+    }
 
+    .calendar-weekdays {
+      margin-bottom: 5px;
+    }
+
+    .calendar-weekday {
+      text-align: center;
+      font-size: 8px;
+      font-weight: 500;
       text-transform: uppercase;
     }
 
-    .calendar-controls {
-
-      display: flex;
-
-      gap: 2px;
-    }
-
-    .calendar-controls button {
-
-      width: 28px;
-
-      height: 28px;
-
-      border: none;
-
-      background: transparent;
-
-      cursor: pointer;
-
-      font-size: 14px;
-
-      font-weight: 300;
-    }
-
-    .calendar-week {
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(7, 1fr);
-
-      margin-bottom: 7px;
-    }
-
-    .weekday {
-
-      text-align: center;
-
-      font-size: 8px;
-
-      letter-spacing: 0.04em;
-
-      opacity: 0.45;
-    }
-
-    .calendar-grid {
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(7, 1fr);
-
-      gap: 4px;
-    }
-
     .calendar-day {
-
+      height: 29px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       position: relative;
-
-      height: 31px;
-
-      border: none;
-
-      background: transparent;
-
-      cursor: pointer;
-
       font-size: 10px;
-
-      font-family: inherit;
-
-      color: #000;
+      cursor: pointer;
     }
 
-    .calendar-day:hover {
-
-      background: #f5f5f5;
+    .calendar-day.empty {
+      cursor: default;
     }
 
     .calendar-day.today {
-
-      font-weight: 700;
+      border: 1px solid #000;
     }
 
     .calendar-day.selected {
-
       background: #000;
-
       color: #fff;
     }
 
     .calendar-day.has-task::after {
-
       content: "";
-
       position: absolute;
-
       bottom: 3px;
-
-      left: 50%;
-
       width: 3px;
-
       height: 3px;
-
-      background: currentColor;
-
+      background: #000;
       border-radius: 50%;
-
-      transform: translateX(-50%);
     }
 
-    .calendar-day.empty {
-
-      cursor: default;
+    .calendar-day.selected.has-task::after {
+      background: #fff;
     }
 
-
-    /* =====================================================
-       SECCIONES
-    ===================================================== */
+    /* =========================
+       SECTIONS
+    ========================= */
 
     .section {
-
-      padding-top: 28px;
-    }
-
-    .section-header {
-
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: center;
-
-      margin-bottom: 10px;
+      margin-bottom: 34px;
     }
 
     .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 13px;
+    }
 
-      font-size: 9px;
+    .section-title h2 {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+    }
 
-      letter-spacing: 0.16em;
-
+    .section-title span {
+      font-size: 10px;
       text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
-    .section-link {
-
-      border: none;
-
-      background: transparent;
-
-      cursor: pointer;
-
-      font-size: 9px;
-
-      letter-spacing: 0.05em;
-
-      color: #666;
-    }
-
-
-    /* =====================================================
-       TAREAS
-    ===================================================== */
+    /* =========================
+       TASKS
+    ========================= */
 
     .task {
-
       display: grid;
-
-      grid-template-columns:
-        18px 1fr auto;
-
-      gap: 10px;
-
+      grid-template-columns: 1fr auto;
+      gap: 20px;
       align-items: center;
-
+      border-top: 1px solid #ddd;
       padding: 13px 0;
-
-      border-bottom: 1px solid #eee;
     }
 
-    .task-marker {
-
-      width: 7px;
-
-      height: 7px;
-
-      border: 1px solid #000;
-
-      border-radius: 50%;
-    }
-
-    .task-name {
-
-      font-size: 12px;
-
-      letter-spacing: 0.01em;
-    }
-
-    .task-date {
-
-      font-size: 8px;
-
-      letter-spacing: 0.06em;
-
-      opacity: 0.55;
-
-      white-space: nowrap;
-    }
-
-    .task.overdue .task-marker {
-
-      background: #000;
-    }
-
-    .task.overdue .task-date {
-
-      opacity: 1;
-    }
-
-    .more-tasks {
-
-      padding-top: 13px;
-
-      font-size: 9px;
-
-      letter-spacing: 0.05em;
-
-      opacity: 0.55;
-    }
-
-
-    /* =====================================================
-       NAVEGACION INFERIOR
-    ===================================================== */
-
-    .bottom-navigation {
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(4, 1fr);
-
-      margin-top: 35px;
-
-      padding-top: 15px;
-
+    .task:first-child {
       border-top: 1px solid #000;
     }
 
-    .nav-button {
-
-      border: none;
-
-      background: transparent;
-
-      cursor: pointer;
-
-      padding: 9px 4px;
-
-      font-size: 8px;
-
-      letter-spacing: 0.08em;
-
-      color: #000;
+    .task-name {
+      font-size: 13px;
+      line-height: 1.4;
     }
 
+    .task-meta {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      white-space: nowrap;
+    }
 
-    /* =====================================================
-       MOVIL
-    ===================================================== */
+    .task-overdue {
+      font-size: 9px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .more {
+      border-top: 1px solid #ddd;
+      padding-top: 13px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* =========================
+       BOTTOM NAV
+    ========================= */
+
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      width: min(680px, calc(100% - 40px));
+      background: #fff;
+      border: 1px solid #000;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      z-index: 30;
+    }
+
+    .nav-item {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .nav-item + .nav-item {
+      border-left: 1px solid #000;
+    }
+
+    .nav-item.active {
+      background: #000;
+      color: #fff;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
 
     @media (max-width: 600px) {
 
-      .header {
-
-        padding-top: 25px;
+      .app {
+        width: calc(100% - 30px);
       }
 
-      .brand-name {
-
-        font-size: 21px;
+      header {
+        padding-top: 24px;
       }
 
-      .menu {
-
-        top: 25px;
-
-        right: 20px;
+      .logo-title {
+        font-size: 24px;
       }
 
-      .main {
-
-        width: calc(100% - 32px);
-
-        margin-top: 48px;
-      }
-
-      .overview-number {
-
-        font-size: 32px;
+      .calendar {
+        width: 44%;
+        min-width: 225px;
+        padding: 12px;
       }
 
       .calendar-day {
-
-        height: 30px;
+        height: 27px;
       }
 
+      .overview-number {
+        font-size: 19px;
+      }
+
+      .menu-container {
+        right: 5px;
+      }
     }
 
+    @media (max-width: 400px) {
+
+      .calendar {
+        width: 48%;
+        min-width: 215px;
+      }
+
+      .overview-number {
+        font-size: 17px;
+      }
+
+      .overview-label {
+        font-size: 8px;
+      }
+    }
   </style>
 </head>
 
-
 <body>
 
+  <div class="app">
 
-  <!-- =====================================================
-       ENCABEZADO
-  ===================================================== -->
+    <!-- HEADER -->
+    <header>
 
-  <header class="header">
+      <div class="header-info">
+        <div class="logo-title">Nova-List</div>
+        <div class="incorova">una APP de Incorova</div>
+        <div class="greeting" id="greeting"></div>
+      </div>
 
-    <h1 class="brand-name">
-      Nova-List
-    </h1>
+      <!-- MENU -->
+      <div class="menu-container" id="menuContainer">
 
-    <p class="brand-subtitle">
-      una APP de Incorova
-    </p>
+        <button class="menu-dots" id="menuButton" aria-label="Abrir menú">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </button>
 
-    <p
-      class="greeting"
-      id="greeting"
-    >
-      Buenas tardes
-    </p>
+        <button class="close-menu" id="closeMenu" aria-label="Cerrar menú">
+          ×
+        </button>
 
-  </header>
+        <div class="menu-options">
 
+          <button class="menu-option">
+            <span class="menu-line"></span>
+            <span class="menu-text">Listas</span>
+          </button>
 
-  <!-- =====================================================
-       MENU
-  ===================================================== -->
+          <button class="menu-option">
+            <span class="menu-line"></span>
+            <span class="menu-text">Notas</span>
+          </button>
 
-  <div
-    class="menu"
-    id="menu"
-  >
+          <button class="menu-option">
+            <span class="menu-line"></span>
+            <span class="menu-text">Dashboard</span>
+          </button>
 
-    <button
-      class="menu-trigger"
-      id="menuTrigger"
-      aria-label="Abrir menú"
-      aria-expanded="false"
-    >
-
-      <span class="trigger-dots">
-
-        <span class="trigger-dot"></span>
-
-        <span class="trigger-dot"></span>
-
-        <span class="trigger-dot"></span>
-
-      </span>
-
-    </button>
-
-
-    <button
-      class="close-menu"
-      id="closeMenu"
-      aria-label="Cerrar menú"
-    ></button>
-
-
-    <nav class="options">
-
-      <div class="option">
-
-        <span class="option-dot"></span>
-
-        <span class="option-line"></span>
-
-        <span class="option-text">
-          Listas
-        </span>
+        </div>
 
       </div>
 
-
-      <div class="option">
-
-        <span class="option-dot"></span>
-
-        <span class="option-line"></span>
-
-        <span class="option-text">
-          Notas
-        </span>
-
-      </div>
+    </header>
 
 
-      <div class="option">
-
-        <span class="option-dot"></span>
-
-        <span class="option-line"></span>
-
-        <span class="option-text">
-          Dashboard
-        </span>
-
-      </div>
-
-    </nav>
-
-  </div>
-
-
-  <!-- =====================================================
-       CONTENIDO
-  ===================================================== -->
-
-  <main class="main">
-
-
-    <!-- RESUMEN -->
-
+    <!-- OVERVIEW -->
     <section class="overview">
 
-      <div>
-
-        <div class="overview-label">
-          Pendientes activos
-        </div>
-
-        <div class="overview-number">
-
-          12
-
-          <span>
-            pendientes
-          </span>
-
-        </div>
-
+      <div class="overview-item">
+        <span class="overview-number">12</span>
+        <span class="overview-label">Pendientes</span>
       </div>
 
+      <div class="overview-item">
+        <span class="overview-number">4</span>
+        <span class="overview-label">Para hoy</span>
+      </div>
 
-      <div class="today-summary">
-
-        4 para hoy<br>
-
-        2 próximos
-
+      <div class="overview-item">
+        <span class="overview-number">2</span>
+        <span class="overview-label">Próximos</span>
       </div>
 
     </section>
 
 
-    <!-- =================================================
-         CALENDARIO
-    ================================================= -->
-
+    <!-- CALENDAR -->
     <section class="calendar-section">
 
-      <div class="calendar-header">
+      <div class="calendar">
 
-        <div
-          class="calendar-title"
-          id="calendarTitle"
-        >
-          Octubre 2026
-        </div>
+        <div class="calendar-header">
 
-
-        <div class="calendar-controls">
-
-          <button
-            type="button"
-            id="previousMonth"
-            aria-label="Mes anterior"
-          >
+          <button class="calendar-arrow" id="prevMonth">
             ‹
           </button>
 
-          <button
-            type="button"
-            id="nextMonth"
-            aria-label="Mes siguiente"
-          >
+          <div class="calendar-month" id="calendarMonth"></div>
+
+          <button class="calendar-arrow" id="nextMonth">
             ›
           </button>
 
         </div>
 
-      </div>
+        <div class="calendar-weekdays">
+          <div class="calendar-weekday">L</div>
+          <div class="calendar-weekday">M</div>
+          <div class="calendar-weekday">X</div>
+          <div class="calendar-weekday">J</div>
+          <div class="calendar-weekday">V</div>
+          <div class="calendar-weekday">S</div>
+          <div class="calendar-weekday">D</div>
+        </div>
 
-
-      <div class="calendar-week">
-
-        <div class="weekday">L</div>
-
-        <div class="weekday">M</div>
-
-        <div class="weekday">M</div>
-
-        <div class="weekday">J</div>
-
-        <div class="weekday">V</div>
-
-        <div class="weekday">S</div>
-
-        <div class="weekday">D</div>
+        <div class="calendar-days" id="calendarDays"></div>
 
       </div>
-
-
-      <div
-        class="calendar-grid"
-        id="calendarGrid"
-      ></div>
 
     </section>
 
 
-    <!-- =================================================
-         HOY
-    ================================================= -->
-
+    <!-- TODAY -->
     <section class="section">
 
-      <div class="section-header">
+      <div class="section-title">
+        <h2>Hoy</h2>
+        <span>03 OCT</span>
+      </div>
 
-        <div class="section-title">
-          Hoy
+      <div class="task">
+        <div class="task-name">
+          Enviar documentos
         </div>
 
-        <button
-          class="section-link"
-          type="button"
-        >
-          ver todo
-        </button>
-
+        <div class="task-overdue">
+          Vencido
+        </div>
       </div>
-
-
-      <div class="task overdue">
-
-        <span class="task-marker"></span>
-
-        <span class="task-name">
-          Enviar documentos
-        </span>
-
-        <span class="task-date">
-          VENCIDO
-        </span>
-
-      </div>
-
 
       <div class="task">
-
-        <span class="task-marker"></span>
-
-        <span class="task-name">
+        <div class="task-name">
           Revisar propuesta
-        </span>
+        </div>
 
-        <span class="task-date">
+        <div class="task-meta">
           16:00
-        </span>
-
+        </div>
       </div>
 
-
       <div class="task">
-
-        <span class="task-marker"></span>
-
-        <span class="task-name">
+        <div class="task-name">
           Comprar concentrado
-        </span>
+        </div>
 
-        <span class="task-date">
-          HOY
-        </span>
-
+        <div class="task-meta">
+          Hoy
+        </div>
       </div>
-
 
       <div class="task">
-
-        <span class="task-marker"></span>
-
-        <span class="task-name">
+        <div class="task-name">
           Llamar a cliente
-        </span>
+        </div>
 
-        <span class="task-date">
+        <div class="task-meta">
           18:30
-        </span>
-
+        </div>
       </div>
 
-
-      <div class="more-tasks">
+      <div class="more">
         + 8 pendientes más
       </div>
 
     </section>
 
 
-    <!-- =================================================
-         PROXIMAMENTE
-    ================================================= -->
-
+    <!-- UPCOMING -->
     <section class="section">
 
-      <div class="section-header">
+      <div class="section-title">
+        <h2>Próximamente</h2>
+      </div>
 
-        <div class="section-title">
-          Próximamente
+      <div class="task">
+
+        <div class="task-name">
+          Pago mensual
         </div>
 
-        <button
-          class="section-link"
-          type="button"
-        >
-          ver agenda
-        </button>
-
-      </div>
-
-
-      <div class="task">
-
-        <span class="task-marker"></span>
-
-        <span class="task-name">
-          Pago mensual
-        </span>
-
-        <span class="task-date">
+        <div class="task-meta">
           06 OCT
-        </span>
+        </div>
 
       </div>
-
 
       <div class="task">
 
-        <span class="task-marker"></span>
-
-        <span class="task-name">
+        <div class="task-name">
           Reunión de trabajo
-        </span>
+        </div>
 
-        <span class="task-date">
+        <div class="task-meta">
           08 OCT · 09:00
-        </span>
+        </div>
 
       </div>
-
 
     </section>
 
-
-    <!-- =================================================
-         NAVEGACION
-    ================================================= -->
-
-    <nav class="bottom-navigation">
-
-      <button
-        class="nav-button"
-        type="button"
-      >
-        Listas
-      </button>
-
-      <button
-        class="nav-button"
-        type="button"
-      >
-        Notas
-      </button>
-
-      <button
-        class="nav-button"
-        type="button"
-      >
-        Agenda
-      </button>
-
-      <button
-        class="nav-button"
-        type="button"
-      >
-        Dashboard
-      </button>
-
-    </nav>
+  </div>
 
 
-  </main>
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
 
+    <button class="nav-item active">
+      Listas
+    </button>
 
-  <!-- =====================================================
-       JAVASCRIPT
-  ===================================================== -->
+    <button class="nav-item">
+      Notas
+    </button>
+
+    <button class="nav-item">
+      Agenda
+    </button>
+
+    <button class="nav-item">
+      Dashboard
+    </button>
+
+  </nav>
+
 
   <script>
 
+    /* =========================
+       GREETING
+    ========================= */
 
-    /* =====================================================
-       SALUDO
-    ===================================================== */
+    function updateGreeting() {
 
-    function actualizarSaludo() {
+      const hour = new Date().getHours();
 
-      const hora =
-        new Date().getHours();
+      let greeting;
 
-      const greeting =
-        document.getElementById("greeting");
-
-
-      if (hora >= 5 && hora < 12) {
-
-        greeting.textContent =
-          "Buenos días";
-
+      if (hour >= 5 && hour < 12) {
+        greeting = "Buenos días";
+      } else if (hour >= 12 && hour < 19) {
+        greeting = "Buenas tardes";
+      } else {
+        greeting = "Buenas noches";
       }
 
-      else if (hora >= 12 && hora < 19) {
-
-        greeting.textContent =
-          "Buenas tardes";
-
-      }
-
-      else {
-
-        greeting.textContent =
-          "Buenas noches";
-
-      }
-
+      document.getElementById("greeting").textContent = greeting;
     }
 
+    updateGreeting();
 
-    actualizarSaludo();
 
-
-    /* =====================================================
+    /* =========================
        MENU
-    ===================================================== */
+    ========================= */
 
-    const menu =
-      document.getElementById("menu");
+    const menuContainer =
+      document.getElementById("menuContainer");
 
-    const menuTrigger =
-      document.getElementById("menuTrigger");
+    const menuButton =
+      document.getElementById("menuButton");
 
     const closeMenu =
       document.getElementById("closeMenu");
 
+    menuButton.addEventListener("click", () => {
+      menuContainer.classList.add("open");
+    });
 
-    menuTrigger.addEventListener(
-      "click",
-      () => {
-
-        menu.classList.remove("closing");
-
-        menu.classList.add("open");
-
-        menuTrigger.setAttribute(
-          "aria-expanded",
-          "true"
-        );
-
-      }
-    );
+    closeMenu.addEventListener("click", () => {
+      menuContainer.classList.remove("open");
+    });
 
 
-    closeMenu.addEventListener(
-      "click",
-      () => {
+    /* =========================
+       CALENDAR
+    ========================= */
 
-        menu.classList.remove("open");
+    const calendarMonth =
+      document.getElementById("calendarMonth");
 
-        menu.classList.add("closing");
+    const calendarDays =
+      document.getElementById("calendarDays");
 
-        menuTrigger.setAttribute(
-          "aria-expanded",
-          "false"
-        );
-
-
-        setTimeout(
-          () => {
-
-            menu.classList.remove("closing");
-
-          },
-          900
-        );
-
-      }
-    );
-
-
-    /* =====================================================
-       CALENDARIO
-    ===================================================== */
-
-    const calendarGrid =
-      document.getElementById("calendarGrid");
-
-    const calendarTitle =
-      document.getElementById("calendarTitle");
-
-    const previousMonth =
-      document.getElementById("previousMonth");
+    const prevMonth =
+      document.getElementById("prevMonth");
 
     const nextMonth =
       document.getElementById("nextMonth");
 
 
-    let calendarDate =
-      new Date();
+    const today = new Date();
+
+    let currentMonth =
+      today.getMonth();
+
+    let currentYear =
+      today.getFullYear();
 
 
-    /*
-      Días que actualmente tienen
-      tareas de ejemplo.
-    */
+    let selectedDate =
+      today.getDate();
+
 
     const taskDays = {
       "2026-10-03": true,
@@ -1393,80 +812,62 @@
     };
 
 
+    function formatDate(year, month, day) {
+
+      const monthString =
+        String(month + 1).padStart(2, "0");
+
+      const dayString =
+        String(day).padStart(2, "0");
+
+      return `${year}-${monthString}-${dayString}`;
+    }
+
+
     function renderCalendar() {
 
-      calendarGrid.innerHTML = "";
-
-
-      const year =
-        calendarDate.getFullYear();
-
-      const month =
-        calendarDate.getMonth();
-
-
-      const monthNames = [
-        "Enero",
-        "Febrero",
-        "Marzo",
-        "Abril",
-        "Mayo",
-        "Junio",
-        "Julio",
-        "Agosto",
-        "Septiembre",
-        "Octubre",
-        "Noviembre",
-        "Diciembre"
-      ];
-
-
-      calendarTitle.textContent =
-        `${monthNames[month]} ${year}`;
-
-
-      /*
-        Primer día del mes.
-
-        JavaScript:
-        domingo = 0
-        lunes = 1
-
-        Lo convertimos para que
-        nuestra semana empiece en lunes.
-      */
+      calendarDays.innerHTML = "";
 
       const firstDay =
-        new Date(year, month, 1);
-
-      let startingDay =
-        firstDay.getDay();
-
-      startingDay =
-        startingDay === 0
-          ? 6
-          : startingDay - 1;
-
+        new Date(
+          currentYear,
+          currentMonth,
+          1
+        ).getDay();
 
       const daysInMonth =
         new Date(
-          year,
-          month + 1,
+          currentYear,
+          currentMonth + 1,
           0
         ).getDate();
 
 
-      const today =
-        new Date();
+      const adjustedFirstDay =
+        firstDay === 0 ? 6 : firstDay - 1;
 
 
-      /*
-        Espacios antes del primer día.
-      */
+      const monthName =
+        new Date(
+          currentYear,
+          currentMonth,
+          1
+        ).toLocaleDateString(
+          "es-ES",
+          {
+            month: "long",
+            year: "numeric"
+          }
+        );
+
+
+      calendarMonth.textContent =
+        monthName;
+
 
       for (
         let i = 0;
-        i < startingDay;
+        i < adjustedFirstDay;
         i++
       ) {
 
@@ -1476,16 +877,9 @@
         empty.className =
           "calendar-day empty";
 
-        calendarGrid.appendChild(
-          empty
-        );
-
+        calendarDays.appendChild(empty);
       }
 
-
-      /*
-        Días del mes.
-      */
 
       for (
         let day = 1;
@@ -1493,100 +887,84 @@
         day++
       ) {
 
-        const button =
+        const dayElement =
           document.createElement("button");
 
-        button.type = "button";
-
-        button.className =
+        dayElement.className =
           "calendar-day";
 
-        button.textContent =
+        dayElement.textContent =
           day;
 
 
         const dateKey =
-          `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-
-
-        /*
-          Marcar días con tareas.
-        */
-
-        if (taskDays[dateKey]) {
-
-          button.classList.add(
-            "has-task"
+          formatDate(
+            currentYear,
+            currentMonth,
+            day
           );
 
-        }
-
-
-        /*
-          Marcar hoy.
-        */
 
         if (
           day === today.getDate() &&
-          month === today.getMonth() &&
-          year === today.getFullYear()
+          currentMonth === today.getMonth() &&
+          currentYear === today.getFullYear()
         ) {
 
-          button.classList.add(
-            "today"
-          );
-
-          button.classList.add(
-            "selected"
-          );
+          dayElement.classList.add("today");
 
         }
 
 
-        /*
-          Seleccionar día.
-        */
+        if (
+          day === selectedDate &&
+          currentMonth === today.getMonth() &&
+          currentYear === today.getFullYear()
+        ) {
 
-        button.addEventListener(
+          dayElement.classList.add("selected");
+
+        }
+
+
+        if (taskDays[dateKey]) {
+
+          dayElement.classList.add("has-task");
+
+        }
+
+
+        dayElement.addEventListener(
           "click",
           () => {
 
-            document
-              .querySelectorAll(
-                ".calendar-day.selected"
-              )
-              .forEach(
-                item =>
-                  item.classList.remove(
-                    "selected"
-                  )
-              );
+            selectedDate = day;
 
-
-            button.classList.add(
-              "selected"
-            );
+            renderCalendar();
 
           }
         );
 
 
-        calendarGrid.appendChild(
-          button
-        );
+        calendarDays.appendChild(dayElement);
 
       }
 
     }
 
 
-    previousMonth.addEventListener(
+    prevMonth.addEventListener(
       "click",
       () => {
 
-        calendarDate.setMonth(
-          calendarDate.getMonth() - 1
-        );
+        currentMonth--;
+
+        if (currentMonth < 0) {
+          currentMonth = 11;
+          currentYear--;
+        }
+
+        selectedDate = 1;
 
         renderCalendar();
 
@@ -1598,9 +976,14 @@
       "click",
       () => {
 
-        calendarDate.setMonth(
-          calendarDate.getMonth() + 1
-        );
+        currentMonth++;
+
+        if (currentMonth > 11) {
+          currentMonth = 0;
+          currentYear++;
+        }
+
+        selectedDate = 1;
 
         renderCalendar();
 
@@ -1611,9 +994,9 @@
     renderCalendar();
 
 
-    /* =====================================================
+    /* =========================
        SERVICE WORKER
-    ===================================================== */
+    ========================= */
 
     if ("serviceWorker" in navigator) {
 
@@ -1623,16 +1006,7 @@
 
           navigator.serviceWorker
             .register("/service-worker.js")
-            .catch(
-              error => {
-
-                console.log(
-                  "Service Worker:",
-                  error
-                );
-
-              }
-            );
+            .catch(() => {});
 
         }
       );
@@ -1640,7 +1014,6 @@
     }
 
   </script>
-
 
 </body>
 </html>
