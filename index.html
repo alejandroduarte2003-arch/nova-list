@@ -10,6 +10,7 @@
   <link rel="apple-touch-icon" href="/nova-icon.png">
 
   <style>
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -37,32 +38,80 @@
       overflow-x: hidden;
     }
 
+
     /* =========================
        ENCABEZADO
     ========================= */
 
     .header {
       position: fixed;
+
       top: 28px;
       left: 50%;
+
       transform: translateX(-50%);
+
       text-align: center;
+
       z-index: 20;
+
       white-space: nowrap;
     }
 
+
     .brand-name {
       font-size: 24px;
+
       font-weight: 500;
+
       letter-spacing: 0.08em;
     }
 
+
     .brand-subtitle {
       margin-top: 5px;
+
       font-size: 9px;
+
       letter-spacing: 0.18em;
+
       text-transform: lowercase;
+
       opacity: 0.55;
+    }
+
+
+    /* =========================
+       SALUDO
+    ========================= */
+
+    .greeting {
+      margin-top: 16px;
+
+      font-size: 13px;
+
+      font-weight: 400;
+
+      letter-spacing: 0.06em;
+
+      opacity: 0;
+
+      animation: greetingIn 0.8s ease forwards;
+    }
+
+
+    @keyframes greetingIn {
+
+      from {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
     }
 
 
@@ -71,13 +120,20 @@
     ========================= */
 
     .menu {
+
       position: fixed;
 
-      /* Posición estética */
       top: 28px;
-      left: 24px;
+
+      /*
+        Ahora está a la derecha
+        con espacio respecto al borde.
+      */
+
+      right: 24px;
 
       width: 330px;
+
       height: 190px;
 
       z-index: 30;
@@ -89,38 +145,51 @@
     ========================= */
 
     .menu-trigger {
+
       position: absolute;
 
       top: 0;
-      left: 0;
+
+      right: 0;
 
       width: 45px;
+
       height: 35px;
 
       border: none;
+
       background: transparent;
 
       cursor: pointer;
+
       padding: 0;
     }
 
+
     .trigger-dots {
+
       position: absolute;
 
       top: 14px;
-      left: 0;
+
+      right: 0;
 
       display: flex;
+
       gap: 5px;
 
       transition: opacity 0.2s ease;
     }
 
+
     .trigger-dot {
+
       width: 5px;
+
       height: 5px;
 
       background: #000000;
+
       border-radius: 50%;
 
       transition:
@@ -134,37 +203,46 @@
     ========================= */
 
     .options {
+
       position: absolute;
 
       top: 0;
-      left: 0;
+
+      right: 0;
 
       width: 320px;
+
       height: 180px;
 
       pointer-events: none;
     }
 
+
     .option {
+
       position: absolute;
 
-      left: 0;
+      right: 0;
 
       height: 25px;
 
       display: flex;
+
       align-items: center;
 
       opacity: 0;
     }
 
+
     .option:nth-child(1) {
       top: 43px;
     }
 
+
     .option:nth-child(2) {
       top: 82px;
     }
+
 
     .option:nth-child(3) {
       top: 121px;
@@ -172,18 +250,21 @@
 
 
     /* =========================
-       PUNTOS DE LAS OPCIONES
+       PUNTOS
     ========================= */
 
     .option-dot {
+
       position: absolute;
 
-      left: 0;
+      right: 0;
 
       width: 5px;
+
       height: 5px;
 
       border-radius: 50%;
+
       background: #000000;
 
       opacity: 0;
@@ -201,12 +282,15 @@
     ========================= */
 
     .option-line {
+
       position: absolute;
 
-      left: 10px;
+      right: 10px;
+
       top: 50%;
 
       width: 0;
+
       height: 1px;
 
       background: #000000;
@@ -223,18 +307,20 @@
     ========================= */
 
     .option-text {
+
       position: absolute;
 
-      left: 43px;
+      right: 43px;
 
       font-size: 11px;
+
       letter-spacing: 0.08em;
 
       white-space: nowrap;
 
       opacity: 0;
 
-      transform: translateX(-5px);
+      transform: translateX(5px);
 
       transition:
         opacity 0.25s ease,
@@ -243,47 +329,58 @@
 
 
     /* =========================
-       X PARA CERRAR
+       X
     ========================= */
 
     .close-menu {
+
       position: absolute;
 
       top: 0;
-      left: 0;
+
+      right: 0;
 
       width: 24px;
+
       height: 24px;
 
       border: none;
+
       background: transparent;
 
       cursor: pointer;
 
       opacity: 0;
+
       pointer-events: none;
 
       transition: opacity 0.25s ease;
     }
 
+
     .close-menu::before,
     .close-menu::after {
+
       content: "";
 
       position: absolute;
 
       top: 11px;
-      left: 5px;
+
+      right: 5px;
 
       width: 13px;
+
       height: 1px;
 
       background: #000000;
     }
 
+
     .close-menu::before {
       transform: rotate(45deg);
     }
+
 
     .close-menu::after {
       transform: rotate(-45deg);
@@ -295,18 +392,25 @@
     ========================= */
 
     .menu.open .trigger-dots {
+
       opacity: 0;
+
       pointer-events: none;
     }
 
+
     .menu.open .option {
+
       opacity: 1;
     }
 
 
-    /* Punto 1 */
+    /* =========================
+       PUNTO 1
+    ========================= */
 
     .menu.open .option:nth-child(1) .option-dot {
+
       opacity: 1;
 
       transform: translateY(0);
@@ -315,9 +419,12 @@
     }
 
 
-    /* Punto 2 */
+    /* =========================
+       PUNTO 2
+    ========================= */
 
     .menu.open .option:nth-child(2) .option-dot {
+
       opacity: 1;
 
       transform: translateY(0);
@@ -326,9 +433,12 @@
     }
 
 
-    /* Punto 3 */
+    /* =========================
+       PUNTO 3
+    ========================= */
 
     .menu.open .option:nth-child(3) .option-dot {
+
       opacity: 1;
 
       transform: translateY(0);
@@ -342,17 +452,25 @@
     ========================= */
 
     .menu.open .option:nth-child(1) .option-line {
+
       width: 22px;
+
       transition-delay: 0.72s;
     }
 
+
     .menu.open .option:nth-child(2) .option-line {
+
       width: 22px;
+
       transition-delay: 0.95s;
     }
 
+
     .menu.open .option:nth-child(3) .option-line {
+
       width: 22px;
+
       transition-delay: 1.18s;
     }
 
@@ -362,6 +480,7 @@
     ========================= */
 
     .menu.open .option:nth-child(1) .option-text {
+
       opacity: 1;
 
       transform: translateX(0);
@@ -369,7 +488,9 @@
       transition-delay: 1.17s;
     }
 
+
     .menu.open .option:nth-child(2) .option-text {
+
       opacity: 1;
 
       transform: translateX(0);
@@ -377,7 +498,9 @@
       transition-delay: 1.40s;
     }
 
+
     .menu.open .option:nth-child(3) .option-text {
+
       opacity: 1;
 
       transform: translateX(0);
@@ -387,10 +510,11 @@
 
 
     /* =========================
-       X
+       X VISIBLE
     ========================= */
 
     .menu.open .close-menu {
+
       opacity: 1;
 
       pointer-events: auto;
@@ -404,20 +528,25 @@
     ========================= */
 
     .menu.closing .option-text {
+
       opacity: 0;
 
-      transform: translateX(-5px);
+      transform: translateX(5px);
 
       transition-delay: 0s;
     }
 
+
     .menu.closing .option-line {
+
       width: 0;
 
       transition-delay: 0.08s;
     }
 
+
     .menu.closing .option-dot {
+
       opacity: 0;
 
       transform: translateY(-40px);
@@ -425,13 +554,17 @@
       transition-delay: 0.25s;
     }
 
+
     .menu.closing .close-menu {
+
       opacity: 0;
 
       pointer-events: none;
     }
 
+
     .menu.closing .trigger-dots {
+
       opacity: 1;
 
       transition-delay: 0.65s;
@@ -445,17 +578,32 @@
     @media (max-width: 600px) {
 
       .header {
+
         top: 25px;
       }
 
+
       .brand-name {
+
         font-size: 21px;
       }
 
-      .menu {
-        top: 25px;
-        left: 20px;
+
+      .greeting {
+
+        margin-top: 14px;
+
+        font-size: 12px;
       }
+
+
+      .menu {
+
+        top: 25px;
+
+        right: 20px;
+      }
+
     }
 
   </style>
@@ -479,6 +627,13 @@
       una APP de Incorova
     </p>
 
+    <p
+      class="greeting"
+      id="greeting"
+    >
+      Buenos días
+    </p>
+
   </header>
 
 
@@ -486,7 +641,10 @@
        MENU
   ========================= -->
 
-  <div class="menu" id="menu">
+  <div
+    class="menu"
+    id="menu"
+  >
 
 
     <!-- TRES PUNTOS -->
@@ -581,7 +739,49 @@
 
   <script>
 
-    const menu = document.getElementById("menu");
+
+    /* =========================
+       SALUDO SEGÚN LA HORA
+    ========================= */
+
+    function actualizarSaludo() {
+
+      const hora = new Date().getHours();
+
+      const greeting =
+        document.getElementById("greeting");
+
+
+      if (hora >= 5 && hora < 12) {
+
+        greeting.textContent = "Buenos días";
+
+      }
+
+      else if (hora >= 12 && hora < 19) {
+
+        greeting.textContent = "Buenas tardes";
+
+      }
+
+      else {
+
+        greeting.textContent = "Buenas noches";
+
+      }
+
+    }
+
+
+    actualizarSaludo();
+
+
+    /* =========================
+       MENU
+    ========================= */
+
+    const menu =
+      document.getElementById("menu");
 
     const menuTrigger =
       document.getElementById("menuTrigger");
@@ -591,46 +791,52 @@
 
 
     /* =========================
-       ABRIR MENU
+       ABRIR
     ========================= */
 
-    menuTrigger.addEventListener("click", () => {
-
-      menu.classList.remove("closing");
-
-      menu.classList.add("open");
-
-      menuTrigger.setAttribute(
-        "aria-expanded",
-        "true"
-      );
-
-    });
-
-
-    /* =========================
-       CERRAR MENU
-    ========================= */
-
-    closeMenu.addEventListener("click", () => {
-
-      menu.classList.remove("open");
-
-      menu.classList.add("closing");
-
-      menuTrigger.setAttribute(
-        "aria-expanded",
-        "false"
-      );
-
-
-      setTimeout(() => {
+    menuTrigger.addEventListener(
+      "click",
+      () => {
 
         menu.classList.remove("closing");
 
-      }, 900);
+        menu.classList.add("open");
 
-    });
+        menuTrigger.setAttribute(
+          "aria-expanded",
+          "true"
+        );
+
+      }
+    );
+
+
+    /* =========================
+       CERRAR
+    ========================= */
+
+    closeMenu.addEventListener(
+      "click",
+      () => {
+
+        menu.classList.remove("open");
+
+        menu.classList.add("closing");
+
+        menuTrigger.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+
+        setTimeout(() => {
+
+          menu.classList.remove("closing");
+
+        }, 900);
+
+      }
+    );
 
 
     /* =========================
@@ -639,20 +845,23 @@
 
     if ("serviceWorker" in navigator) {
 
-      window.addEventListener("load", () => {
+      window.addEventListener(
+        "load",
+        () => {
 
-        navigator.serviceWorker
-          .register("/service-worker.js")
-          .catch(error => {
+          navigator.serviceWorker
+            .register("/service-worker.js")
+            .catch(error => {
 
-            console.log(
-              "Service Worker:",
-              error
-            );
+              console.log(
+                "Service Worker:",
+                error
+              );
 
-          });
+            });
 
-      });
+        }
+      );
 
     }
 
