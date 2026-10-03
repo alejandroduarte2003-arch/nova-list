@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
@@ -24,11 +25,12 @@
   />
 
   <style>
-    /* =========================================================
+
+    /* =====================================================
        NOVA LIST
        GEOMETRIC SANS
-       BLACK / WHITE ONLY
-    ========================================================= */
+       BLACK / WHITE
+    ===================================================== */
 
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 
@@ -48,15 +50,15 @@
     }
 
     html {
-      background: var(--white);
-      color: var(--black);
+      background: #fff;
+      color: #000;
       scroll-behavior: smooth;
     }
 
     body {
       margin: 0;
-      background: var(--white);
-      color: var(--black);
+      background: #fff;
+      color: #000;
       font-family: 'Montserrat', Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
       text-rendering: geometricPrecision;
@@ -83,33 +85,33 @@
       outline: none;
     }
 
-    input[type="date"],
-    input[type="time"] {
-      color-scheme: light;
-    }
 
-    /* =========================================================
+    /* =====================================================
        APP
-    ========================================================= */
+    ===================================================== */
 
     .app {
       width: min(920px, 100%);
       min-height: 100vh;
       margin: 0 auto;
+
       padding:
         clamp(22px, 4vw, 42px)
         clamp(18px, 4vw, 42px)
         100px;
     }
 
-    /* =========================================================
+
+    /* =====================================================
        HEADER
-    ========================================================= */
+    ===================================================== */
 
     .main-header {
       position: relative;
+
       width: 100%;
       min-height: 92px;
+
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -129,6 +131,7 @@
 
     .brand-subtitle {
       margin-top: 7px;
+
       font-size: 10px;
       letter-spacing: 0.4px;
       font-weight: 500;
@@ -136,87 +139,110 @@
 
     .greeting {
       margin-top: 22px;
+
       font-size: 13px;
       font-weight: 500;
     }
 
-    /* =========================================================
-       THREE DOTS MENU
-    ========================================================= */
+
+    /* =====================================================
+       MENU — NUEVA ESTRUCTURA
+    ===================================================== */
 
     .menu-container {
       position: relative;
-      flex: 0 0 42px;
-      width: 42px;
-      height: 76px;
-      z-index: 1100;
+
+      width: 150px;
+      height: 115px;
+
+      flex: 0 0 150px;
+
+      z-index: 2000;
     }
+
+
+    /* -----------------------------------------------------
+       BOTÓN DE LOS 3 PUNTOS
+    ----------------------------------------------------- */
 
     .dots-button {
       position: absolute;
-      top: 2px;
+
+      top: 0;
       right: 0;
+
       width: 34px;
       height: 34px;
+
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 1110;
+
+      padding: 0;
+
+      z-index: 2020;
     }
 
     .dots {
+      width: 19px;
+      height: 8px;
+
       display: flex;
       flex-direction: row;
       align-items: center;
-      justify-content: center;
-      gap: 4px;
-      width: 20px;
-      height: 10px;
+      justify-content: space-between;
+
+      position: relative;
     }
 
     .dot {
-      position: relative;
+      position: relative !important;
+
+      display: block;
+
       width: 4px;
       height: 4px;
-      flex: 0 0 4px;
+
+      min-width: 4px;
+      min-height: 4px;
+
       border-radius: 50%;
-      background: #000000;
+
+      background: #000;
+
+      margin: 0;
+      padding: 0;
+
       transition:
-        transform 0.28s ease,
-        opacity 0.2s ease;
+        transform 0.30s ease,
+        opacity 0.20s ease;
     }
 
-    /*
-      IMPORTANTE:
-      Los puntos empiezan horizontales.
-      Al abrirse se desplazan ligeramente hacia abajo
-      y hacia la izquierda.
-    */
 
-    .menu-container.open .dot:nth-child(1) {
-      transform: translate(-5px, 0);
-    }
-
-    .menu-container.open .dot:nth-child(2) {
-      transform: translate(-5px, 27px);
-    }
-
-    .menu-container.open .dot:nth-child(3) {
-      transform: translate(-5px, 54px);
-    }
+    /* -----------------------------------------------------
+       X
+    ----------------------------------------------------- */
 
     .menu-close {
       position: absolute;
-      top: 1px;
+
+      top: 0;
       right: 0;
+
       width: 34px;
       height: 34px;
+
       display: none;
+
       align-items: center;
       justify-content: center;
-      font-size: 19px;
+
+      padding: 0;
+
+      font-size: 20px;
       font-weight: 400;
-      z-index: 1120;
+
+      z-index: 2030;
     }
 
     .menu-container.open .menu-close {
@@ -227,95 +253,196 @@
       pointer-events: none;
     }
 
-    .menu-option {
+
+    /* =====================================================
+       CADA FILA DEL MENÚ
+    ===================================================== */
+
+    .menu-row {
       position: absolute;
-      right: 27px;
+
+      right: 0;
+
+      width: 145px;
+      height: 22px;
+
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      gap: 9px;
-      white-space: nowrap;
+
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.18s ease;
-      z-index: 1105;
+
+      transition: opacity 0.15s ease;
+
+      z-index: 2010;
     }
 
-    .menu-option:nth-child(1) {
-      top: 34px;
+
+    /* POSICIÓN DE CADA FILA */
+
+    .menu-row-1 {
+      top: 27px;
     }
 
-    .menu-option:nth-child(2) {
-      top: 64px;
+    .menu-row-2 {
+      top: 57px;
     }
 
-    .menu-option:nth-child(3) {
-      top: 94px;
+    .menu-row-3 {
+      top: 87px;
     }
+
+
+    /* -----------------------------------------------------
+       PUNTO DEL MENÚ ABIERTO
+    ----------------------------------------------------- */
+
+    .menu-point {
+      position: absolute;
+
+      right: 10px;
+
+      width: 4px;
+      height: 4px;
+
+      border-radius: 50%;
+
+      background: #000;
+
+      flex: 0 0 4px;
+    }
+
+
+    /* -----------------------------------------------------
+       LÍNEA
+    ----------------------------------------------------- */
 
     .menu-line {
+      position: absolute;
+
+      right: 14px;
+
       width: 0;
       height: 1px;
-      background: #000000;
-      transition: width 0.25s ease;
-      flex-shrink: 0;
+
+      background: #000;
+
+      transition:
+        width 0.25s ease;
     }
 
-    .menu-option-text {
+
+    /* -----------------------------------------------------
+       TEXTO
+    ----------------------------------------------------- */
+
+    .menu-text {
+      position: absolute;
+
+      right: 0;
+
       font-size: 11px;
       font-weight: 500;
+
       opacity: 0;
+
       transform: translateX(5px);
+
       transition:
         opacity 0.18s ease,
         transform 0.18s ease;
     }
 
-    .menu-container.open .menu-option {
+
+    /* =====================================================
+       ABRIR MENÚ
+    ===================================================== */
+
+    .menu-container.open .menu-row {
       opacity: 1;
       pointer-events: auto;
     }
 
+
+    /*
+      Primero aparece/crece la línea.
+    */
+
     .menu-container.open .menu-line {
-      width: 30px;
+      width: 65px;
     }
 
-    .menu-container.open .menu-option-text {
+
+    /*
+      Después aparece el texto.
+    */
+
+    .menu-container.open .menu-text {
       opacity: 1;
+
       transform: translateX(0);
+
       transition-delay: 0.25s;
     }
 
-    /* =========================================================
+
+    /* =====================================================
+       POSICIÓN EXACTA DEL PUNTO DE CADA FILA
+    ===================================================== */
+
+    .menu-row-1 .menu-point {
+      top: 9px;
+    }
+
+    .menu-row-2 .menu-point {
+      top: 9px;
+    }
+
+    .menu-row-3 .menu-point {
+      top: 9px;
+    }
+
+
+    /* =====================================================
        QUICK ACTIONS
-    ========================================================= */
+    ===================================================== */
 
     .quick-actions {
       margin-top: 48px;
+
       display: grid;
+
       grid-template-columns: 1fr 1fr;
+
       gap: 24px;
     }
 
     .quick-action {
       min-height: 105px;
-      border: 1px solid var(--black);
+
+      border: 1px solid #000;
+
       padding: 20px;
+
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       justify-content: center;
-      transition: background 0.2s ease;
+
+      transition:
+        background 0.2s ease;
     }
 
     .quick-action:hover {
-      background: var(--very-light);
+      background: #f6f6f6;
     }
 
     .quick-action-icon {
       height: 32px;
+
       display: flex;
       align-items: center;
+
       margin-bottom: 10px;
     }
 
@@ -325,32 +452,46 @@
       line-height: 1.3;
     }
 
-    /* Post-it */
+
+    /* POST IT */
+
     .post-it {
       position: relative;
+
       width: 24px;
       height: 24px;
+
       border: 1.5px solid #000;
     }
 
     .post-it::after {
       content: "";
+
       position: absolute;
+
       right: -1.5px;
       bottom: -1.5px;
+
       width: 8px;
       height: 8px;
+
       background: #fff;
+
       border-left: 1.5px solid #000;
       border-top: 1.5px solid #000;
     }
 
-    /* Star */
+
+    /* STAR */
+
     .star-circle {
       width: 27px;
       height: 27px;
+
       border: 1.4px solid #000;
+
       border-radius: 50%;
+
       display: flex;
       align-items: center;
       justify-content: center;
@@ -361,15 +502,19 @@
       line-height: 1;
     }
 
-    /* =========================================================
-       REMINDER FORM
-    ========================================================= */
+
+    /* =====================================================
+       REMINDER PANEL
+    ===================================================== */
 
     .reminder-panel {
       display: none;
+
       margin-top: 28px;
+
       border-top: 1px solid #000;
       border-bottom: 1px solid #000;
+
       padding: 25px 0;
     }
 
@@ -380,8 +525,8 @@
     .panel-title {
       font-size: 17px;
       font-weight: 600;
+
       margin-bottom: 25px;
-      letter-spacing: -0.3px;
     }
 
     .form-group {
@@ -390,18 +535,25 @@
 
     .form-label {
       display: block;
+
       margin-bottom: 10px;
+
       font-size: 11px;
       font-weight: 600;
     }
 
     .text-input {
       width: 100%;
+
       border: none;
       border-bottom: 1px solid #000;
+
       border-radius: 0;
+
       padding: 10px 0;
+
       font-size: 14px;
+
       background: transparent;
       color: #000;
     }
@@ -410,9 +562,10 @@
       color: #8b8b8b;
     }
 
-    /* =========================================================
-       LIST SELECTOR
-    ========================================================= */
+
+    /* =====================================================
+       SELECTOR DE LISTA
+    ===================================================== */
 
     .list-selector {
       position: relative;
@@ -420,10 +573,13 @@
 
     .selected-list-row {
       min-height: 40px;
+
       border-bottom: 1px solid #000;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       cursor: pointer;
     }
 
@@ -435,7 +591,9 @@
     .list-arrow {
       font-size: 17px;
       line-height: 1;
-      transition: transform 0.25s ease;
+
+      transition:
+        transform 0.25s ease;
     }
 
     .list-selector.expanded .list-arrow {
@@ -444,6 +602,7 @@
 
     .list-options {
       display: none;
+
       border-bottom: 1px solid #000;
     }
 
@@ -453,8 +612,11 @@
 
     .list-option {
       padding: 11px 0;
+
       font-size: 12px;
-      border-bottom: 1px solid var(--light-gray);
+
+      border-bottom: 1px solid #e8e8e8;
+
       cursor: pointer;
     }
 
@@ -468,28 +630,37 @@
 
     .create-list-option {
       padding: 12px 0;
+
       font-size: 11px;
       font-weight: 600;
+
       cursor: pointer;
     }
 
-    /* =========================================================
+
+    /* =====================================================
        DATE / TIME
-    ========================================================= */
+    ===================================================== */
 
     .date-input,
     .time-input {
       width: 100%;
       height: 42px;
+
       border: 1px solid #000;
+
       border-radius: 0;
+
       background: #fff;
+
       padding: 0 12px;
+
       font-size: 13px;
     }
 
     .time-wrapper {
       display: none;
+
       margin-top: 13px;
     }
 
@@ -497,9 +668,10 @@
       display: block;
     }
 
-    /* =========================================================
+
+    /* =====================================================
        YES / NO
-    ========================================================= */
+    ===================================================== */
 
     .choice-row {
       display: flex;
@@ -509,34 +681,45 @@
     .choice-button {
       display: flex;
       align-items: center;
+
       gap: 8px;
+
       font-size: 12px;
     }
 
     .choice-circle {
       width: 17px;
       height: 17px;
+
       border: 1px solid #000;
+
       border-radius: 50%;
+
       position: relative;
     }
 
     .choice-button.selected .choice-circle::after {
       content: "";
+
       position: absolute;
+
       inset: 3px;
+
       background: #000;
+
       border-radius: 50%;
     }
 
     .save-reminder {
       width: 100%;
       height: 45px;
+
       border: 1px solid #000;
+
       margin-top: 8px;
+
       font-size: 12px;
       font-weight: 600;
-      transition: all 0.2s ease;
     }
 
     .save-reminder:hover {
@@ -547,14 +730,18 @@
     .cancel-reminder {
       width: 100%;
       height: 40px;
+
       margin-top: 8px;
+
       font-size: 11px;
+
       color: #666;
     }
 
-    /* =========================================================
-       MAIN CONTENT
-    ========================================================= */
+
+    /* =====================================================
+       MAIN
+    ===================================================== */
 
     .main-content {
       margin-top: 46px;
@@ -563,13 +750,14 @@
     .section-title {
       font-size: 11px;
       font-weight: 600;
-      letter-spacing: 0.2px;
+
       margin-bottom: 16px;
     }
 
-    /* =========================================================
+
+    /* =====================================================
        CALENDAR
-    ========================================================= */
+    ===================================================== */
 
     .calendar-section {
       margin-top: 34px;
@@ -577,13 +765,16 @@
 
     .calendar-box {
       border: 1px solid #000;
+
       padding: 18px;
     }
 
     .calendar-header {
       display: flex;
+
       justify-content: space-between;
       align-items: center;
+
       margin-bottom: 18px;
     }
 
@@ -600,34 +791,48 @@
     .calendar-control {
       width: 25px;
       height: 25px;
+
       display: flex;
+
       justify-content: center;
       align-items: center;
+
       font-size: 14px;
     }
 
     .calendar-weekdays,
     .calendar-days {
       display: grid;
+
       grid-template-columns: repeat(7, 1fr);
+
       gap: 4px;
     }
 
     .calendar-weekday {
       text-align: center;
+
       font-size: 8px;
+
       color: #666;
+
       padding-bottom: 8px;
     }
 
     .calendar-day {
       min-height: 31px;
+
       display: flex;
+
       align-items: center;
       justify-content: center;
+
       position: relative;
+
       font-size: 10px;
+
       cursor: pointer;
+
       border: 1px solid transparent;
     }
 
@@ -637,21 +842,28 @@
 
     .calendar-day.today {
       border: 1px solid #000;
+
       font-weight: 700;
     }
 
     .calendar-day.selected {
       background: #000;
+
       color: #fff;
     }
 
     .calendar-day.has-items::after {
       content: "";
+
       position: absolute;
+
       bottom: 4px;
+
       width: 3px;
       height: 3px;
+
       background: #000;
+
       border-radius: 50%;
     }
 
@@ -663,31 +875,41 @@
       cursor: default;
     }
 
-    /* =========================================================
-       TODAY / UPCOMING
-    ========================================================= */
+
+    /* =====================================================
+       HOY / PROXIMAMENTE
+    ===================================================== */
 
     .day-navigation {
       margin-top: 32px;
+
       display: flex;
       flex-direction: column;
+
       gap: 10px;
     }
 
     .day-button {
       min-height: 62px;
+
       border-top: 1px solid #000;
       border-bottom: 1px solid #000;
+
       display: flex;
+
       align-items: center;
       justify-content: space-between;
+
       padding: 0 5px;
+
       text-align: left;
     }
 
     .day-button-left {
       display: flex;
+
       align-items: center;
+
       gap: 9px;
     }
 
@@ -698,20 +920,30 @@
 
     .day-arrow {
       font-size: 18px;
-      font-weight: 400;
     }
 
-    /* iPhone-style overdue badge */
+
+    /* =====================================================
+       BADGE
+    ===================================================== */
+
     .notification-badge {
       display: none;
+
       min-width: 18px;
       height: 18px;
+
       padding: 0 5px;
+
       background: #ff3b30;
+
       color: #fff;
+
       border-radius: 999px;
+
       font-size: 9px;
       font-weight: 700;
+
       align-items: center;
       justify-content: center;
     }
@@ -720,12 +952,14 @@
       display: inline-flex;
     }
 
-    /* =========================================================
+
+    /* =====================================================
        VIEWS
-    ========================================================= */
+    ===================================================== */
 
     .view {
       display: none;
+
       margin-top: 35px;
     }
 
@@ -735,14 +969,18 @@
 
     .view-header {
       display: flex;
+
       align-items: center;
+
       gap: 12px;
+
       margin-bottom: 24px;
     }
 
     .back-button {
       width: 30px;
       height: 30px;
+
       font-size: 19px;
     }
 
@@ -753,13 +991,16 @@
 
     .view-date {
       font-size: 10px;
+
       color: #666;
+
       margin-top: 4px;
     }
 
-    /* =========================================================
-       TASK ITEMS
-    ========================================================= */
+
+    /* =====================================================
+       TASKS
+    ===================================================== */
 
     .items-container {
       display: flex;
@@ -768,10 +1009,15 @@
 
     .task-item {
       min-height: 67px;
+
       border-top: 1px solid #000;
+
       display: flex;
+
       align-items: center;
+
       gap: 13px;
+
       padding: 10px 3px;
     }
 
@@ -782,15 +1028,20 @@
     .task-check {
       width: 18px;
       height: 18px;
+
       border: 1px solid #000;
+
       flex: 0 0 18px;
+
       display: flex;
+
       align-items: center;
       justify-content: center;
     }
 
     .task-check.completed::after {
       content: "✓";
+
       font-size: 11px;
     }
 
@@ -801,50 +1052,68 @@
 
     .task-title {
       font-size: 12px;
+
       font-weight: 500;
+
       line-height: 1.4;
+
       word-break: break-word;
     }
 
     .task-item.completed .task-title {
       text-decoration: line-through;
+
       color: #777;
     }
 
     .task-meta {
       display: flex;
+
       gap: 9px;
+
       flex-wrap: wrap;
+
       margin-top: 4px;
+
       font-size: 8px;
+
       color: #777;
     }
 
     .task-delete {
       font-size: 15px;
+
       width: 25px;
       height: 25px;
+
       color: #777;
     }
 
     .reminder-mark {
       font-size: 8px;
+
       border: 1px solid #000;
+
       padding: 2px 5px;
     }
 
     .empty-state {
       padding: 35px 5px;
+
       text-align: center;
+
       font-size: 11px;
+
       color: #777;
+
       border-top: 1px solid #000;
       border-bottom: 1px solid #000;
     }
 
-    /* =========================================================
+
+    /* =====================================================
        LISTS
-    ========================================================= */
+    ===================================================== */
 
     .lists-container {
       display: flex;
@@ -853,11 +1122,16 @@
 
     .list-card {
       min-height: 61px;
+
       border-top: 1px solid #000;
+
       display: flex;
+
       justify-content: space-between;
       align-items: center;
+
       padding: 0 5px;
+
       cursor: pointer;
     }
 
@@ -867,43 +1141,60 @@
 
     .list-card-name {
       font-size: 12px;
+
       font-weight: 500;
     }
 
     .list-card-count {
       font-size: 9px;
+
       color: #777;
     }
 
     .new-list-button {
       width: 100%;
       height: 48px;
+
       border: 1px solid #000;
+
       margin-top: 16px;
+
       font-size: 11px;
+
       font-weight: 600;
     }
 
-    /* =========================================================
-       QUICK NOTES
-    ========================================================= */
+
+    /* =====================================================
+       NOTES
+    ===================================================== */
 
     .notes-area {
       width: 100%;
+
       min-height: 240px;
+
       border: 1px solid #000;
+
       padding: 15px;
+
       font-size: 13px;
+
       line-height: 1.6;
+
       resize: vertical;
+
       background: #fff;
     }
 
     .save-notes {
       width: 100%;
       height: 44px;
+
       border: 1px solid #000;
+
       margin-top: 10px;
+
       font-size: 11px;
       font-weight: 600;
     }
@@ -913,69 +1204,95 @@
       color: #fff;
     }
 
-    /* =========================================================
+
+    /* =====================================================
        DASHBOARD
-    ========================================================= */
+    ===================================================== */
 
     .dashboard-grid {
       display: grid;
+
       grid-template-columns: repeat(2, 1fr);
+
       gap: 10px;
     }
 
     .dashboard-item {
       border: 1px solid #000;
+
       min-height: 105px;
+
       padding: 17px;
+
       display: flex;
+
       flex-direction: column;
+
       justify-content: space-between;
     }
 
     .dashboard-number {
       font-size: 28px;
+
       font-weight: 600;
+
       letter-spacing: -1px;
     }
 
     .dashboard-label {
       font-size: 9px;
+
       font-weight: 500;
     }
 
-    /* =========================================================
-       BOTTOM NAVIGATION
-    ========================================================= */
+
+    /* =====================================================
+       BOTTOM NAV
+    ===================================================== */
 
     .bottom-nav {
       position: fixed;
+
       bottom: 0;
       left: 50%;
+
       transform: translateX(-50%);
+
       width: min(920px, 100%);
+
       height: 66px;
+
       background: rgba(255,255,255,0.97);
+
       border-top: 1px solid #000;
+
       display: grid;
+
       grid-template-columns: repeat(4, 1fr);
+
       z-index: 1000;
     }
 
     .bottom-nav-button {
       display: flex;
+
       flex-direction: column;
+
       align-items: center;
       justify-content: center;
+
       gap: 5px;
     }
 
     .bottom-nav-icon {
       font-size: 15px;
+
       line-height: 1;
     }
 
     .bottom-nav-label {
       font-size: 8px;
+
       font-weight: 500;
     }
 
@@ -983,18 +1300,25 @@
       font-weight: 700;
     }
 
-    /* =========================================================
-       MODALS
-    ========================================================= */
+
+    /* =====================================================
+       MODAL
+    ===================================================== */
 
     .modal-overlay {
       position: fixed;
+
       inset: 0;
+
       background: rgba(255,255,255,0.94);
+
       display: none;
+
       align-items: center;
       justify-content: center;
+
       padding: 20px;
+
       z-index: 3000;
     }
 
@@ -1004,47 +1328,64 @@
 
     .modal {
       width: min(420px, 100%);
+
       border: 1px solid #000;
+
       background: #fff;
+
       padding: 25px;
     }
 
     .modal-title {
       font-size: 16px;
+
       font-weight: 600;
+
       margin-bottom: 20px;
     }
 
     .modal-input {
       width: 100%;
+
       border: none;
+
       border-bottom: 1px solid #000;
+
       padding: 10px 0;
+
       font-size: 13px;
     }
 
     .modal-buttons {
       display: flex;
+
       gap: 10px;
+
       margin-top: 22px;
     }
 
     .modal-button {
       flex: 1;
+
       height: 42px;
+
       border: 1px solid #000;
+
       font-size: 10px;
+
       font-weight: 600;
     }
 
     .modal-button.primary {
       background: #000;
+
       color: #fff;
     }
 
-    /* =========================================================
-       RESPONSIVE
-    ========================================================= */
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
 
     @media (max-width: 600px) {
 
@@ -1059,13 +1400,25 @@
         min-height: 88px;
       }
 
+      /*
+        El menú tiene suficiente espacio para que
+        sus textos no se mezclen con el resto.
+      */
+
+      .menu-container {
+        width: 150px;
+        flex-basis: 150px;
+      }
+
       .quick-actions {
         gap: 10px;
+
         margin-top: 38px;
       }
 
       .quick-action {
         min-height: 100px;
+
         padding: 16px;
       }
 
@@ -1081,17 +1434,15 @@
         min-height: 30px;
       }
 
-      .dashboard-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
       input[type="text"],
       input[type="date"],
       input[type="time"],
       textarea {
         font-size: 16px;
       }
+
     }
+
 
     @media (max-width: 390px) {
 
@@ -1109,6 +1460,7 @@
 
       .quick-action {
         min-height: 94px;
+
         padding: 13px;
       }
 
@@ -1118,25 +1470,33 @@
 
       .calendar-day {
         min-height: 27px;
+
         font-size: 9px;
       }
 
       .bottom-nav-label {
         font-size: 7px;
       }
+
     }
+
   </style>
 </head>
+
 
 <body>
 
   <div class="app">
 
-    <!-- =======================================================
-         HEADER
-    ======================================================== -->
 
-    <header class="main-header" id="mainHeader">
+    <!-- ===================================================
+         HEADER
+    ==================================================== -->
+
+    <header
+      class="main-header"
+      id="mainHeader"
+    >
 
       <div class="header-left">
 
@@ -1148,28 +1508,48 @@
           una APP de Incorova
         </div>
 
-        <div class="greeting" id="greeting">
+        <div
+          class="greeting"
+          id="greeting"
+        >
           Buenos días
         </div>
 
       </div>
 
 
-      <!-- THREE DOT MENU -->
+      <!-- =================================================
+           MENU
+      ================================================== -->
 
-      <div class="menu-container" id="menuContainer">
+      <div
+        class="menu-container"
+        id="menuContainer"
+      >
+
+
+        <!-- 3 PUNTOS ORIGINALES -->
 
         <button
           class="dots-button"
           id="dotsButton"
           aria-label="Abrir menú"
         >
+
           <div class="dots">
+
             <span class="dot"></span>
+
             <span class="dot"></span>
+
             <span class="dot"></span>
+
           </div>
+
         </button>
+
+
+        <!-- X -->
 
         <button
           class="menu-close"
@@ -1179,44 +1559,85 @@
           ×
         </button>
 
+
+        <!-- ===============================================
+             FILA 1
+        ================================================ -->
+
         <button
-          class="menu-option"
+          class="menu-row menu-row-1"
           data-menu="lists"
         >
+
+          <span class="menu-point"></span>
+
           <span class="menu-line"></span>
-          <span class="menu-option-text">Listas</span>
+
+          <span class="menu-text">
+            Listas
+          </span>
+
         </button>
 
+
+        <!-- ===============================================
+             FILA 2
+        ================================================ -->
+
         <button
-          class="menu-option"
+          class="menu-row menu-row-2"
           data-menu="notes"
         >
+
+          <span class="menu-point"></span>
+
           <span class="menu-line"></span>
-          <span class="menu-option-text">Notas</span>
+
+          <span class="menu-text">
+            Notas
+          </span>
+
         </button>
 
+
+        <!-- ===============================================
+             FILA 3
+        ================================================ -->
+
         <button
-          class="menu-option"
+          class="menu-row menu-row-3"
           data-menu="dashboard"
         >
+
+          <span class="menu-point"></span>
+
           <span class="menu-line"></span>
-          <span class="menu-option-text">Dashboard</span>
+
+          <span class="menu-text">
+            Dashboard
+          </span>
+
         </button>
+
 
       </div>
 
     </header>
 
 
-    <!-- =======================================================
+    <!-- ===================================================
          HOME
-    ======================================================== -->
+    ==================================================== -->
 
     <main id="homeView">
+
 
       <!-- QUICK ACTIONS -->
 
       <section class="quick-actions">
+
+
+        <!-- NOTAS -->
 
         <button
           class="quick-action"
@@ -1224,7 +1645,9 @@
         >
 
           <div class="quick-action-icon">
+
             <div class="post-it"></div>
+
           </div>
 
           <div class="quick-action-title">
@@ -1234,6 +1657,8 @@
         </button>
 
 
+        <!-- RECORDATORIO -->
+
         <button
           class="quick-action"
           id="newReminderButton"
@@ -1242,7 +1667,11 @@
           <div class="quick-action-icon">
 
             <div class="star-circle">
-              <span class="star">✦</span>
+
+              <span class="star">
+                ✦
+              </span>
+
             </div>
 
           </div>
@@ -1253,12 +1682,13 @@
 
         </button>
 
+
       </section>
 
 
-      <!-- =====================================================
-           REMINDER CREATION
-      ====================================================== -->
+      <!-- =================================================
+           NUEVO RECORDATORIO
+      ================================================== -->
 
       <section
         class="reminder-panel"
@@ -1270,7 +1700,7 @@
         </div>
 
 
-        <!-- TITLE -->
+        <!-- RECORDATORIO -->
 
         <div class="form-group">
 
@@ -1289,7 +1719,7 @@
         </div>
 
 
-        <!-- LIST -->
+        <!-- LISTA -->
 
         <div class="form-group">
 
@@ -1316,7 +1746,6 @@
 
               <span
                 class="list-arrow"
-                id="listArrow"
               >
                 →
               </span>
@@ -1343,7 +1772,7 @@
         </div>
 
 
-        <!-- DATE -->
+        <!-- FECHA -->
 
         <div class="form-group">
 
@@ -1360,7 +1789,7 @@
         </div>
 
 
-        <!-- TIME -->
+        <!-- HORA -->
 
         <div class="form-group">
 
@@ -1372,20 +1801,25 @@
 
             <button
               class="choice-button"
-              data-time-choice="yes"
               id="timeYes"
             >
+
               <span class="choice-circle"></span>
+
               Sí
+
             </button>
+
 
             <button
               class="choice-button"
-              data-time-choice="no"
               id="timeNo"
             >
+
               <span class="choice-circle"></span>
+
               No
+
             </button>
 
           </div>
@@ -1407,7 +1841,7 @@
         </div>
 
 
-        <!-- ALARM -->
+        <!-- ALARMA -->
 
         <div class="form-group">
 
@@ -1419,20 +1853,25 @@
 
             <button
               class="choice-button"
-              data-alarm-choice="yes"
               id="alarmYes"
             >
+
               <span class="choice-circle"></span>
+
               Sí
+
             </button>
+
 
             <button
               class="choice-button"
-              data-alarm-choice="no"
               id="alarmNo"
             >
+
               <span class="choice-circle"></span>
+
               No
+
             </button>
 
           </div>
@@ -1447,6 +1886,7 @@
           Guardar recordatorio
         </button>
 
+
         <button
           class="cancel-reminder"
           id="cancelReminder"
@@ -1457,9 +1897,9 @@
       </section>
 
 
-      <!-- =====================================================
-           CALENDAR
-      ====================================================== -->
+      <!-- =================================================
+           CALENDARIO
+      ================================================== -->
 
       <section class="calendar-section">
 
@@ -1467,7 +1907,9 @@
           Calendario
         </div>
 
+
         <div class="calendar-box">
+
 
           <div class="calendar-header">
 
@@ -1475,8 +1917,8 @@
               class="calendar-month"
               id="calendarMonth"
             >
-              Octubre 2026
             </div>
+
 
             <div class="calendar-controls">
 
@@ -1523,11 +1965,12 @@
       </section>
 
 
-      <!-- =====================================================
-           TODAY / UPCOMING
-      ====================================================== -->
+      <!-- =================================================
+           HOY / PROXIMAMENTE
+      ================================================== -->
 
       <section class="day-navigation">
+
 
         <button
           class="day-button"
@@ -1580,9 +2023,9 @@
     </main>
 
 
-    <!-- =======================================================
+    <!-- ===================================================
          TODAY VIEW
-    ======================================================== -->
+    ==================================================== -->
 
     <section
       class="view"
@@ -1624,9 +2067,9 @@
     </section>
 
 
-    <!-- =======================================================
-         UPCOMING VIEW
-    ======================================================== -->
+    <!-- ===================================================
+         UPCOMING
+    ==================================================== -->
 
     <section
       class="view"
@@ -1666,9 +2109,9 @@
     </section>
 
 
-    <!-- =======================================================
-         LISTS VIEW
-    ======================================================== -->
+    <!-- ===================================================
+         LISTAS
+    ==================================================== -->
 
     <section
       class="view"
@@ -1708,9 +2151,9 @@
     </section>
 
 
-    <!-- =======================================================
-         LIST DETAIL
-    ======================================================== -->
+    <!-- ===================================================
+         DETALLE LISTA
+    ==================================================== -->
 
     <section
       class="view"
@@ -1754,9 +2197,9 @@
     </section>
 
 
-    <!-- =======================================================
-         NOTES VIEW
-    ======================================================== -->
+    <!-- ===================================================
+         NOTAS
+    ==================================================== -->
 
     <section
       class="view"
@@ -1796,9 +2239,9 @@
     </section>
 
 
-    <!-- =======================================================
-         DASHBOARD VIEW
-    ======================================================== -->
+    <!-- ===================================================
+         DASHBOARD
+    ==================================================== -->
 
     <section
       class="view"
@@ -1822,6 +2265,7 @@
 
 
       <div class="dashboard-grid">
+
 
         <div class="dashboard-item">
 
@@ -1886,18 +2330,21 @@
 
         </div>
 
+
       </div>
 
     </section>
 
+
   </div>
 
 
-  <!-- =========================================================
-       BOTTOM NAVIGATION
-  ========================================================== -->
+  <!-- =====================================================
+       BOTTOM NAV
+  ====================================================== -->
 
   <nav class="bottom-nav">
+
 
     <button
       class="bottom-nav-button active"
@@ -1962,12 +2409,13 @@
 
     </button>
 
+
   </nav>
 
 
-  <!-- =========================================================
-       MODAL CREATE LIST
-  ========================================================== -->
+  <!-- =====================================================
+       MODAL LISTA
+  ====================================================== -->
 
   <div
     class="modal-overlay"
@@ -1980,6 +2428,7 @@
         Crear nueva lista
       </div>
 
+
       <input
         type="text"
         class="modal-input"
@@ -1987,6 +2436,7 @@
         placeholder="Nombre de la lista"
         autocomplete="off"
       />
+
 
       <div class="modal-buttons">
 
@@ -1996,6 +2446,7 @@
         >
           Cancelar
         </button>
+
 
         <button
           class="modal-button primary"
@@ -2011,179 +2462,274 @@
   </div>
 
 
+  <!-- =====================================================
+       JAVASCRIPT
+  ====================================================== -->
+
   <script>
 
-    /* =========================================================
-       NOVA LIST
-       JAVASCRIPT
-    ========================================================== */
+    /* =====================================================
+       DATA
+    ===================================================== */
 
-    const STORAGE_KEY = "novaListData";
+    const STORAGE_KEY =
+      "novaListData";
+
 
     let data = {
+
       lists: [],
+
       tasks: [],
+
       notes: ""
+
     };
+
 
     let selectedReminderList = null;
 
     let reminderHasTime = false;
+
     let reminderHasAlarm = false;
 
-    let currentCalendarDate = new Date();
+    let currentCalendarDate =
+      new Date();
 
-    let selectedCalendarDate = new Date();
+    let selectedCalendarDate =
+      new Date();
 
     let currentListId = null;
 
 
-    /* =========================================================
+    /* =====================================================
        DOM
-    ========================================================== */
+    ===================================================== */
 
     const menuContainer =
-      document.getElementById("menuContainer");
+      document.getElementById(
+        "menuContainer"
+      );
 
     const dotsButton =
-      document.getElementById("dotsButton");
+      document.getElementById(
+        "dotsButton"
+      );
 
     const menuClose =
-      document.getElementById("menuClose");
-
+      document.getElementById(
+        "menuClose"
+      );
 
     const greeting =
-      document.getElementById("greeting");
+      document.getElementById(
+        "greeting"
+      );
 
 
     const reminderPanel =
-      document.getElementById("reminderPanel");
+      document.getElementById(
+        "reminderPanel"
+      );
 
     const newReminderButton =
-      document.getElementById("newReminderButton");
+      document.getElementById(
+        "newReminderButton"
+      );
 
     const cancelReminder =
-      document.getElementById("cancelReminder");
+      document.getElementById(
+        "cancelReminder"
+      );
 
     const saveReminder =
-      document.getElementById("saveReminder");
+      document.getElementById(
+        "saveReminder"
+      );
 
 
     const reminderTitle =
-      document.getElementById("reminderTitle");
+      document.getElementById(
+        "reminderTitle"
+      );
 
     const reminderDate =
-      document.getElementById("reminderDate");
+      document.getElementById(
+        "reminderDate"
+      );
 
     const reminderTime =
-      document.getElementById("reminderTime");
+      document.getElementById(
+        "reminderTime"
+      );
+
 
     const reminderListSelector =
-      document.getElementById("reminderListSelector");
+      document.getElementById(
+        "reminderListSelector"
+      );
 
     const selectedListRow =
-      document.getElementById("selectedListRow");
+      document.getElementById(
+        "selectedListRow"
+      );
 
     const selectedListName =
-      document.getElementById("selectedListName");
+      document.getElementById(
+        "selectedListName"
+      );
 
     const reminderListOptions =
-      document.getElementById("reminderListOptions");
+      document.getElementById(
+        "reminderListOptions"
+      );
 
     const createListFromReminder =
-      document.getElementById("createListFromReminder");
+      document.getElementById(
+        "createListFromReminder"
+      );
 
 
     const timeYes =
-      document.getElementById("timeYes");
+      document.getElementById(
+        "timeYes"
+      );
 
     const timeNo =
-      document.getElementById("timeNo");
+      document.getElementById(
+        "timeNo"
+      );
 
     const timeWrapper =
-      document.getElementById("timeWrapper");
+      document.getElementById(
+        "timeWrapper"
+      );
 
 
     const alarmYes =
-      document.getElementById("alarmYes");
+      document.getElementById(
+        "alarmYes"
+      );
 
     const alarmNo =
-      document.getElementById("alarmNo");
+      document.getElementById(
+        "alarmNo"
+      );
 
 
     const calendarMonth =
-      document.getElementById("calendarMonth");
+      document.getElementById(
+        "calendarMonth"
+      );
 
     const calendarDays =
-      document.getElementById("calendarDays");
+      document.getElementById(
+        "calendarDays"
+      );
 
 
     const previousMonth =
-      document.getElementById("previousMonth");
+      document.getElementById(
+        "previousMonth"
+      );
 
     const nextMonth =
-      document.getElementById("nextMonth");
+      document.getElementById(
+        "nextMonth"
+      );
 
 
     const overdueBadge =
-      document.getElementById("overdueBadge");
+      document.getElementById(
+        "overdueBadge"
+      );
 
 
     const todayButton =
-      document.getElementById("todayButton");
+      document.getElementById(
+        "todayButton"
+      );
 
     const upcomingButton =
-      document.getElementById("upcomingButton");
+      document.getElementById(
+        "upcomingButton"
+      );
 
 
     const todayItems =
-      document.getElementById("todayItems");
+      document.getElementById(
+        "todayItems"
+      );
 
     const upcomingItems =
-      document.getElementById("upcomingItems");
+      document.getElementById(
+        "upcomingItems"
+      );
 
 
     const listsContainer =
-      document.getElementById("listsContainer");
+      document.getElementById(
+        "listsContainer"
+      );
 
 
     const listDetailItems =
-      document.getElementById("listDetailItems");
+      document.getElementById(
+        "listDetailItems"
+      );
 
     const listDetailTitle =
-      document.getElementById("listDetailTitle");
+      document.getElementById(
+        "listDetailTitle"
+      );
 
     const listDetailCount =
-      document.getElementById("listDetailCount");
+      document.getElementById(
+        "listDetailCount"
+      );
 
 
     const notesArea =
-      document.getElementById("notesArea");
+      document.getElementById(
+        "notesArea"
+      );
 
 
     const dashboardPending =
-      document.getElementById("dashboardPending");
+      document.getElementById(
+        "dashboardPending"
+      );
 
     const dashboardToday =
-      document.getElementById("dashboardToday");
+      document.getElementById(
+        "dashboardToday"
+      );
 
     const dashboardOverdue =
-      document.getElementById("dashboardOverdue");
+      document.getElementById(
+        "dashboardOverdue"
+      );
 
     const dashboardLists =
-      document.getElementById("dashboardLists");
+      document.getElementById(
+        "dashboardLists"
+      );
 
 
     const listModal =
-      document.getElementById("listModal");
+      document.getElementById(
+        "listModal"
+      );
 
     const newListName =
-      document.getElementById("newListName");
+      document.getElementById(
+        "newListName"
+      );
 
 
-    /* =========================================================
+    /* =====================================================
        INITIALIZE
-    ========================================================== */
+    ===================================================== */
 
     function initialize() {
 
@@ -2191,14 +2737,16 @@
 
       updateGreeting();
 
-      selectedReminderList = null;
+      selectedReminderList =
+        null;
 
       selectedListName.textContent =
         "Seleccionar lista";
 
       setDefaultReminderDate();
 
-      notesArea.value = data.notes || "";
+      notesArea.value =
+        data.notes || "";
 
       renderCalendar();
 
@@ -2213,26 +2761,32 @@
     }
 
 
-    /* =========================================================
+    /* =====================================================
        LOCAL STORAGE
-    ========================================================== */
+    ===================================================== */
 
     function loadData() {
 
       const saved =
-        localStorage.getItem(STORAGE_KEY);
+        localStorage.getItem(
+          STORAGE_KEY
+        );
+
 
       if (!saved) {
 
         data.lists = [
+
           {
             id: createId(),
             name: "Personal"
           },
+
           {
             id: createId(),
             name: "Trabajo"
           }
+
         ];
 
         data.tasks = [];
@@ -2242,26 +2796,38 @@
         saveData();
 
         return;
+
       }
+
 
       try {
 
         const parsed =
           JSON.parse(saved);
 
-        data = {
-          lists: Array.isArray(parsed.lists)
-            ? parsed.lists
-            : [],
 
-          tasks: Array.isArray(parsed.tasks)
-            ? parsed.tasks
-            : [],
+        data = {
+
+          lists:
+            Array.isArray(
+              parsed.lists
+            )
+              ? parsed.lists
+              : [],
+
+          tasks:
+            Array.isArray(
+              parsed.tasks
+            )
+              ? parsed.tasks
+              : [],
 
           notes:
-            typeof parsed.notes === "string"
+            typeof parsed.notes ===
+            "string"
               ? parsed.notes
               : ""
+
         };
 
       } catch (error) {
@@ -2298,26 +2864,31 @@
     }
 
 
-    /* =========================================================
+    /* =====================================================
        GREETING
-    ========================================================== */
+    ===================================================== */
 
     function updateGreeting() {
 
       const hour =
         new Date().getHours();
 
+
       if (hour < 12) {
 
         greeting.textContent =
           "Buenos días";
 
-      } else if (hour < 19) {
+      }
+
+      else if (hour < 19) {
 
         greeting.textContent =
           "Buenas tardes";
 
-      } else {
+      }
+
+      else {
 
         greeting.textContent =
           "Buenas noches";
@@ -2327,13 +2898,15 @@
     }
 
 
-    /* =========================================================
+    /* =====================================================
        MENU
-    ========================================================== */
+    ===================================================== */
 
     dotsButton.addEventListener(
       "click",
-      function() {
+      function(event) {
+
+        event.stopPropagation();
 
         menuContainer.classList.add(
           "open"
@@ -2345,7 +2918,9 @@
 
     menuClose.addEventListener(
       "click",
-      function() {
+      function(event) {
+
+        event.stopPropagation();
 
         menuContainer.classList.remove(
           "open"
@@ -2356,55 +2931,110 @@
 
 
     document
-      .querySelectorAll(".menu-option")
-      .forEach(function(option) {
+      .querySelectorAll(".menu-row")
+      .forEach(
+        function(row) {
 
-        option.addEventListener(
-          "click",
-          function() {
+          row.addEventListener(
+            "click",
+            function(event) {
 
-            const menu =
-              option.dataset.menu;
+              event.stopPropagation();
 
-            menuContainer.classList.remove(
-              "open"
-            );
+              const menu =
+                row.dataset.menu;
 
-            if (menu === "lists") {
 
-              showView("listsView");
+              menuContainer.classList.remove(
+                "open"
+              );
 
-              setBottomActive("lists");
+
+              if (
+                menu === "lists"
+              ) {
+
+                renderLists();
+
+                showView(
+                  "listsView"
+                );
+
+                setBottomActive(
+                  "lists"
+                );
+
+              }
+
+
+              if (
+                menu === "notes"
+              ) {
+
+                notesArea.value =
+                  data.notes || "";
+
+                showView(
+                  "notesView"
+                );
+
+                setBottomActive(
+                  "notes"
+                );
+
+              }
+
+
+              if (
+                menu === "dashboard"
+              ) {
+
+                updateDashboard();
+
+                showView(
+                  "dashboardView"
+                );
+
+                setBottomActive(
+                  "dashboard"
+                );
+
+              }
 
             }
+          );
 
-            if (menu === "notes") {
-
-              showView("notesView");
-
-              setBottomActive("notes");
-
-            }
-
-            if (menu === "dashboard") {
-
-              updateDashboard();
-
-              showView("dashboardView");
-
-              setBottomActive("dashboard");
-
-            }
-
-          }
-        );
-
-      });
+        }
+      );
 
 
-    /* =========================================================
-       REMINDER PANEL
-    ========================================================== */
+    /* =====================================================
+       CERRAR MENÚ FUERA
+    ===================================================== */
+
+    document.addEventListener(
+      "click",
+      function(event) {
+
+        if (
+          !menuContainer.contains(
+            event.target
+          )
+        ) {
+
+          menuContainer.classList.remove(
+            "open"
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =====================================================
+       RECORDATORIO
+    ===================================================== */
 
     newReminderButton.addEventListener(
       "click",
@@ -2414,9 +3044,9 @@
           "visible"
         );
 
-        reminderTitle.focus();
-
         renderReminderLists();
+
+        reminderTitle.focus();
 
       }
     );
@@ -2438,26 +3068,34 @@
         "visible"
       );
 
+
       reminderTitle.value = "";
 
-      selectedReminderList = null;
+      selectedReminderList =
+        null;
 
       selectedListName.textContent =
         "Seleccionar lista";
+
 
       reminderListSelector.classList.remove(
         "expanded"
       );
 
-      reminderHasTime = false;
 
-      reminderHasAlarm = false;
+      reminderHasTime =
+        false;
+
+      reminderHasAlarm =
+        false;
+
 
       reminderTime.value = "";
 
       timeWrapper.classList.remove(
         "visible"
       );
+
 
       setChoice(
         timeYes,
@@ -2479,6 +3117,7 @@
         false
       );
 
+
       setDefaultReminderDate();
 
     }
@@ -2486,22 +3125,23 @@
 
     function setDefaultReminderDate() {
 
-      const today =
-        new Date();
-
       reminderDate.value =
-        formatDate(today);
+        formatDate(
+          new Date()
+        );
 
     }
 
 
-    /* =========================================================
+    /* =====================================================
        LIST SELECTOR
-    ========================================================== */
+    ===================================================== */
 
     selectedListRow.addEventListener(
       "click",
-      function() {
+      function(event) {
+
+        event.stopPropagation();
 
         reminderListSelector.classList.toggle(
           "expanded"
@@ -2515,31 +3155,41 @@
 
     function renderReminderLists() {
 
-      reminderListOptions.innerHTML = "";
+      reminderListOptions.innerHTML =
+        "";
+
 
       data.lists.forEach(
         function(list) {
 
-          const button =
-            document.createElement("div");
+          const option =
+            document.createElement(
+              "div"
+            );
 
-          button.className =
+
+          option.className =
             "list-option";
 
-          button.textContent =
+
+          option.textContent =
             list.name;
 
-          button.addEventListener(
+
+          option.addEventListener(
             "click",
             function(event) {
 
               event.stopPropagation();
 
+
               selectedReminderList =
                 list.id;
 
+
               selectedListName.textContent =
                 list.name;
+
 
               reminderListSelector.classList.remove(
                 "expanded"
@@ -2548,8 +3198,9 @@
             }
           );
 
+
           reminderListOptions.appendChild(
-            button
+            option
           );
 
         }
@@ -2558,13 +3209,15 @@
     }
 
 
-    /* =========================================================
-       CREATE LIST FROM REMINDER
-    ========================================================== */
+    /* =====================================================
+       CREAR LISTA DESDE RECORDATORIO
+    ===================================================== */
 
     createListFromReminder.addEventListener(
       "click",
-      function() {
+      function(event) {
+
+        event.stopPropagation();
 
         openListModal(
           true
@@ -2574,15 +3227,17 @@
     );
 
 
-    /* =========================================================
-       TIME CHOICE
-    ========================================================== */
+    /* =====================================================
+       HORA
+    ===================================================== */
 
     timeYes.addEventListener(
       "click",
       function() {
 
-        reminderHasTime = true;
+        reminderHasTime =
+          true;
+
 
         setChoice(
           timeYes,
@@ -2593,6 +3248,7 @@
           timeNo,
           false
         );
+
 
         timeWrapper.classList.add(
           "visible"
@@ -2606,7 +3262,9 @@
       "click",
       function() {
 
-        reminderHasTime = false;
+        reminderHasTime =
+          false;
+
 
         setChoice(
           timeYes,
@@ -2618,25 +3276,30 @@
           true
         );
 
+
         timeWrapper.classList.remove(
           "visible"
         );
 
-        reminderTime.value = "";
+
+        reminderTime.value =
+          "";
 
       }
     );
 
 
-    /* =========================================================
-       ALARM CHOICE
-    ========================================================== */
+    /* =====================================================
+       ALARMA
+    ===================================================== */
 
     alarmYes.addEventListener(
       "click",
       function() {
 
-        reminderHasAlarm = true;
+        reminderHasAlarm =
+          true;
+
 
         setChoice(
           alarmYes,
@@ -2656,7 +3319,9 @@
       "click",
       function() {
 
-        reminderHasAlarm = false;
+        reminderHasAlarm =
+          false;
+
 
         setChoice(
           alarmYes,
@@ -2683,7 +3348,9 @@
           "selected"
         );
 
-      } else {
+      }
+
+      else {
 
         button.classList.remove(
           "selected"
@@ -2694,9 +3361,9 @@
     }
 
 
-    /* =========================================================
-       SAVE REMINDER
-    ========================================================== */
+    /* =====================================================
+       GUARDAR RECORDATORIO
+    ===================================================== */
 
     saveReminder.addEventListener(
       "click",
@@ -2704,6 +3371,7 @@
 
         const title =
           reminderTitle.value.trim();
+
 
         if (!title) {
 
@@ -2788,6 +3456,7 @@
           reminder
         );
 
+
         saveData();
 
         closeReminderPanel();
@@ -2798,6 +3467,7 @@
 
         updateDashboard();
 
+
         alert(
           "Recordatorio guardado."
         );
@@ -2806,9 +3476,9 @@
     );
 
 
-    /* =========================================================
-       CALENDAR
-    ========================================================== */
+    /* =====================================================
+       CALENDARIO
+    ===================================================== */
 
     function renderCalendar() {
 
@@ -2820,6 +3490,7 @@
 
 
       const monthNames = [
+
         "Enero",
         "Febrero",
         "Marzo",
@@ -2832,6 +3503,7 @@
         "Octubre",
         "Noviembre",
         "Diciembre"
+
       ];
 
 
@@ -2839,7 +3511,8 @@
         `${monthNames[month]} ${year}`;
 
 
-      calendarDays.innerHTML = "";
+      calendarDays.innerHTML =
+        "";
 
 
       const firstDay =
@@ -2850,15 +3523,9 @@
         );
 
 
-      /*
-        JS:
-        Sunday = 0
-        Monday = 1
-        ...
-      */
-
       let startDay =
         firstDay.getDay();
+
 
       startDay =
         startDay === 0
@@ -2881,10 +3548,14 @@
       ) {
 
         const empty =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
+
 
         empty.className =
           "calendar-day empty";
+
 
         calendarDays.appendChild(
           empty
@@ -2904,10 +3575,14 @@
       ) {
 
         const cell =
-          document.createElement("button");
+          document.createElement(
+            "button"
+          );
+
 
         cell.className =
           "calendar-day";
+
 
         cell.textContent =
           day;
@@ -2922,7 +3597,9 @@
 
 
         const dateString =
-          formatDate(date);
+          formatDate(
+            date
+          );
 
 
         if (
@@ -2938,7 +3615,9 @@
 
 
         if (
-          formatDate(selectedCalendarDate) ===
+          formatDate(
+            selectedCalendarDate
+          ) ===
           dateString
         ) {
 
@@ -2978,7 +3657,9 @@
             selectedCalendarDate =
               date;
 
+
             renderCalendar();
+
 
             openDateView(
               dateString
@@ -3008,6 +3689,7 @@
             1
           );
 
+
         renderCalendar();
 
       }
@@ -3025,15 +3707,16 @@
             1
           );
 
+
         renderCalendar();
 
       }
     );
 
 
-    /* =========================================================
-       TODAY
-    ========================================================== */
+    /* =====================================================
+       HOY
+    ===================================================== */
 
     todayButton.addEventListener(
       "click",
@@ -3079,7 +3762,8 @@
       container
     ) {
 
-      container.innerHTML = "";
+      container.innerHTML =
+        "";
 
 
       const items =
@@ -3099,12 +3783,16 @@
           );
 
 
-      if (items.length === 0) {
+      if (
+        items.length === 0
+      ) {
 
         container.innerHTML = `
+
           <div class="empty-state">
             No hay elementos para este día.
           </div>
+
         `;
 
         return;
@@ -3127,9 +3815,9 @@
     }
 
 
-    /* =========================================================
-       UPCOMING
-    ========================================================== */
+    /* =====================================================
+       PRÓXIMAMENTE
+    ===================================================== */
 
     upcomingButton.addEventListener(
       "click",
@@ -3147,11 +3835,13 @@
 
     function renderUpcoming() {
 
-      upcomingItems.innerHTML = "";
+      upcomingItems.innerHTML =
+        "";
 
 
       const now =
         new Date();
+
 
       const end =
         new Date(
@@ -3193,12 +3883,16 @@
           );
 
 
-      if (items.length === 0) {
+      if (
+        items.length === 0
+      ) {
 
         upcomingItems.innerHTML = `
+
           <div class="empty-state">
             No hay pendientes para las próximas 48 horas.
           </div>
+
         `;
 
         return;
@@ -3222,9 +3916,9 @@
     }
 
 
-    /* =========================================================
+    /* =====================================================
        TASK ELEMENT
-    ========================================================== */
+    ===================================================== */
 
     function createTaskElement(
       task,
@@ -3232,13 +3926,18 @@
     ) {
 
       const item =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
+
 
       item.className =
         "task-item";
 
 
-      if (task.completed) {
+      if (
+        task.completed
+      ) {
 
         item.classList.add(
           "completed"
@@ -3248,13 +3947,18 @@
 
 
       const check =
-        document.createElement("button");
+        document.createElement(
+          "button"
+        );
+
 
       check.className =
         "task-check";
 
 
-      if (task.completed) {
+      if (
+        task.completed
+      ) {
 
         check.classList.add(
           "completed"
@@ -3270,6 +3974,7 @@
           task.completed =
             !task.completed;
 
+
           saveData();
 
           refreshEverything();
@@ -3279,24 +3984,34 @@
 
 
       const content =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
+
 
       content.className =
         "task-content";
 
 
       const title =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
+
 
       title.className =
         "task-title";
+
 
       title.textContent =
         task.title;
 
 
       const meta =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
+
 
       meta.className =
         "task-meta";
@@ -3306,7 +4021,10 @@
         data.lists.find(
           function(l) {
 
-            return l.id === task.listId;
+            return (
+              l.id ===
+              task.listId
+            );
 
           }
         );
@@ -3315,10 +4033,14 @@
       if (list) {
 
         const listMeta =
-          document.createElement("span");
+          document.createElement(
+            "span"
+          );
+
 
         listMeta.textContent =
           list.name;
+
 
         meta.appendChild(
           listMeta
@@ -3332,27 +4054,38 @@
         "reminder"
       ) {
 
-        const reminderMark =
-          document.createElement("span");
+        const mark =
+          document.createElement(
+            "span"
+          );
 
-        reminderMark.className =
+
+        mark.className =
           "reminder-mark";
 
-        reminderMark.textContent =
+
+        mark.textContent =
           "RECORDATORIO";
 
+
         meta.appendChild(
-          reminderMark
+          mark
         );
 
 
-        if (task.time) {
+        if (
+          task.time
+        ) {
 
           const time =
-            document.createElement("span");
+            document.createElement(
+              "span"
+            );
+
 
           time.textContent =
             task.time;
+
 
           meta.appendChild(
             time
@@ -3363,15 +4096,21 @@
       }
 
 
-      if (showDate) {
+      if (
+        showDate
+      ) {
 
         const date =
-          document.createElement("span");
+          document.createElement(
+            "span"
+          );
+
 
         date.textContent =
           formatReadableDate(
             task.date
           );
+
 
         meta.appendChild(
           date
@@ -3384,16 +4123,21 @@
         title
       );
 
+
       content.appendChild(
         meta
       );
 
 
       const deleteButton =
-        document.createElement("button");
+        document.createElement(
+          "button"
+        );
+
 
       deleteButton.className =
         "task-delete";
+
 
       deleteButton.textContent =
         "×";
@@ -3403,23 +4147,29 @@
         "click",
         function() {
 
-          const confirmed =
-            confirm(
+          if (
+            !confirm(
               "¿Eliminar este elemento?"
-            );
+            )
+          ) {
 
-          if (!confirmed) {
             return;
+
           }
+
 
           data.tasks =
             data.tasks.filter(
               function(t) {
 
-                return t.id !== task.id;
+                return (
+                  t.id !==
+                  task.id
+                );
 
               }
             );
+
 
           saveData();
 
@@ -3433,9 +4183,11 @@
         check
       );
 
+
       item.appendChild(
         content
       );
+
 
       item.appendChild(
         deleteButton
@@ -3447,21 +4199,26 @@
     }
 
 
-    /* =========================================================
-       LISTS
-    ========================================================== */
+    /* =====================================================
+       LISTAS
+    ===================================================== */
 
     function renderLists() {
 
-      listsContainer.innerHTML = "";
+      listsContainer.innerHTML =
+        "";
 
 
-      if (data.lists.length === 0) {
+      if (
+        data.lists.length === 0
+      ) {
 
         listsContainer.innerHTML = `
+
           <div class="empty-state">
             Todavía no tienes listas.
           </div>
+
         `;
 
         return;
@@ -3473,24 +4230,34 @@
         function(list) {
 
           const card =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
+
 
           card.className =
             "list-card";
 
 
           const name =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
+
 
           name.className =
             "list-card-name";
+
 
           name.textContent =
             list.name;
 
 
           const count =
-            document.createElement("div");
+            document.createElement(
+              "div"
+            );
+
 
           count.className =
             "list-card-count";
@@ -3517,6 +4284,7 @@
           card.appendChild(
             name
           );
+
 
           card.appendChild(
             count
@@ -3545,9 +4313,9 @@
     }
 
 
-    /* =========================================================
-       LIST DETAIL
-    ========================================================== */
+    /* =====================================================
+       DETALLE LISTA
+    ===================================================== */
 
     function openListDetail(
       listId
@@ -3561,14 +4329,19 @@
         data.lists.find(
           function(item) {
 
-            return item.id === listId;
+            return (
+              item.id ===
+              listId
+            );
 
           }
         );
 
 
       if (!list) {
+
         return;
+
       }
 
 
@@ -3592,7 +4365,8 @@
       listId
     ) {
 
-      listDetailItems.innerHTML = "";
+      listDetailItems.innerHTML =
+        "";
 
 
       const items =
@@ -3626,12 +4400,16 @@
         `${pending} pendiente${pending === 1 ? "" : "s"}`;
 
 
-      if (items.length === 0) {
+      if (
+        items.length === 0
+      ) {
 
         listDetailItems.innerHTML = `
+
           <div class="empty-state">
             Esta lista está vacía.
           </div>
+
         `;
 
         return;
@@ -3672,19 +4450,21 @@
       );
 
 
-    /* =========================================================
-       CREATE LIST
-    ========================================================== */
+    /* =====================================================
+       CREAR LISTA
+    ===================================================== */
 
     const newListButton =
       document.getElementById(
         "newListButton"
       );
 
+
     const cancelListModal =
       document.getElementById(
         "cancelListModal"
       );
+
 
     const saveNewList =
       document.getElementById(
@@ -3712,9 +4492,13 @@
         "visible"
       );
 
-      newListName.value = "";
+
+      newListName.value =
+        "";
+
 
       newListName.focus();
+
 
       listModal.dataset.fromReminder =
         fromReminder
@@ -3790,6 +4574,7 @@
           newList
         );
 
+
         saveData();
 
 
@@ -3805,10 +4590,13 @@
         renderReminderLists();
 
 
-        if (fromReminder) {
+        if (
+          fromReminder
+        ) {
 
           selectedReminderList =
             newList.id;
+
 
           selectedListName.textContent =
             newList.name;
@@ -3828,38 +4616,39 @@
         "visible"
       );
 
-      newListName.value = "";
+      newListName.value =
+        "";
 
     }
 
 
-    /* =========================================================
-       NOTES
-    ========================================================== */
+    /* =====================================================
+       NOTAS
+    ===================================================== */
 
-    const quickNotesButton =
-      document.getElementById(
+    document
+      .getElementById(
         "quickNotesButton"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          notesArea.value =
+            data.notes || "";
+
+
+          showView(
+            "notesView"
+          );
+
+
+          setBottomActive(
+            "notes"
+          );
+
+        }
       );
-
-
-    quickNotesButton.addEventListener(
-      "click",
-      function() {
-
-        notesArea.value =
-          data.notes || "";
-
-        showView(
-          "notesView"
-        );
-
-        setBottomActive(
-          "notes"
-        );
-
-      }
-    );
 
 
     document
@@ -3873,7 +4662,9 @@
           data.notes =
             notesArea.value;
 
+
           saveData();
+
 
           alert(
             "Notas guardadas."
@@ -3883,9 +4674,9 @@
       );
 
 
-    /* =========================================================
+    /* =====================================================
        DASHBOARD
-    ========================================================== */
+    ===================================================== */
 
     function updateDashboard() {
 
@@ -3894,7 +4685,8 @@
           function(task) {
 
             return (
-              task.type === "todo" &&
+              task.type ===
+              "todo" &&
               !task.completed
             );
 
@@ -3913,7 +4705,8 @@
           function(task) {
 
             return (
-              task.date === today &&
+              task.date ===
+              today &&
               !task.completed
             );
 
@@ -3928,11 +4721,14 @@
       dashboardPending.textContent =
         pending;
 
+
       dashboardToday.textContent =
         todayCount;
 
+
       dashboardOverdue.textContent =
         overdue;
+
 
       dashboardLists.textContent =
         data.lists.length;
@@ -3940,10 +4736,10 @@
     }
 
 
-    /* =========================================================
+    /* =====================================================
        OVERDUE
-       SOLO CUENTA TO-DO
-    ========================================================== */
+       SOLO TO-DO
+    ===================================================== */
 
     function getOverdueTasks() {
 
@@ -3955,7 +4751,8 @@
         function(task) {
 
           if (
-            task.type !== "todo"
+            task.type !==
+            "todo"
           ) {
 
             return false;
@@ -3999,18 +4796,23 @@
         getOverdueTasks().length;
 
 
-      if (count > 0) {
+      if (
+        count > 0
+      ) {
 
         overdueBadge.textContent =
           count > 99
             ? "99+"
             : count;
 
+
         overdueBadge.classList.add(
           "visible"
         );
 
-      } else {
+      }
+
+      else {
 
         overdueBadge.classList.remove(
           "visible"
@@ -4021,9 +4823,9 @@
     }
 
 
-    /* =========================================================
+    /* =====================================================
        VIEWS
-    ========================================================== */
+    ===================================================== */
 
     function hideAllViews() {
 
@@ -4039,6 +4841,7 @@
           }
         );
 
+
       document
         .getElementById(
           "homeView"
@@ -4053,6 +4856,7 @@
 
       hideAllViews();
 
+
       document
         .getElementById(
           "homeView"
@@ -4060,9 +4864,11 @@
         .style.display =
         "block";
 
+
       setBottomActive(
         "home"
       );
+
 
       renderCalendar();
 
@@ -4079,10 +4885,12 @@
 
       hideAllViews();
 
+
       const view =
         document.getElementById(
           id
         );
+
 
       if (view) {
 
@@ -4110,6 +4918,7 @@
               "active"
             );
 
+
             if (
               button.dataset.bottom ===
               name
@@ -4127,9 +4936,9 @@
     }
 
 
-    /* =========================================================
+    /* =====================================================
        BOTTOM NAV
-    ========================================================== */
+    ===================================================== */
 
     document
       .querySelectorAll(
@@ -4182,9 +4991,11 @@
                 notesArea.value =
                   data.notes || "";
 
+
                 showView(
                   "notesView"
                 );
+
 
                 setBottomActive(
                   "notes"
@@ -4200,9 +5011,11 @@
 
                 updateDashboard();
 
+
                 showView(
                   "dashboardView"
                 );
+
 
                 setBottomActive(
                   "dashboard"
@@ -4217,9 +5030,9 @@
       );
 
 
-    /* =========================================================
+    /* =====================================================
        BACK BUTTONS
-    ========================================================== */
+    ===================================================== */
 
     document
       .querySelectorAll(
@@ -4241,13 +5054,14 @@
       );
 
 
-    /* =========================================================
+    /* =====================================================
        REFRESH
-    ========================================================== */
+    ===================================================== */
 
     function refreshEverything() {
 
       saveData();
+
 
       renderCalendar();
 
@@ -4269,12 +5083,6 @@
       }
 
 
-      const today =
-        formatDate(
-          new Date()
-        );
-
-
       if (
         document
           .getElementById(
@@ -4286,7 +5094,9 @@
       ) {
 
         renderDateItems(
-          today,
+          formatDate(
+            new Date()
+          ),
           todayItems
         );
 
@@ -4310,9 +5120,9 @@
     }
 
 
-    /* =========================================================
-       SORT TASKS
-    ========================================================== */
+    /* =====================================================
+       SORT
+    ===================================================== */
 
     function sortTasks(
       a,
@@ -4320,14 +5130,18 @@
     ) {
 
       const dateA =
-        a.date || "9999-12-31";
+        a.date ||
+        "9999-12-31";
+
 
       const dateB =
-        b.date || "9999-12-31";
+        b.date ||
+        "9999-12-31";
 
 
       if (
-        dateA !== dateB
+        dateA !==
+        dateB
       ) {
 
         return dateA.localeCompare(
@@ -4338,10 +5152,13 @@
 
 
       const timeA =
-        a.time || "99:99";
+        a.time ||
+        "99:99";
+
 
       const timeB =
-        b.time || "99:99";
+        b.time ||
+        "99:99";
 
 
       return timeA.localeCompare(
@@ -4351,9 +5168,9 @@
     }
 
 
-    /* =========================================================
-       DATE HELPERS
-    ========================================================== */
+    /* =====================================================
+       DATE
+    ===================================================== */
 
     function formatDate(
       date
@@ -4362,6 +5179,7 @@
       const year =
         date.getFullYear();
 
+
       const month =
         String(
           date.getMonth() + 1
@@ -4369,6 +5187,7 @@
           2,
           "0"
         );
+
 
       const day =
         String(
@@ -4412,12 +5231,14 @@
       const today =
         new Date();
 
+
       today.setHours(
         0,
         0,
         0,
         0
       );
+
 
       return today;
 
@@ -4435,6 +5256,7 @@
 
 
       const days = [
+
         "Domingo",
         "Lunes",
         "Martes",
@@ -4442,10 +5264,12 @@
         "Jueves",
         "Viernes",
         "Sábado"
+
       ];
 
 
       const months = [
+
         "enero",
         "febrero",
         "marzo",
@@ -4458,72 +5282,26 @@
         "octubre",
         "noviembre",
         "diciembre"
+
       ];
 
 
-      return `
-        ${days[date.getDay()]}
-        ${date.getDate()}
-        de
-        ${months[date.getMonth()]}
-        de
-        ${date.getFullYear()}
-      `;
+      return (
+        days[date.getDay()] +
+        " " +
+        date.getDate() +
+        " de " +
+        months[date.getMonth()] +
+        " de " +
+        date.getFullYear()
+      );
 
     }
 
 
-    /* =========================================================
-       CLOSE MENU WHEN CLICKING OUTSIDE
-    ========================================================== */
-
-    document.addEventListener(
-      "click",
-      function(event) {
-
-        if (
-          !menuContainer.contains(
-            event.target
-          )
-        ) {
-
-          menuContainer.classList.remove(
-            "open"
-          );
-
-        }
-
-      }
-    );
-
-
-    /* =========================================================
-       CLOSE LIST SELECTOR OUTSIDE
-    ========================================================== */
-
-    document.addEventListener(
-      "click",
-      function(event) {
-
-        if (
-          !reminderListSelector.contains(
-            event.target
-          )
-        ) {
-
-          reminderListSelector.classList.remove(
-            "expanded"
-          );
-
-        }
-
-      }
-    );
-
-
-    /* =========================================================
+    /* =====================================================
        SERVICE WORKER
-    ========================================================== */
+    ===================================================== */
 
     if (
       "serviceWorker" in navigator
@@ -4554,9 +5332,9 @@
     }
 
 
-    /* =========================================================
+    /* =====================================================
        START
-    ========================================================== */
+    ===================================================== */
 
     initialize();
 
