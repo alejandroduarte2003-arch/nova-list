@@ -5,7 +5,7 @@
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   >
 
   <meta
@@ -30,17 +30,35 @@
 
   <style>
 
+    /* =====================================================
+       BASE
+    ===================================================== */
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
+    html {
+      width: 100%;
+      min-height: 100%;
+    }
+
     body {
+      width: 100%;
+      min-height: 100vh;
+
       background: #ffffff;
       color: #000000;
-      font-family: "Geometric Sans", "Montserrat", "Arial", sans-serif;
-      min-height: 100vh;
+
+      font-family:
+        "Geometric Sans",
+        "Montserrat",
+        "Arial",
+        sans-serif;
+
+      overflow-x: hidden;
     }
 
     button,
@@ -54,64 +72,81 @@
       background: none;
       border: none;
       cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    input {
+      max-width: 100%;
     }
 
     .app {
       width: min(100%, 920px);
       margin: 0 auto;
-      padding: 0 24px 35px;
+
+      padding:
+        0
+        clamp(16px, 4vw, 24px)
+        35px;
     }
 
 
-    /* =========================
+    /* =====================================================
        HEADER
-    ========================= */
+    ===================================================== */
 
     header {
       position: relative;
-      padding-top: 30px;
-      padding-bottom: 34px;
+
+      padding-top: clamp(24px, 5vw, 30px);
+      padding-bottom: clamp(28px, 6vw, 34px);
     }
 
     .brand {
       text-align: left;
+      padding-right: 70px;
     }
 
     .brand-name {
-      font-size: 23px;
+      font-size: clamp(20px, 5vw, 23px);
       font-weight: 600;
       letter-spacing: -0.7px;
     }
 
     .brand-subtitle {
       margin-top: 3px;
-      font-size: 11px;
+
+      font-size: clamp(10px, 2.7vw, 11px);
       letter-spacing: 0.2px;
     }
 
     .greeting {
       margin-top: 19px;
-      font-size: 13px;
+
+      font-size: clamp(12px, 3vw, 13px);
       font-weight: 500;
     }
 
 
-    /* =========================
+    /* =====================================================
        MENU 3 PUNTOS
-    ========================= */
+    ===================================================== */
 
     .menu-container {
       position: absolute;
+
       top: 31px;
-      right: 14px;
+      right: 4px;
+
       width: 170px;
       min-height: 115px;
+
       pointer-events: none;
       z-index: 20;
     }
 
     .menu-dots {
       position: absolute;
+
       top: 3px;
       right: 0;
 
@@ -126,6 +161,7 @@
     .dot {
       width: 5px;
       height: 5px;
+
       background: #000;
       border-radius: 50%;
 
@@ -133,11 +169,6 @@
         transform 0.55s cubic-bezier(.22,1,.36,1),
         opacity 0.25s ease;
     }
-
-    /*
-      Los puntos apenas se desplazan.
-      No modifican el espacio del header.
-    */
 
     .menu-container.open .dot:nth-child(1) {
       transform: translate(-55px, 35px);
@@ -153,6 +184,7 @@
 
     .menu-options {
       position: absolute;
+
       top: 0;
       right: 0;
 
@@ -164,6 +196,7 @@
 
     .menu-option {
       position: absolute;
+
       right: 0;
 
       width: 135px;
@@ -195,10 +228,13 @@
     .menu-line {
       width: 0;
       height: 1px;
+
       background: #000;
+
       flex-shrink: 0;
 
-      transition: width 0.35s ease;
+      transition:
+        width 0.35s ease;
     }
 
     .menu-text {
@@ -230,6 +266,7 @@
 
     .close-menu {
       position: absolute;
+
       top: 3px;
       right: 0;
 
@@ -238,9 +275,11 @@
 
       opacity: 0;
       pointer-events: none;
+
       z-index: 40;
 
-      transition: opacity 0.25s ease;
+      transition:
+        opacity 0.25s ease;
     }
 
     .menu-container.open .close-menu {
@@ -257,19 +296,27 @@
     }
 
 
-    /* =========================
+    /* =====================================================
        ACCESOS SUPERIORES
-    ========================= */
+    ===================================================== */
 
     .quick-actions {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: clamp(9px, 2.5vw, 14px);
+
       margin-bottom: 22px;
     }
 
     .quick-action {
-      min-height: 112px;
+      width: 100%;
+      min-width: 0;
+
+      min-height:
+        clamp(100px, 25vw, 112px);
 
       border: 1px solid #000;
       border-radius: 2px;
@@ -280,6 +327,8 @@
       justify-content: center;
 
       text-align: center;
+
+      padding: 12px 8px;
 
       transition:
         background 0.2s ease,
@@ -296,9 +345,12 @@
 
     .quick-icon {
       height: 38px;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
+      flex-shrink: 0;
     }
 
     /* Post-it */
@@ -306,14 +358,18 @@
     .post-it {
       width: 27px;
       height: 31px;
+
       border: 1.5px solid #000;
+
       position: relative;
       background: #fff;
     }
 
     .post-it::after {
       content: "";
+
       position: absolute;
+
       right: -1.5px;
       bottom: -1.5px;
 
@@ -321,12 +377,14 @@
       height: 9px;
 
       background: #fff;
+
       border-top: 1.5px solid #000;
       border-left: 1.5px solid #000;
     }
 
     .post-it::before {
       content: "";
+
       position: absolute;
 
       width: 12px;
@@ -358,6 +416,7 @@
 
     .four-star {
       position: relative;
+
       width: 16px;
       height: 16px;
     }
@@ -365,7 +424,9 @@
     .four-star::before,
     .four-star::after {
       content: "";
+
       position: absolute;
+
       left: 50%;
       top: 50%;
 
@@ -373,9 +434,15 @@
       height: 15px;
 
       background: #000;
-      border-radius: 100% 100% 100% 100%;
 
-      transform: translate(-50%, -50%);
+      border-radius:
+        100%
+        100%
+        100%
+        100%;
+
+      transform:
+        translate(-50%, -50%);
     }
 
     .four-star::after {
@@ -386,24 +453,32 @@
 
     .quick-title {
       margin-top: 8px;
-      font-size: 12px;
+
+      font-size: clamp(10px, 2.8vw, 12px);
       font-weight: 600;
+
+      line-height: 1.3;
     }
 
 
-    /* =========================
+    /* =====================================================
        FORMULARIO RECORDATORIO
-    ========================= */
+    ===================================================== */
 
     .reminder-panel {
       display: none;
 
+      width: 100%;
+
       border: 1px solid #000;
-      padding: 20px;
+
+      padding:
+        clamp(16px, 4vw, 20px);
 
       margin-bottom: 22px;
 
-      animation: panelIn 0.25s ease;
+      animation:
+        panelIn 0.25s ease;
     }
 
     .reminder-panel.open {
@@ -411,6 +486,7 @@
     }
 
     @keyframes panelIn {
+
       from {
         opacity: 0;
         transform: translateY(-5px);
@@ -420,50 +496,66 @@
         opacity: 1;
         transform: translateY(0);
       }
+
     }
 
     .panel-title {
       font-size: 15px;
       font-weight: 600;
-      margin-bottom: 18px;
+
+      margin-bottom: 21px;
     }
 
     .field {
-      margin-bottom: 17px;
+      width: 100%;
+      margin-bottom: 20px;
     }
 
     .field-label {
       display: block;
-      font-size: 11px;
-      margin-bottom: 7px;
+
+      font-size: clamp(11px, 2.8vw, 12px);
+
+      line-height: 1.4;
+
+      margin-bottom: 9px;
     }
 
     .field-input {
       width: 100%;
-      height: 39px;
+      height: 43px;
 
       border: 1px solid #000;
       border-radius: 0;
 
-      padding: 0 11px;
+      padding:
+        0
+        11px;
 
       outline: none;
+
       background: #fff;
+
+      font-size: 13px;
     }
 
     .field-input:focus {
       border-width: 1.5px;
     }
 
-    /* Selector de listas */
+
+    /* =====================================================
+       SELECTOR LISTAS
+    ===================================================== */
 
     .list-selector {
       position: relative;
+      width: 100%;
     }
 
     .list-selector-main {
       width: 100%;
-      min-height: 39px;
+      min-height: 43px;
 
       border: 1px solid #000;
 
@@ -471,12 +563,20 @@
       align-items: center;
       justify-content: space-between;
 
-      padding: 0 11px;
+      padding:
+        0
+        11px;
+
+      text-align: left;
+
+      font-size: 13px;
     }
 
     .list-arrow {
-      font-size: 16px;
-      transition: transform 0.25s ease;
+      font-size: 18px;
+
+      transition:
+        transform 0.25s ease;
     }
 
     .list-selector.open .list-arrow {
@@ -490,6 +590,8 @@
       border-top: none;
 
       background: #fff;
+
+      width: 100%;
     }
 
     .list-selector.open .list-dropdown {
@@ -497,11 +599,19 @@
     }
 
     .list-option {
-      padding: 10px 11px;
-      border-bottom: 1px solid #ddd;
-      font-size: 12px;
-      text-align: left;
       width: 100%;
+
+      min-height: 43px;
+
+      padding:
+        10px
+        11px;
+
+      border-bottom: 1px solid #ddd;
+
+      font-size: 12px;
+
+      text-align: left;
     }
 
     .list-option:last-child {
@@ -514,11 +624,17 @@
 
     .new-list-button {
       width: 100%;
-      padding: 10px 11px;
+
+      min-height: 43px;
+
+      padding:
+        10px
+        11px;
 
       border-top: 1px solid #000;
 
       font-size: 12px;
+
       text-align: left;
     }
 
@@ -526,22 +642,40 @@
       background: #f6f6f6;
     }
 
-    /* Fecha / hora */
+
+    /* =====================================================
+       FECHA Y HORA
+    ===================================================== */
 
     .date-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 16px;
+
+      width: 100%;
+    }
+
+    .date-row .field {
+      min-width: 0;
     }
 
     .toggle-row {
       display: flex;
+
       gap: 8px;
+
+      width: 100%;
     }
 
     .toggle-button {
-      min-width: 62px;
-      height: 34px;
+      flex: 1;
+
+      min-width: 0;
+
+      height: 43px;
 
       border: 1px solid #000;
 
@@ -555,29 +689,41 @@
 
     .time-field {
       display: none;
-      margin-top: 10px;
+
+      margin-top: 12px;
     }
 
     .time-field.visible {
       display: block;
     }
 
-    /* Alarma */
+
+    /* =====================================================
+       ALARMA
+    ===================================================== */
 
     .alarm-row {
       display: flex;
+
       gap: 12px;
-      margin-top: 7px;
+
+      margin-top: 4px;
+
+      min-height: 48px;
+
+      align-items: center;
     }
 
     .alarm-button {
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
 
       border: 1px solid #000;
       border-radius: 50%;
 
       font-size: 11px;
+
+      flex-shrink: 0;
     }
 
     .alarm-button.active {
@@ -585,18 +731,28 @@
       color: #fff;
     }
 
+
+    /* =====================================================
+       BOTONES PANEL
+    ===================================================== */
+
     .panel-actions {
       display: flex;
+
       justify-content: flex-end;
+
       gap: 10px;
 
-      margin-top: 22px;
+      margin-top: 25px;
     }
 
     .panel-cancel,
     .panel-save {
-      height: 36px;
-      padding: 0 17px;
+      min-height: 40px;
+
+      padding:
+        0
+        17px;
 
       border: 1px solid #000;
 
@@ -609,34 +765,51 @@
     }
 
 
-    /* =========================
+    /* =====================================================
        CALENDARIO + LISTAS
-    ========================= */
+    ===================================================== */
 
     .dashboard-top {
       display: grid;
-      grid-template-columns: 44% 1fr;
-      gap: 16px;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+
+      gap: clamp(9px, 2.5vw, 16px);
 
       margin-bottom: 22px;
+
+      width: 100%;
     }
 
     .calendar,
     .lists-panel {
+      width: 100%;
+      min-width: 0;
+
       border: 1px solid #000;
-      padding: 17px;
+
+      padding:
+        clamp(11px, 3vw, 17px);
     }
 
     .box-title {
-      font-size: 13px;
+      font-size: clamp(11px, 2.8vw, 13px);
+
       font-weight: 600;
+
       margin-bottom: 14px;
     }
 
-    /* Calendario */
+
+    /* =====================================================
+       CALENDARIO
+    ===================================================== */
 
     .calendar-header {
       display: flex;
+
       justify-content: space-between;
       align-items: center;
 
@@ -644,50 +817,79 @@
     }
 
     .calendar-month {
-      font-size: 12px;
+      font-size: clamp(10px, 2.7vw, 12px);
+
       font-weight: 600;
+
+      text-align: center;
+
+      white-space: nowrap;
     }
 
     .month-button {
       font-size: 17px;
       line-height: 1;
-      padding: 2px 5px;
+
+      padding:
+        2px 4px;
+
+      flex-shrink: 0;
     }
 
     .weekdays,
     .calendar-days {
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 3px;
+
+      grid-template-columns:
+        repeat(7, minmax(0, 1fr));
+
+      gap: clamp(1px, 0.7vw, 3px);
+
+      width: 100%;
     }
 
     .weekday {
+      min-width: 0;
+
       text-align: center;
-      font-size: 9px;
+
+      font-size:
+        clamp(7px, 2vw, 9px);
+
       margin-bottom: 4px;
     }
 
     .calendar-day {
-      height: 29px;
+      width: 100%;
+      height:
+        clamp(27px, 7vw, 31px);
 
       display: flex;
+
       align-items: center;
       justify-content: center;
 
       position: relative;
 
-      font-size: 10px;
+      font-size:
+        clamp(8px, 2.3vw, 10px);
     }
 
     .calendar-day button {
-      width: 25px;
-      height: 25px;
+      width:
+        clamp(23px, 6vw, 27px);
+
+      height:
+        clamp(23px, 6vw, 27px);
 
       display: flex;
+
       align-items: center;
       justify-content: center;
 
       border-radius: 50%;
+
+      flex-shrink: 0;
     }
 
     .calendar-day.today button {
@@ -706,26 +908,36 @@
       height: 3px;
 
       border-radius: 50%;
+
       background: #000;
 
       bottom: 1px;
     }
 
-    /* Listas */
+
+    /* =====================================================
+       LISTAS
+    ===================================================== */
 
     .lists {
       display: flex;
       flex-direction: column;
+
+      width: 100%;
     }
 
     .list-item {
-      min-height: 42px;
+      min-height:
+        clamp(38px, 10vw, 42px);
 
       border-top: 1px solid #ddd;
 
       display: flex;
+
       align-items: center;
       justify-content: space-between;
+
+      gap: 8px;
 
       cursor: pointer;
     }
@@ -735,14 +947,25 @@
     }
 
     .list-name {
-      font-size: 12px;
+      min-width: 0;
+
+      font-size:
+        clamp(10px, 2.7vw, 12px);
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .list-count {
       font-size: 10px;
+
+      flex-shrink: 0;
     }
 
     .create-list {
+      width: 100%;
+
       margin-top: 12px;
 
       border-top: 1px solid #000;
@@ -750,17 +973,19 @@
       padding-top: 12px;
 
       font-size: 11px;
+
       text-align: left;
     }
 
 
-    /* =========================
-       HOY / PROXIMAMENTE
-    ========================= */
+    /* =====================================================
+       HOY / PRÓXIMAMENTE
+    ===================================================== */
 
     .main-shortcuts {
       display: flex;
       flex-direction: column;
+
       gap: 10px;
 
       margin-bottom: 22px;
@@ -768,15 +993,20 @@
 
     .day-button {
       width: 100%;
-      min-height: 58px;
+
+      min-height:
+        clamp(54px, 14vw, 58px);
 
       border: 1px solid #000;
 
       display: flex;
+
       align-items: center;
       justify-content: space-between;
 
-      padding: 0 16px;
+      padding:
+        0
+        clamp(13px, 4vw, 16px);
 
       text-align: left;
 
@@ -795,10 +1025,14 @@
 
     .day-button-name {
       display: flex;
+
       align-items: center;
+
       gap: 8px;
 
-      font-size: 13px;
+      font-size:
+        clamp(12px, 3vw, 13px);
+
       font-weight: 600;
     }
 
@@ -806,13 +1040,17 @@
       font-size: 17px;
     }
 
-    /* Contador rojo estilo notificación */
+
+    /* =====================================================
+       BADGE
+    ===================================================== */
 
     .overdue-badge {
       min-width: 18px;
       height: 18px;
 
-      padding: 0 5px;
+      padding:
+        0 5px;
 
       background: #e00000;
       color: #fff;
@@ -820,6 +1058,7 @@
       border-radius: 50%;
 
       display: none;
+
       align-items: center;
       justify-content: center;
 
@@ -832,9 +1071,9 @@
     }
 
 
-    /* =========================
+    /* =====================================================
        VISTAS DE TAREAS
-    ========================= */
+    ===================================================== */
 
     .task-view {
       display: none;
@@ -850,39 +1089,54 @@
 
     .view-header {
       display: flex;
+
       align-items: center;
       justify-content: space-between;
+
+      gap: 15px;
 
       margin-bottom: 20px;
     }
 
     .view-title {
-      font-size: 18px;
+      font-size:
+        clamp(16px, 4.5vw, 18px);
+
       font-weight: 600;
     }
 
     .back-button {
       font-size: 12px;
+
       text-decoration: underline;
+
+      flex-shrink: 0;
     }
 
     .view-subtitle {
       font-size: 11px;
+
       margin-bottom: 15px;
     }
 
     .task-list {
       display: flex;
       flex-direction: column;
+
       gap: 8px;
     }
 
     .task-card {
+      width: 100%;
+
       border: 1px solid #000;
+
       padding: 14px;
 
       display: flex;
+
       align-items: center;
+
       gap: 12px;
     }
 
@@ -891,33 +1145,44 @@
       height: 18px;
 
       border: 1px solid #000;
+
       flex-shrink: 0;
     }
 
     .task-content {
       flex: 1;
+
+      min-width: 0;
     }
 
     .task-title {
       font-size: 12px;
+
       font-weight: 600;
+
+      word-break: break-word;
     }
 
     .task-meta {
       font-size: 10px;
+
       margin-top: 4px;
+
+      word-break: break-word;
     }
 
     .task-overdue {
       font-size: 9px;
+
       margin-top: 5px;
+
       font-weight: 600;
     }
 
 
-    /* =========================
-       VISTA DE LISTA
-    ========================= */
+    /* =====================================================
+       VISTA LISTA
+    ===================================================== */
 
     .list-detail {
       display: none;
@@ -929,15 +1194,24 @@
 
     .list-detail-header {
       display: flex;
+
       align-items: center;
       justify-content: space-between;
+
+      gap: 15px;
 
       margin-bottom: 20px;
     }
 
     .list-detail-title {
-      font-size: 18px;
+      font-size:
+        clamp(16px, 4.5vw, 18px);
+
       font-weight: 600;
+
+      min-width: 0;
+
+      word-break: break-word;
     }
 
     .list-detail-count {
@@ -945,79 +1219,236 @@
     }
 
 
-    /* =========================
+    /* =====================================================
        BOTTOM NAV
-    ========================= */
+    ===================================================== */
 
     .bottom-nav {
       border-top: 1px solid #000;
 
       margin-top: 30px;
+
       padding-top: 16px;
 
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
       gap: 5px;
     }
 
     .bottom-nav button {
-      font-size: 10px;
-      padding: 8px 0;
+      font-size:
+        clamp(9px, 2.5vw, 10px);
+
+      padding:
+        8px 0;
+
+      min-width: 0;
     }
 
 
-    /* =========================
+    /* =====================================================
        MENSAJE VACÍO
-    ========================= */
+    ===================================================== */
 
     .empty-state {
+      width: 100%;
+
       border: 1px solid #ddd;
-      padding: 30px 20px;
+
+      padding:
+        30px 20px;
 
       text-align: center;
+
       font-size: 11px;
     }
 
 
-    /* =========================
-       RESPONSIVE
-    ========================= */
+    /* =====================================================
+       RESPONSIVE — TELÉFONO
+    ===================================================== */
 
     @media (max-width: 600px) {
 
       .app {
-        padding-left: 17px;
-        padding-right: 17px;
+        width: 100%;
+
+        padding-left:
+          clamp(13px, 4vw, 17px);
+
+        padding-right:
+          clamp(13px, 4vw, 17px);
+
+        padding-bottom: 30px;
       }
+
+      /*
+        Calendario y listas permanecen siempre
+        en dos columnas iguales.
+      */
 
       .dashboard-top {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
+        grid-template-columns:
+          minmax(0, 1fr)
+          minmax(0, 1fr);
+
+        gap:
+          clamp(8px, 2.5vw, 11px);
       }
 
-      .calendar,
-      .lists-panel {
-        padding: 13px;
+      /*
+        En móvil el formulario deja de poner
+        fecha y hora lado a lado.
+      */
+
+      .date-row {
+        grid-template-columns: 1fr;
+
+        gap: 0;
       }
 
-      .quick-actions {
+      /*
+        La pregunta de hora ahora tiene
+        espacio propio.
+      */
+
+      .date-row .field {
+        margin-bottom: 21px;
+      }
+
+      /*
+        Más espacio entre la pregunta
+        y los botones Sí / No.
+      */
+
+      .toggle-row {
+        margin-top: 4px;
+
         gap: 9px;
       }
 
-      .quick-action {
-        min-height: 105px;
+      .toggle-button {
+        height: 44px;
+      }
+
+      /*
+        Alarma también tiene separación clara.
+      */
+
+      .alarm-row {
+        margin-top: 8px;
+
+        gap: 12px;
+      }
+
+      /*
+        Botones inferiores del formulario.
+      */
+
+      .panel-actions {
+        justify-content: stretch;
+
+        margin-top: 27px;
+      }
+
+      .panel-cancel,
+      .panel-save {
+        flex: 1;
+
+        min-height: 43px;
       }
 
     }
 
-    @media (max-width: 390px) {
 
-      .dashboard-top {
-        grid-template-columns: 1fr;
+    /* =====================================================
+       TELÉFONOS MUY PEQUEÑOS
+    ===================================================== */
+
+    @media (max-width: 360px) {
+
+      .app {
+        padding-left: 12px;
+        padding-right: 12px;
       }
 
-      .date-row {
-        grid-template-columns: 1fr;
+      .dashboard-top {
+        gap: 7px;
+      }
+
+      .calendar,
+      .lists-panel {
+        padding: 9px;
+      }
+
+      .box-title {
+        margin-bottom: 11px;
+      }
+
+      .calendar-header {
+        margin-bottom: 9px;
+      }
+
+      .weekday {
+        font-size: 7px;
+      }
+
+      .calendar-day {
+        height: 25px;
+      }
+
+      .calendar-day button {
+        width: 21px;
+        height: 21px;
+      }
+
+      .quick-actions {
+        gap: 7px;
+      }
+
+      .quick-action {
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+
+      .quick-title {
+        font-size: 9px;
+      }
+
+      .reminder-panel {
+        padding: 13px;
+      }
+
+    }
+
+
+    /* =====================================================
+       TABLET
+    ===================================================== */
+
+    @media (min-width: 601px) and (max-width: 900px) {
+
+      .dashboard-top {
+        grid-template-columns:
+          minmax(0, 1fr)
+          minmax(0, 1fr);
+      }
+
+    }
+
+
+    /* =====================================================
+       PANTALLAS GRANDES
+    ===================================================== */
+
+    @media (min-width: 901px) {
+
+      .app {
+        padding-left: 24px;
+        padding-right: 24px;
       }
 
     }
@@ -1246,7 +1677,7 @@
       </div>
 
 
-      <!-- FECHA -->
+      <!-- FECHA / HORA -->
 
       <div class="date-row">
 
@@ -1737,6 +2168,7 @@
       .padStart(2, "0");
 
     return `${year}-${month}-${day}`;
+
   }
 
 
@@ -1756,7 +2188,9 @@
   function formatDate(dateString) {
 
     const date =
-      new Date(dateString + "T00:00:00");
+      new Date(
+        dateString + "T00:00:00"
+      );
 
     return date.toLocaleDateString(
       "es-GT",
@@ -1871,24 +2305,46 @@
 
   function showHome() {
 
-    homeView.classList.remove("hidden");
+    homeView.classList.remove(
+      "hidden"
+    );
 
-    todayView.classList.remove("active");
-    upcomingView.classList.remove("active");
-    listDetail.classList.remove("active");
+    todayView.classList.remove(
+      "active"
+    );
+
+    upcomingView.classList.remove(
+      "active"
+    );
+
+    listDetail.classList.remove(
+      "active"
+    );
 
   }
 
 
   function showView(view) {
 
-    homeView.classList.add("hidden");
+    homeView.classList.add(
+      "hidden"
+    );
 
-    todayView.classList.remove("active");
-    upcomingView.classList.remove("active");
-    listDetail.classList.remove("active");
+    todayView.classList.remove(
+      "active"
+    );
 
-    view.classList.add("active");
+    upcomingView.classList.remove(
+      "active"
+    );
+
+    listDetail.classList.remove(
+      "active"
+    );
+
+    view.classList.add(
+      "active"
+    );
 
   }
 
@@ -2031,7 +2487,9 @@
   function createNewList() {
 
     const name =
-      prompt("Nombre de la nueva lista:");
+      prompt(
+        "Nombre de la nueva lista:"
+      );
 
     if (!name || !name.trim()) {
       return;
@@ -2056,7 +2514,7 @@
 
 
   /* =====================================================
-     SELECTOR DE LISTAS DEL RECORDATORIO
+     SELECTOR DE LISTAS
   ===================================================== */
 
   const listSelector =
@@ -2127,7 +2585,9 @@
         }
       );
 
-      listDropdown.appendChild(button);
+      listDropdown.appendChild(
+        button
+      );
 
     });
 
@@ -2169,6 +2629,7 @@
       "reminderPanel"
     );
 
+
   document
     .getElementById("newReminderButton")
     .addEventListener(
@@ -2185,12 +2646,12 @@
           )
         ) {
 
-          document
-            .getElementById(
-              "reminderDate"
-            )
-            .value =
-            getDateString( new Date() );
+          document.getElementById(
+            "reminderDate"
+          ).value =
+            getDateString(
+              new Date()
+            );
 
         }
 
@@ -2221,10 +2682,16 @@
     selectedList.textContent =
       "Seleccionar lista";
 
+    listSelector.classList.remove(
+      "open"
+    );
+
     document.getElementById(
       "reminderDate"
     ).value =
-      getDateString(new Date());
+      getDateString(
+        new Date()
+      );
 
     document.getElementById(
       "reminderTime"
@@ -2368,7 +2835,9 @@
     const hasTime =
       document
         .getElementById("timeYes")
-        .classList.contains("active");
+        .classList.contains(
+          "active"
+        );
 
     const time =
       document.getElementById(
@@ -2378,7 +2847,9 @@
     const alarm =
       document
         .getElementById("alarmYes")
-        .classList.contains("active");
+        .classList.contains(
+          "active"
+        );
 
 
     if (!title) {
@@ -2448,7 +2919,10 @@
 
       date,
 
-      time: hasTime ? time : null,
+      time:
+        hasTime
+          ? time
+          : null,
 
       alarm,
 
@@ -2490,7 +2964,9 @@
   function showToday() {
 
     const today =
-      getDateString(new Date());
+      getDateString(
+        new Date()
+      );
 
     const todayTasks =
       tasks.filter(
@@ -2503,7 +2979,6 @@
       "todaySubtitle"
     ).textContent =
       formatDate(today);
-
 
     renderTaskCards(
       document.getElementById(
@@ -2518,7 +2993,7 @@
 
 
   /* =====================================================
-     PRÓXIMAMENTE - 48 HORAS
+     PRÓXIMAMENTE
   ===================================================== */
 
   document
@@ -2537,31 +3012,41 @@
     const limit =
       new Date(
         now.getTime() +
-        (48 * 60 * 60 * 1000)
+        (
+          48 *
+          60 *
+          60 *
+          1000
+        )
       );
 
 
     const upcoming =
-      tasks.filter(task => {
+      tasks.filter(
+        task => {
 
-        if (
-          task.type !== "todo" ||
-          task.completed
-        ) {
-          return false;
-        }
+          if (
+            task.type !== "todo" ||
+            task.completed
+          ) {
 
-        const taskDate =
-          new Date(
-            task.date + "T23:59:59"
+            return false;
+
+          }
+
+          const taskDate =
+            new Date(
+              task.date +
+              "T23:59:59"
+            );
+
+          return (
+            taskDate > now &&
+            taskDate <= limit
           );
 
-        return (
-          taskDate > now &&
-          taskDate <= limit
-        );
-
-      });
+        }
+      );
 
 
     renderTaskCards(
@@ -2571,13 +3056,15 @@
       upcoming
     );
 
-    showView(upcomingView);
+    showView(
+      upcomingView
+    );
 
   }
 
 
   /* =====================================================
-     TARJETAS DE TAREAS
+     TARJETAS
   ===================================================== */
 
   function renderTaskCards(
@@ -2603,14 +3090,18 @@
     taskArray.forEach(task => {
 
       const card =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       card.className =
         "task-card";
 
 
       const today =
-        getDateString(new Date());
+        getDateString(
+          new Date()
+        );
 
 
       const overdue =
@@ -2621,7 +3112,8 @@
 
       const list =
         lists.find(
-          item => item.id === task.list
+          item =>
+            item.id === task.list
         );
 
 
@@ -2635,7 +3127,9 @@
 
         meta +=
           " · " +
-          formatDate(task.date);
+          formatDate(
+            task.date
+          );
 
       }
 
@@ -2681,7 +3175,9 @@
       `;
 
 
-      container.appendChild(card);
+      container.appendChild(
+        card
+      );
 
     });
 
@@ -2695,7 +3191,10 @@
   function updateOverdueBadge() {
 
     const today =
-      getDateString(new Date());
+      getDateString(
+        new Date()
+      );
+
 
     const overdue =
       tasks.filter(
@@ -2771,7 +3270,9 @@
 
 
   let selectedDate =
-    getDateString(new Date());
+    getDateString(
+      new Date()
+    );
 
 
   function renderCalendar() {
@@ -2797,20 +3298,26 @@
     weekdays.innerHTML = "";
 
 
-    weekdayNames.forEach(day => {
+    weekdayNames.forEach(
+      day => {
 
-      const element =
-        document.createElement("div");
+        const element =
+          document.createElement(
+            "div"
+          );
 
-      element.className =
-        "weekday";
+        element.className =
+          "weekday";
 
-      element.textContent =
-        day;
+        element.textContent =
+          day;
 
-      weekdays.appendChild(element);
+        weekdays.appendChild(
+          element
+        );
 
-    });
+      }
+    );
 
 
     const days =
@@ -2844,12 +3351,16 @@
     ) {
 
       const empty =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       empty.className =
         "calendar-day";
 
-      days.appendChild(empty);
+      days.appendChild(
+        empty
+      );
 
     }
 
@@ -2869,11 +3380,15 @@
 
 
       const dateString =
-        getDateString(date);
+        getDateString(
+          date
+        );
 
 
       const cell =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       cell.className =
         "calendar-day";
@@ -2881,7 +3396,9 @@
 
       if (
         dateString ===
-        getDateString(new Date())
+        getDateString(
+          new Date()
+        )
       ) {
 
         cell.classList.add(
@@ -2904,7 +3421,9 @@
 
 
       const button =
-        document.createElement("button");
+        document.createElement(
+          "button"
+        );
 
       button.textContent =
         day;
@@ -2923,7 +3442,9 @@
       );
 
 
-      cell.appendChild(button);
+      cell.appendChild(
+        button
+      );
 
 
       const hasTasks =
@@ -2937,7 +3458,9 @@
       if (hasTasks) {
 
         const indicator =
-          document.createElement("span");
+          document.createElement(
+            "span"
+          );
 
         indicator.className =
           "task-dot";
@@ -2949,7 +3472,9 @@
       }
 
 
-      days.appendChild(cell);
+      days.appendChild(
+        cell
+      );
 
     }
 
@@ -2995,11 +3520,26 @@
   function escapeHTML(value) {
 
     return String(value)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
+      .replaceAll(
+        "&",
+        "&amp;"
+      )
+      .replaceAll(
+        "<",
+        "&lt;"
+      )
+      .replaceAll(
+        ">",
+        "&gt;"
+      )
+      .replaceAll(
+        '"',
+        "&quot;"
+      )
+      .replaceAll(
+        "'",
+        "&#039;"
+      );
 
   }
 
