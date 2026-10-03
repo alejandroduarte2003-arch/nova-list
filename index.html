@@ -35,10 +35,6 @@
 
     <style>
 
-        /* =========================
-           BASE
-        ========================= */
-
         * {
             box-sizing: border-box;
             margin: 0;
@@ -50,7 +46,7 @@
             --black: #000000;
             --white: #ffffff;
             --gray: #777777;
-            --light-gray: #e8e8e8;
+            --border: #e8e8e8;
         }
 
 
@@ -62,8 +58,10 @@
 
 
         body {
-            background: var(--white);
-            color: var(--black);
+
+            background: #ffffff;
+
+            color: #000000;
 
             font-family:
                 "Geometric Sans",
@@ -74,12 +72,7 @@
                 Arial,
                 sans-serif;
 
-            overflow-x: hidden;
-        }
-
-
-        button {
-            font-family: inherit;
+            overflow: hidden;
         }
 
 
@@ -109,7 +102,7 @@
 
             position: absolute;
 
-            top: 42px;
+            top: 38px;
 
             left: 50%;
 
@@ -143,13 +136,9 @@
 
             font-size: 10px;
 
-            font-weight: 400;
-
-            letter-spacing: 2.8px;
+            letter-spacing: 2.7px;
 
             color: #777777;
-
-            text-transform: lowercase;
         }
 
 
@@ -161,7 +150,7 @@
 
             position: absolute;
 
-            top: 38px;
+            top: 35px;
 
             right: 35px;
 
@@ -173,7 +162,7 @@
 
             flex-direction: column;
 
-            gap: 10px;
+            gap: 9px;
         }
 
 
@@ -183,14 +172,14 @@
 
             padding: 16px 18px;
 
-            background: #ffffff;
+            border: 1px solid var(--border);
 
-            border: 1px solid #e7e7e7;
+            background: #ffffff;
 
             opacity: 0;
 
             transform:
-                translateY(-35px);
+                translateY(-30px);
 
             animation:
                 notificationIn
@@ -216,13 +205,13 @@
 
         .notification-label {
 
-            font-size: 9px;
+            font-size: 8px;
 
             letter-spacing: 2px;
 
-            color: #888888;
-
             text-transform: uppercase;
+
+            color: #888888;
 
             margin-bottom: 7px;
         }
@@ -233,14 +222,12 @@
             font-size: 13px;
 
             font-weight: 500;
-
-            letter-spacing: -.1px;
         }
 
 
         .notification-time {
 
-            margin-top: 7px;
+            margin-top: 6px;
 
             font-size: 10px;
 
@@ -251,17 +238,20 @@
         @keyframes notificationIn {
 
             from {
+
                 opacity: 0;
+
                 transform:
-                    translateY(-35px);
+                    translateY(-30px);
             }
 
             to {
+
                 opacity: 1;
+
                 transform:
                     translateY(0);
             }
-
         }
 
 
@@ -269,7 +259,7 @@
            MENÚ
         ========================= */
 
-        .menu-container {
+        .menu {
 
             position: fixed;
 
@@ -277,18 +267,18 @@
 
             left: 0;
 
+            width: 500px;
+
+            height: 250px;
+
             z-index: 50;
-
-            width: 100%;
-
-            height: 230px;
 
             pointer-events: none;
         }
 
 
         /* =========================
-           BOTÓN DE PUNTOS
+           BOTÓN
         ========================= */
 
         .menu-trigger {
@@ -299,11 +289,9 @@
 
             left: 0;
 
-            width: 65px;
+            width: 58px;
 
-            height: 65px;
-
-            padding: 0;
+            height: 58px;
 
             border: none;
 
@@ -321,7 +309,13 @@
         }
 
 
-        .dots {
+        .trigger-dots {
+
+            position: relative;
+
+            width: 22px;
+
+            height: 8px;
 
             display: flex;
 
@@ -329,16 +323,104 @@
 
             align-items: center;
 
-            justify-content: center;
-
-            gap: 5px;
+            justify-content: space-between;
 
             transition:
-                gap .35s cubic-bezier(.16,1,.3,1);
+                transform .7s cubic-bezier(.16,1,.3,1);
         }
 
 
-        .dot {
+        .trigger-dot {
+
+            width: 4px;
+
+            height: 4px;
+
+            background: #000000;
+
+            border-radius: 50%;
+
+            transition:
+                transform .7s cubic-bezier(.16,1,.3,1),
+                opacity .3s ease;
+        }
+
+
+        /* Hover */
+
+        @media (hover: hover) {
+
+            .menu-trigger:hover
+            .trigger-dots {
+
+                width: 28px;
+            }
+
+        }
+
+
+        /* =========================
+           OPCIONES
+        ========================= */
+
+        .options {
+
+            position: absolute;
+
+            top: 58px;
+
+            left: 0;
+
+            width: 450px;
+
+            height: 170px;
+        }
+
+
+        .option {
+
+            position: absolute;
+
+            left: 0;
+
+            width: 450px;
+
+            height: 45px;
+
+            pointer-events: none;
+        }
+
+
+        /*
+         * Posiciones verticales
+         */
+
+        .option:nth-child(1) {
+            top: 0;
+        }
+
+
+        .option:nth-child(2) {
+            top: 55px;
+        }
+
+
+        .option:nth-child(3) {
+            top: 110px;
+        }
+
+
+        /* =========================
+           PUNTO DE CADA OPCIÓN
+        ========================= */
+
+        .option-dot {
+
+            position: absolute;
+
+            left: 27px;
+
+            top: 50%;
 
             width: 4px;
 
@@ -348,60 +430,10 @@
 
             background: #000000;
 
-            transition:
-                transform .7s cubic-bezier(.16,1,.3,1),
-                opacity .35s ease;
-        }
-
-
-        /* =========================
-           HOVER
-        ========================= */
-
-        .menu-trigger:hover .dots {
-
-            gap: 9px;
-        }
-
-
-        /* =========================
-           OPCIONES
-        ========================= */
-
-        .menu-options {
-
-            position: absolute;
-
-            top: 65px;
-
-            left: 0;
-
-            width: 360px;
-
-            pointer-events: none;
-        }
-
-
-        .menu-option {
-
-            position: relative;
-
-            height: 48px;
-
-            width: 360px;
-
-            display: flex;
-
-            align-items: center;
-
-            padding-left: 65px;
-
-            overflow: hidden;
-
             opacity: 0;
 
             transform:
-                translateX(-25px);
+                translate(-27px, -50%);
 
             transition:
                 opacity .2s ease,
@@ -409,16 +441,15 @@
         }
 
 
-        /*
-         * La línea empieza en el punto
-         * y crece hacia la derecha.
-         */
+        /* =========================
+           LÍNEA
+        ========================= */
 
-        .menu-line {
+        .option-line {
 
             position: absolute;
 
-            left: 0;
+            left: 31px;
 
             top: 50%;
 
@@ -432,13 +463,25 @@
                 translateY(-50%);
 
             transition:
-                width .8s cubic-bezier(.16,1,.3,1);
+                width .7s cubic-bezier(.16,1,.3,1);
         }
 
 
-        .menu-text {
+        /* =========================
+           TEXTO
+        ========================= */
 
-            position: relative;
+        .option-text {
+
+            position: absolute;
+
+            left: 31px;
+
+            top: 50%;
+
+            transform:
+                translateY(-50%)
+                translateX(12px);
 
             margin-left: 15px;
 
@@ -452,131 +495,241 @@
 
             opacity: 0;
 
-            transform:
-                translateX(-10px);
-
             transition:
-                opacity .4s ease .35s,
-                transform .5s cubic-bezier(.16,1,.3,1) .35s;
+                opacity .35s ease,
+                transform .45s cubic-bezier(.16,1,.3,1);
         }
 
 
         /* =========================
-           MENÚ ABIERTO
+           ABRIR MENÚ
         ========================= */
 
-        .nova-page.menu-open
-        .menu-options {
+        .menu.open {
 
             pointer-events: auto;
         }
 
 
-        .nova-page.menu-open
-        .menu-option {
+        /*
+         * Cada punto sale del botón
+         * y baja hasta su posición.
+         */
+
+        .menu.open
+        .option {
+
+            pointer-events: auto;
+        }
+
+
+        .menu.open
+        .option-dot {
 
             opacity: 1;
 
             transform:
-                translateX(0);
+                translate(0, -50%);
         }
 
 
-        .nova-page.menu-open
-        .menu-option:nth-child(1) {
+        /*
+         * El primer punto llega primero.
+         */
+
+        .menu.open
+        .option:nth-child(1)
+        .option-dot {
 
             transition-delay: .05s;
         }
 
 
-        .nova-page.menu-open
-        .menu-option:nth-child(2) {
+        .menu.open
+        .option:nth-child(2)
+        .option-dot {
 
             transition-delay: .25s;
         }
 
 
-        .nova-page.menu-open
-        .menu-option:nth-child(3) {
+        .menu.open
+        .option:nth-child(3)
+        .option-dot {
 
             transition-delay: .45s;
         }
 
 
-        .nova-page.menu-open
-        .menu-option:nth-child(1)
-        .menu-line {
+        /*
+         * La línea aparece después
+         * de que el punto llega.
+         */
 
-            width: 230px;
+        .menu.open
+        .option:nth-child(1)
+        .option-line {
 
-            transition-delay: .25s;
-        }
-
-
-        .nova-page.menu-open
-        .menu-option:nth-child(2)
-        .menu-line {
-
-            width: 280px;
-
-            transition-delay: .45s;
-        }
-
-
-        .nova-page.menu-open
-        .menu-option:nth-child(3)
-        .menu-line {
-
-            width: 330px;
+            width: 210px;
 
             transition-delay: .65s;
         }
 
 
-        .nova-page.menu-open
-        .menu-text {
+        .menu.open
+        .option:nth-child(2)
+        .option-line {
+
+            width: 250px;
+
+            transition-delay: .85s;
+        }
+
+
+        .menu.open
+        .option:nth-child(3)
+        .option-line {
+
+            width: 290px;
+
+            transition-delay: 1.05s;
+        }
+
+
+        /*
+         * El texto aparece solamente
+         * cuando la línea terminó.
+         */
+
+        .menu.open
+        .option:nth-child(1)
+        .option-text {
 
             opacity: 1;
 
             transform:
+                translateY(-50%)
                 translateX(0);
+
+            transition-delay: 1.35s;
+        }
+
+
+        .menu.open
+        .option:nth-child(2)
+        .option-text {
+
+            opacity: 1;
+
+            transform:
+                translateY(-50%)
+                translateX(0);
+
+            transition-delay: 1.55s;
+        }
+
+
+        .menu.open
+        .option:nth-child(3)
+        .option-text {
+
+            opacity: 1;
+
+            transform:
+                translateY(-50%)
+                translateX(0);
+
+            transition-delay: 1.75s;
         }
 
 
         /* =========================
-           PUNTOS → VERTICAL
+           PUNTOS ORIGINALES
         ========================= */
 
-        .nova-page.menu-open
-        .dots {
+        .menu.open
+        .trigger-dot {
 
-            flex-direction: column;
-
-            gap: 5px;
+            opacity: 0;
         }
 
 
-        .nova-page.menu-open
-        .dot:nth-child(1) {
+        /*
+         * Los tres puntos originales
+         * salen visualmente de su lugar
+         * para dar sensación de que
+         * cada uno se convierte en
+         * una opción.
+         */
+
+        .menu.open
+        .trigger-dot:nth-child(1) {
 
             transform:
-                translateY(0);
+                translate(
+                    0,
+                    0
+                );
         }
 
 
-        .nova-page.menu-open
-        .dot:nth-child(2) {
+        .menu.open
+        .trigger-dot:nth-child(2) {
 
             transform:
-                translateY(0);
+                translate(
+                    0,
+                    0
+                );
         }
 
 
-        .nova-page.menu-open
-        .dot:nth-child(3) {
+        .menu.open
+        .trigger-dot:nth-child(3) {
 
             transform:
-                translateY(0);
+                translate(
+                    0,
+                    0
+                );
+        }
+
+
+        /* =========================
+           CERRAR
+        ========================= */
+
+        .menu:not(.open)
+        .option-dot {
+
+            opacity: 0;
+
+            transform:
+                translate(-27px, -50%);
+
+            transition-delay: 0s;
+        }
+
+
+        .menu:not(.open)
+        .option-line {
+
+            width: 0;
+
+            transition-delay: 0s;
+        }
+
+
+        .menu:not(.open)
+        .option-text {
+
+            opacity: 0;
+
+            transform:
+                translateY(-50%)
+                translateX(12px);
+
+            transition-delay: 0s;
         }
 
 
@@ -588,7 +741,7 @@
 
             .header {
 
-                top: 32px;
+                top: 30px;
             }
 
 
@@ -610,7 +763,7 @@
 
             .notification-panel {
 
-                top: 105px;
+                top: 100px;
 
                 right: 15px;
 
@@ -630,56 +783,45 @@
             }
 
 
-            .menu-options {
+            .menu {
 
-                width: 300px;
+                width: 350px;
             }
 
 
-            .menu-option {
+            .options {
 
-                width: 300px;
+                width: 330px;
             }
 
 
-            .menu-option:nth-child(1)
-            .menu-line {
+            .option {
 
-                width: 190px;
+                width: 330px;
             }
 
 
-            .menu-option:nth-child(2)
-            .menu-line {
+            .menu.open
+            .option:nth-child(1)
+            .option-line {
 
-                width: 235px;
+                width: 150px;
             }
 
 
-            .menu-option:nth-child(3)
-            .menu-line {
+            .menu.open
+            .option:nth-child(2)
+            .option-line {
 
-                width: 280px;
+                width: 185px;
             }
 
-        }
 
+            .menu.open
+            .option:nth-child(3)
+            .option-line {
 
-        /* =========================
-           ANIMACIONES REDUCIDAS
-        ========================= */
-
-        @media (prefers-reduced-motion: reduce) {
-
-            *,
-            *::before,
-            *::after {
-
-                animation-duration: .01ms !important;
-
-                animation-iteration-count: 1 !important;
-
-                transition-duration: .01ms !important;
+                width: 220px;
             }
 
         }
@@ -692,10 +834,7 @@
 <body>
 
 
-<div
-    class="nova-page"
-    id="novaPage"
->
+<div class="nova-page">
 
 
     <!-- =========================
@@ -719,9 +858,7 @@
          NOTIFICACIONES
     ========================== -->
 
-    <aside
-        class="notification-panel"
-    >
+    <aside class="notification-panel">
 
         <div class="notification">
 
@@ -780,8 +917,13 @@
          MENÚ
     ========================== -->
 
-    <div class="menu-container">
+    <div
+        class="menu"
+        id="menu"
+    >
 
+
+        <!-- BOTÓN -->
 
         <button
             class="menu-trigger"
@@ -790,52 +932,57 @@
             aria-expanded="false"
         >
 
-            <span class="dots">
+            <span class="trigger-dots">
 
-                <span class="dot"></span>
+                <span class="trigger-dot"></span>
 
-                <span class="dot"></span>
+                <span class="trigger-dot"></span>
 
-                <span class="dot"></span>
+                <span class="trigger-dot"></span>
 
             </span>
 
         </button>
 
 
-        <nav
-            class="menu-options"
-            id="menuOptions"
-        >
+        <!-- OPCIONES -->
+
+        <nav class="options">
 
 
-            <div class="menu-option">
+            <div class="option">
 
-                <span class="menu-line"></span>
+                <span class="option-dot"></span>
 
-                <span class="menu-text">
+                <span class="option-line"></span>
+
+                <span class="option-text">
                     Listas
                 </span>
 
             </div>
 
 
-            <div class="menu-option">
+            <div class="option">
 
-                <span class="menu-line"></span>
+                <span class="option-dot"></span>
 
-                <span class="menu-text">
+                <span class="option-line"></span>
+
+                <span class="option-text">
                     Notas
                 </span>
 
             </div>
 
 
-            <div class="menu-option">
+            <div class="option">
 
-                <span class="menu-line"></span>
+                <span class="option-dot"></span>
 
-                <span class="menu-text">
+                <span class="option-line"></span>
+
+                <span class="option-text">
                     Dashboard
                 </span>
 
@@ -853,9 +1000,9 @@
 <script>
 
 
-    const novaPage =
+    const menu =
         document.getElementById(
-            "novaPage"
+            "menu"
         );
 
 
@@ -869,15 +1016,15 @@
         "click",
         function() {
 
-            const opened =
-                novaPage.classList.toggle(
-                    "menu-open"
+            const isOpen =
+                menu.classList.toggle(
+                    "open"
                 );
 
 
             menuTrigger.setAttribute(
                 "aria-expanded",
-                opened
+                isOpen
             );
 
         }
