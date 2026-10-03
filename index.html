@@ -17,7 +17,7 @@
 
     <meta
         name="description"
-        content="Nova List - una APP de Incorova"
+        content="Nova-List - una APP de Incorova"
     >
 
     <link
@@ -50,6 +50,7 @@
             --black: #000000;
             --white: #ffffff;
             --gray: #777777;
+            --light-gray: #e8e8e8;
         }
 
 
@@ -64,14 +65,6 @@
             background: var(--white);
             color: var(--black);
 
-            /*
-             * GEOMETRIC SANS
-             *
-             * Si la fuente está instalada en el dispositivo,
-             * se utilizará directamente.
-             *
-             * Si no, se utiliza una alternativa geométrica.
-             */
             font-family:
                 "Geometric Sans",
                 "Century Gothic",
@@ -91,13 +84,15 @@
 
 
         /* =========================
-           CONTENEDOR PRINCIPAL
+           PÁGINA
         ========================= */
 
         .nova-page {
+
             position: relative;
 
             width: 100%;
+
             min-height: 100vh;
 
             background: #ffffff;
@@ -107,96 +102,144 @@
 
 
         /* =========================
-           PANEL DE NOTIFICACIONES
+           ENCABEZADO
+        ========================= */
+
+        .header {
+
+            position: absolute;
+
+            top: 42px;
+
+            left: 50%;
+
+            transform:
+                translateX(-50%);
+
+            text-align: center;
+
+            z-index: 10;
+
+            white-space: nowrap;
+        }
+
+
+        .brand-name {
+
+            font-size:
+                clamp(34px, 5vw, 62px);
+
+            font-weight: 500;
+
+            letter-spacing: -3px;
+
+            line-height: 1;
+        }
+
+
+        .brand-subtitle {
+
+            margin-top: 10px;
+
+            font-size: 10px;
+
+            font-weight: 400;
+
+            letter-spacing: 2.8px;
+
+            color: #777777;
+
+            text-transform: lowercase;
+        }
+
+
+        /* =========================
+           NOTIFICACIONES
         ========================= */
 
         .notification-panel {
 
-            position: fixed;
+            position: absolute;
 
-            left: 0;
-            bottom: 0;
+            top: 38px;
 
-            width: 300px;
-            max-width: 80vw;
+            right: 35px;
 
-            padding: 0 0 30px 24px;
+            width: 260px;
 
             z-index: 20;
 
-            pointer-events: none;
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
         }
 
 
         .notification {
 
-            position: relative;
+            width: 100%;
 
-            width: 250px;
-
-            padding: 17px 20px;
-
-            margin-top: 10px;
+            padding: 16px 18px;
 
             background: #ffffff;
 
             border: 1px solid #e7e7e7;
 
-            border-radius: 0;
-
-            box-shadow:
-                0 8px 30px rgba(0, 0, 0, 0.05);
-
             opacity: 0;
 
             transform:
-                translateY(80px);
+                translateY(-35px);
 
             animation:
                 notificationIn
-                0.8s cubic-bezier(.16,1,.3,1)
+                .8s cubic-bezier(.16,1,.3,1)
                 forwards;
         }
 
 
         .notification:nth-child(1) {
-            animation-delay: .2s;
+            animation-delay: .15s;
         }
 
 
         .notification:nth-child(2) {
-            animation-delay: .45s;
+            animation-delay: .35s;
         }
 
 
         .notification:nth-child(3) {
-            animation-delay: .7s;
+            animation-delay: .55s;
         }
 
 
-        .notification-small {
+        .notification-label {
+
             font-size: 9px;
 
-            letter-spacing: 1.5px;
-
-            text-transform: uppercase;
+            letter-spacing: 2px;
 
             color: #888888;
+
+            text-transform: uppercase;
 
             margin-bottom: 7px;
         }
 
 
         .notification-title {
+
             font-size: 13px;
 
-            font-weight: 600;
+            font-weight: 500;
 
-            letter-spacing: -.2px;
+            letter-spacing: -.1px;
         }
 
 
         .notification-time {
+
             margin-top: 7px;
 
             font-size: 10px;
@@ -209,76 +252,58 @@
 
             from {
                 opacity: 0;
-                transform: translateY(80px);
+                transform:
+                    translateY(-35px);
             }
 
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform:
+                    translateY(0);
             }
 
         }
 
 
         /* =========================
-           IDENTIDAD CENTRAL
+           MENÚ
         ========================= */
 
-        .brand {
-
-            position: absolute;
-
-            top: 50%;
-            left: 50%;
-
-            transform:
-                translate(-50%, -50%);
-
-            text-align: center;
-
-            white-space: nowrap;
-        }
-
-
-        .brand-name {
-
-            font-size: clamp(38px, 6vw, 76px);
-
-            font-weight: 600;
-
-            letter-spacing: -3px;
-
-            line-height: .9;
-        }
-
-
-        .brand-subtitle {
-
-            margin-top: 15px;
-
-            font-size: clamp(9px, 1vw, 12px);
-
-            letter-spacing: 2.5px;
-
-            color: #777777;
-
-            text-transform: lowercase;
-        }
-
-
-        /* =========================
-           BOTÓN DE TRES PUNTOS
-        ========================= */
-
-        .menu-trigger {
+        .menu-container {
 
             position: fixed;
 
             top: 0;
+
             left: 0;
 
-            width: 58px;
-            height: 58px;
+            z-index: 50;
+
+            width: 100%;
+
+            height: 230px;
+
+            pointer-events: none;
+        }
+
+
+        /* =========================
+           BOTÓN DE PUNTOS
+        ========================= */
+
+        .menu-trigger {
+
+            position: absolute;
+
+            top: 0;
+
+            left: 0;
+
+            width: 65px;
+
+            height: 65px;
+
+            padding: 0;
 
             border: none;
 
@@ -286,14 +311,13 @@
 
             cursor: pointer;
 
-            z-index: 50;
+            pointer-events: auto;
 
             display: flex;
 
             align-items: center;
-            justify-content: center;
 
-            padding: 0;
+            justify-content: center;
         }
 
 
@@ -301,13 +325,13 @@
 
             display: flex;
 
-            flex-direction: column;
+            flex-direction: row;
 
             align-items: center;
 
             justify-content: center;
 
-            gap: 4px;
+            gap: 5px;
 
             transition:
                 gap .35s cubic-bezier(.16,1,.3,1);
@@ -316,53 +340,43 @@
 
         .dot {
 
-            width: 3px;
-            height: 3px;
+            width: 4px;
+
+            height: 4px;
 
             border-radius: 50%;
 
             background: #000000;
 
             transition:
-                transform .45s cubic-bezier(.16,1,.3,1),
-                width .45s cubic-bezier(.16,1,.3,1),
-                height .45s cubic-bezier(.16,1,.3,1);
-        }
-
-
-        /* Efecto al pasar el mouse */
-
-        .menu-trigger:hover .dots {
-
-            gap: 7px;
-        }
-
-
-        .menu-trigger:hover .dot {
-
-            width: 4px;
-            height: 4px;
+                transform .7s cubic-bezier(.16,1,.3,1),
+                opacity .35s ease;
         }
 
 
         /* =========================
-           MENÚ ABIERTO
+           HOVER
         ========================= */
 
-        .menu-panel {
+        .menu-trigger:hover .dots {
 
-            position: fixed;
+            gap: 9px;
+        }
 
-            top: 58px;
+
+        /* =========================
+           OPCIONES
+        ========================= */
+
+        .menu-options {
+
+            position: absolute;
+
+            top: 65px;
+
             left: 0;
 
-            z-index: 40;
-
-            display: flex;
-
-            flex-direction: column;
-
-            width: 240px;
+            width: 360px;
 
             pointer-events: none;
         }
@@ -374,69 +388,85 @@
 
             height: 48px;
 
+            width: 360px;
+
             display: flex;
 
             align-items: center;
 
-            padding-left: 58px;
+            padding-left: 65px;
 
-            background: #ffffff;
-
-            color: #000000;
-
-            font-size: 11px;
-
-            letter-spacing: 2px;
-
-            text-transform: uppercase;
-
-            text-decoration: none;
+            overflow: hidden;
 
             opacity: 0;
 
             transform:
-                translateY(-18px)
-                translateX(-20px);
-
-            border-bottom: 1px solid #eeeeee;
+                translateX(-25px);
 
             transition:
-                opacity .45s ease,
-                transform .6s cubic-bezier(.16,1,.3,1);
+                opacity .2s ease,
+                transform .75s cubic-bezier(.16,1,.3,1);
         }
 
 
-        .menu-option::before {
+        /*
+         * La línea empieza en el punto
+         * y crece hacia la derecha.
+         */
 
-            content: "";
+        .menu-line {
 
             position: absolute;
 
             left: 0;
-            top: 0;
+
+            top: 50%;
 
             width: 0;
+
             height: 1px;
 
             background: #000000;
 
+            transform:
+                translateY(-50%);
+
             transition:
-                width .65s cubic-bezier(.16,1,.3,1);
+                width .8s cubic-bezier(.16,1,.3,1);
         }
 
 
-        .menu-option:hover::before {
+        .menu-text {
 
-            width: 100%;
+            position: relative;
+
+            margin-left: 15px;
+
+            font-size: 10px;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+
+            white-space: nowrap;
+
+            opacity: 0;
+
+            transform:
+                translateX(-10px);
+
+            transition:
+                opacity .4s ease .35s,
+                transform .5s cubic-bezier(.16,1,.3,1) .35s;
         }
 
 
         /* =========================
-           ANIMACIÓN AL ABRIR
+           MENÚ ABIERTO
         ========================= */
 
         .nova-page.menu-open
-        .menu-panel {
+        .menu-options {
 
             pointer-events: auto;
         }
@@ -448,7 +478,6 @@
             opacity: 1;
 
             transform:
-                translateY(0)
                 translateX(0);
         }
 
@@ -463,26 +492,75 @@
         .nova-page.menu-open
         .menu-option:nth-child(2) {
 
-            transition-delay: .15s;
+            transition-delay: .25s;
         }
 
 
         .nova-page.menu-open
         .menu-option:nth-child(3) {
 
+            transition-delay: .45s;
+        }
+
+
+        .nova-page.menu-open
+        .menu-option:nth-child(1)
+        .menu-line {
+
+            width: 230px;
+
             transition-delay: .25s;
         }
 
 
+        .nova-page.menu-open
+        .menu-option:nth-child(2)
+        .menu-line {
+
+            width: 280px;
+
+            transition-delay: .45s;
+        }
+
+
+        .nova-page.menu-open
+        .menu-option:nth-child(3)
+        .menu-line {
+
+            width: 330px;
+
+            transition-delay: .65s;
+        }
+
+
+        .nova-page.menu-open
+        .menu-text {
+
+            opacity: 1;
+
+            transform:
+                translateX(0);
+        }
+
+
         /* =========================
-           MOVIMIENTO DE LOS PUNTOS
+           PUNTOS → VERTICAL
         ========================= */
+
+        .nova-page.menu-open
+        .dots {
+
+            flex-direction: column;
+
+            gap: 5px;
+        }
+
 
         .nova-page.menu-open
         .dot:nth-child(1) {
 
             transform:
-                translateY(7px);
+                translateY(0);
         }
 
 
@@ -498,29 +576,33 @@
         .dot:nth-child(3) {
 
             transform:
-                translateY(-7px);
+                translateY(0);
         }
 
 
         /* =========================
-           RESPONSIVE
+           MÓVIL
         ========================= */
 
-        @media (max-width: 600px) {
+        @media (max-width: 700px) {
+
+            .header {
+
+                top: 32px;
+            }
+
 
             .brand-name {
 
-                letter-spacing: -2px;
+                font-size: 40px;
 
-                font-size: 43px;
+                letter-spacing: -2px;
             }
 
 
             .brand-subtitle {
 
-                margin-top: 12px;
-
-                font-size: 9px;
+                font-size: 8px;
 
                 letter-spacing: 2px;
             }
@@ -528,43 +610,63 @@
 
             .notification-panel {
 
-                width: 260px;
+                top: 105px;
 
-                padding-left: 16px;
-
-                padding-bottom: 20px;
-            }
-
-
-            .notification {
-
-                width: 225px;
-
-                padding: 15px 17px;
-            }
-
-
-            .menu-panel {
+                right: 15px;
 
                 width: 210px;
             }
 
 
+            .notification {
+
+                padding: 13px 15px;
+            }
+
+
+            .notification-title {
+
+                font-size: 12px;
+            }
+
+
+            .menu-options {
+
+                width: 300px;
+            }
+
+
             .menu-option {
 
-                height: 46px;
+                width: 300px;
+            }
 
-                padding-left: 48px;
 
-                font-size: 10px;
+            .menu-option:nth-child(1)
+            .menu-line {
+
+                width: 190px;
+            }
+
+
+            .menu-option:nth-child(2)
+            .menu-line {
+
+                width: 235px;
+            }
+
+
+            .menu-option:nth-child(3)
+            .menu-line {
+
+                width: 280px;
             }
 
         }
 
 
         /* =========================
-           REDUCIR ANIMACIONES
-           SI EL DISPOSITIVO LO PIDE
+           ANIMACIONES REDUCIDAS
         ========================= */
 
         @media (prefers-reduced-motion: reduce) {
@@ -597,83 +699,20 @@
 
 
     <!-- =========================
-         BOTÓN MENÚ
+         ENCABEZADO
     ========================== -->
 
-    <button
-        class="menu-trigger"
-        id="menuTrigger"
-        aria-label="Abrir menú"
-        aria-expanded="false"
-    >
-
-        <span class="dots">
-
-            <span class="dot"></span>
-
-            <span class="dot"></span>
-
-            <span class="dot"></span>
-
-        </span>
-
-    </button>
-
-
-    <!-- =========================
-         MENÚ
-    ========================== -->
-
-    <nav
-        class="menu-panel"
-        id="menuPanel"
-    >
-
-        <a
-            href="#"
-            class="menu-option"
-            onclick="return false;"
-        >
-            Listas
-        </a>
-
-
-        <a
-            href="#"
-            class="menu-option"
-            onclick="return false;"
-        >
-            Notas
-        </a>
-
-
-        <a
-            href="#"
-            class="menu-option"
-            onclick="return false;"
-        >
-            Dashboard
-        </a>
-
-    </nav>
-
-
-    <!-- =========================
-         MARCA CENTRAL
-    ========================== -->
-
-    <main class="brand">
+    <header class="header">
 
         <h1 class="brand-name">
             Nova-List
         </h1>
 
-
         <p class="brand-subtitle">
             una APP de Incorova
         </p>
 
-    </main>
+    </header>
 
 
     <!-- =========================
@@ -682,12 +721,11 @@
 
     <aside
         class="notification-panel"
-        aria-label="Notificaciones"
     >
 
         <div class="notification">
 
-            <div class="notification-small">
+            <div class="notification-label">
                 Próximo
             </div>
 
@@ -704,7 +742,7 @@
 
         <div class="notification">
 
-            <div class="notification-small">
+            <div class="notification-label">
                 Hoy
             </div>
 
@@ -721,7 +759,7 @@
 
         <div class="notification">
 
-            <div class="notification-small">
+            <div class="notification-label">
                 Atención
             </div>
 
@@ -736,6 +774,77 @@
         </div>
 
     </aside>
+
+
+    <!-- =========================
+         MENÚ
+    ========================== -->
+
+    <div class="menu-container">
+
+
+        <button
+            class="menu-trigger"
+            id="menuTrigger"
+            aria-label="Abrir menú"
+            aria-expanded="false"
+        >
+
+            <span class="dots">
+
+                <span class="dot"></span>
+
+                <span class="dot"></span>
+
+                <span class="dot"></span>
+
+            </span>
+
+        </button>
+
+
+        <nav
+            class="menu-options"
+            id="menuOptions"
+        >
+
+
+            <div class="menu-option">
+
+                <span class="menu-line"></span>
+
+                <span class="menu-text">
+                    Listas
+                </span>
+
+            </div>
+
+
+            <div class="menu-option">
+
+                <span class="menu-line"></span>
+
+                <span class="menu-text">
+                    Notas
+                </span>
+
+            </div>
+
+
+            <div class="menu-option">
+
+                <span class="menu-line"></span>
+
+                <span class="menu-text">
+                    Dashboard
+                </span>
+
+            </div>
+
+
+        </nav>
+
+    </div>
 
 
 </div>
@@ -760,7 +869,7 @@
         "click",
         function() {
 
-            const isOpen =
+            const opened =
                 novaPage.classList.toggle(
                     "menu-open"
                 );
@@ -768,39 +877,8 @@
 
             menuTrigger.setAttribute(
                 "aria-expanded",
-                isOpen
+                opened
             );
-
-        }
-    );
-
-
-    /*
-     * Cerrar el menú al hacer clic
-     * fuera de él.
-     */
-
-    document.addEventListener(
-        "click",
-        function(event) {
-
-            if (
-                !menuTrigger.contains(event.target) &&
-                !document
-                    .getElementById("menuPanel")
-                    .contains(event.target)
-            ) {
-
-                novaPage.classList.remove(
-                    "menu-open"
-                );
-
-                menuTrigger.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-            }
 
         }
     );
