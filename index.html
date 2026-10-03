@@ -6,6 +6,7 @@
 
     <meta name="theme-color" content="#ffffff">
     <meta name="description" content="Nova List - INCOROVA">
+    <link rel="manifest" href="manifest.json">
 
     <title>Nova List</title>
 
@@ -502,6 +503,20 @@
 
     render();
 
+ if ("serviceWorker" in navigator) {
+
+        window.addEventListener("load", function() {
+
+            navigator.serviceWorker.register(
+                "service-worker.js"
+            );
+
+        });
+
+    }
+
+
+    
 </script>
 
 </body>
