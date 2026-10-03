@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#ffffff">
+    <meta name="description" content="Nova List - INCOROVA">
+
+    <title>Nova List</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #ffffff;
+            color: #111111;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 700px;
+            margin: auto;
+            padding: 25px 20px 100px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .menu {
+            width: 42px;
+            height: 42px;
+            border: 1px solid #111;
+            border-radius: 50%;
+            background: white;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .space {
+            width: 42px;
+        }
+
+        .date {
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 28px;
+        }
+
+        .add {
+            display: flex;
+            border: 1px solid #ddd;
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .add input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 16px;
+            font-size: 15px;
+        }
+
+        .add button {
+            width: 55px;
+            border: none;
+            background: #111;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 35px;
+        }
+
+        .stat {
+            border: 1px solid #e2e2e2;
+            border-radius: 14px;
+            padding: 15px;
+        }
+
+        .number {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .label {
+            color: #777;
+            font-size: 12px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .section-title h2 {
+            font-size: 18px;
+        }
+
+        .section-title span {
+            color: #777;
+            font-size: 12px;
+        }
+
+        .tasks {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .task {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            border: 1px solid #e1e1e1;
+            border-radius: 14px;
+        }
+
+        .check {
+            width: 22px;
+            height: 22px;
+            border: 1px solid #111;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .task.done .check {
+            background: #111;
+        }
+
+        .task-title {
+            flex: 1;
+            font-size: 15px;
+        }
+
+        .task.done .task-title {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .delete {
+            border: none;
+            background: none;
+            color: #999;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 35px 20px;
+            color: #888;
+            border: 1px dashed #ddd;
+            border-radius: 14px;
+        }
+
+        @media (max-width: 500px) {
+
+            .app {
+                padding: 20px 16px 80px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .stats {
+                gap: 8px;
+            }
+
+            .stat {
+                padding: 12px;
+            }
+
+            .number {
+                font-size: 21px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <header>
+
+        <button class="menu" onclick="openMenu()">
+            ⋯
+        </button>
+
+        <div class="logo">
+            NOVA LIST
+        </div>
+
+        <div class="space"></div>
+
+    </header>
+
+    <div class="date" id="date"></div>
+
+    <h1>
+        Mis pendientes
+    </h1>
+
+    <div class="add">
+
+        <input
+            id="taskInput"
+            type="text"
+            placeholder="¿Qué necesitas hacer?"
+        >
+
+        <button onclick="addTask()">
+            +
+        </button>
+
+    </div>
+
+    <div class="stats">
+
+        <div class="stat">
+            <div class="number" id="total">0</div>
+            <div class="label">Pendientes</div>
+        </div>
+
+        <div class="stat">
+            <div class="number" id="completed">0</div>
+            <div class="label">Completadas</div>
+        </div>
+
+        <div class="stat">
+            <div class="number" id="remaining">0</div>
+            <div class="label">Restantes</div>
+        </div>
+
+    </div>
+
+    <div class="section-title">
+
+        <h2>
+            Mis tareas
+        </h2>
+
+        <span id="count">
+            0 tareas
+        </span>
+
+    </div>
+
+    <div
+        class="tasks"
+        id="tasks"
+    ></div>
+
+</div>
+
+<script>
+
+    let tasks =
+        JSON.parse(
+            localStorage.getItem("novaListTasks")
+        ) || [];
+
+
+    function save() {
+
+        localStorage.setItem(
+            "novaListTasks",
+            JSON.stringify(tasks)
+        );
+
+    }
+
+
+    function addTask() {
+
+        const input =
+            document.getElementById("taskInput");
+
+        const title =
+            input.value.trim();
+
+        if (!title) return;
+
+        tasks.unshift({
+
+            id: Date.now(),
+
+            title: title,
+
+            completed: false
+
+        });
+
+        input.value = "";
+
+        save();
+
+        render();
+
+    }
+
+
+    function toggleTask(id) {
+
+        tasks = tasks.map(task => {
+
+            if (task.id === id) {
+
+                task.completed =
+                    !task.completed;
+
+            }
+
+            return task;
+
+        });
+
+        save();
+
+        render();
+
+    }
+
+
+    function deleteTask(id) {
+
+        tasks =
+            tasks.filter(
+                task => task.id !== id
+            );
+
+        save();
+
+        render();
+
+    }
+
+
+    function render() {
+
+        const container =
+            document.getElementById("tasks");
+
+        if (tasks.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    No tienes pendientes todavía.
+                </div>
+            `;
+
+        } else {
+
+            container.innerHTML =
+                tasks.map(task => `
+
+                    <div class="task ${
+                        task.completed ? "done" : ""
+                    }">
+
+                        <button
+                            class="check"
+                            onclick="toggleTask(${task.id})"
+                        ></button>
+
+                        <div class="task-title">
+                            ${escapeHTML(task.title)}
+                        </div>
+
+                        <button
+                            class="delete"
+                            onclick="deleteTask(${task.id})"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+                `).join("");
+
+        }
+
+        updateStats();
+
+    }
+
+
+    function updateStats() {
+
+        const total = tasks.length;
+
+        const completed =
+            tasks.filter(
+                task => task.completed
+            ).length;
+
+        const remaining =
+            total - completed;
+
+        document.getElementById("total")
+            .textContent = total;
+
+        document.getElementById("completed")
+            .textContent = completed;
+
+        document.getElementById("remaining")
+            .textContent = remaining;
+
+        document.getElementById("count")
+            .textContent =
+            `${total} ${
+                total === 1 ? "tarea" : "tareas"
+            }`;
+
+    }
+
+
+    function escapeHTML(text) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent = text;
+
+        return div.innerHTML;
+
+    }
+
+
+    function openMenu() {
+
+        alert(
+            "El menú de Nova List estará disponible próximamente."
+        );
+
+    }
+
+
+    document
+        .getElementById("taskInput")
+        .addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Enter") {
+
+                    addTask();
+
+                }
+
+            }
+        );
+
+
+    const today = new Date();
+
+    document.getElementById("date")
+        .textContent =
+        today.toLocaleDateString(
+            "es-ES",
+            {
+                weekday: "long",
+                day: "numeric",
+                month: "long"
+            }
+        );
+
+
+    render();
+
+</script>
+
+</body>
+</html>
