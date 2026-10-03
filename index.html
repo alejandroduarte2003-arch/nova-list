@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Nova-List</title>
 
@@ -10,6 +10,10 @@
   <link rel="apple-touch-icon" href="/nova-icon.png">
 
   <style>
+
+    /* =====================================================
+       BASE
+    ===================================================== */
 
     * {
       box-sizing: border-box;
@@ -38,26 +42,24 @@
       overflow-x: hidden;
     }
 
-
-    /* =========================
-       ENCABEZADO
-    ========================= */
-
-    .header {
-      position: fixed;
-
-      top: 28px;
-      left: 50%;
-
-      transform: translateX(-50%);
-
-      text-align: center;
-
-      z-index: 20;
-
-      white-space: nowrap;
+    button {
+      font-family: inherit;
     }
 
+
+    /* =====================================================
+       ENCABEZADO
+    ===================================================== */
+
+    .header {
+      position: relative;
+
+      width: 100%;
+
+      padding-top: 28px;
+
+      text-align: center;
+    }
 
     .brand-name {
       font-size: 24px;
@@ -67,7 +69,6 @@
       letter-spacing: 0.08em;
     }
 
-
     .brand-subtitle {
       margin-top: 5px;
 
@@ -75,60 +76,29 @@
 
       letter-spacing: 0.18em;
 
-      text-transform: lowercase;
-
       opacity: 0.55;
     }
 
-
-    /* =========================
-       SALUDO
-    ========================= */
-
     .greeting {
-      margin-top: 16px;
+      margin-top: 15px;
 
-      font-size: 13px;
-
-      font-weight: 400;
+      font-size: 12px;
 
       letter-spacing: 0.06em;
 
-      opacity: 0;
-
-      animation: greetingIn 0.8s ease forwards;
+      opacity: 0.65;
     }
 
 
-    @keyframes greetingIn {
-
-      from {
-        opacity: 0;
-        transform: translateY(5px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-    }
-
-
-    /* =========================
-       MENU
-    ========================= */
+    /* =====================================================
+       MENU SUPERIOR DERECHO
+    ===================================================== */
 
     .menu {
 
-      position: fixed;
+      position: absolute;
 
       top: 28px;
-
-      /*
-        Ahora está a la derecha
-        con espacio respecto al borde.
-      */
 
       right: 24px;
 
@@ -138,11 +108,6 @@
 
       z-index: 30;
     }
-
-
-    /* =========================
-       BOTÓN DE LOS 3 PUNTOS
-    ========================= */
 
     .menu-trigger {
 
@@ -165,7 +130,6 @@
       padding: 0;
     }
 
-
     .trigger-dots {
 
       position: absolute;
@@ -181,14 +145,13 @@
       transition: opacity 0.2s ease;
     }
 
-
     .trigger-dot {
 
       width: 5px;
 
       height: 5px;
 
-      background: #000000;
+      background: #000;
 
       border-radius: 50%;
 
@@ -198,9 +161,9 @@
     }
 
 
-    /* =========================
-       OPCIONES
-    ========================= */
+    /* =====================================================
+       OPCIONES DEL MENU
+    ===================================================== */
 
     .options {
 
@@ -217,7 +180,6 @@
       pointer-events: none;
     }
 
-
     .option {
 
       position: absolute;
@@ -233,25 +195,17 @@
       opacity: 0;
     }
 
-
     .option:nth-child(1) {
       top: 43px;
     }
-
 
     .option:nth-child(2) {
       top: 82px;
     }
 
-
     .option:nth-child(3) {
       top: 121px;
     }
-
-
-    /* =========================
-       PUNTOS
-    ========================= */
 
     .option-dot {
 
@@ -265,7 +219,7 @@
 
       border-radius: 50%;
 
-      background: #000000;
+      background: #000;
 
       opacity: 0;
 
@@ -275,11 +229,6 @@
         transform 0.7s cubic-bezier(.65,0,.35,1),
         opacity 0.25s ease;
     }
-
-
-    /* =========================
-       LÍNEAS
-    ========================= */
 
     .option-line {
 
@@ -293,18 +242,13 @@
 
       height: 1px;
 
-      background: #000000;
+      background: #000;
 
       transform: translateY(-50%);
 
       transition:
         width 0.45s cubic-bezier(.65,0,.35,1);
     }
-
-
-    /* =========================
-       TEXTO
-    ========================= */
 
     .option-text {
 
@@ -328,9 +272,9 @@
     }
 
 
-    /* =========================
-       X
-    ========================= */
+    /* =====================================================
+       BOTON X
+    ===================================================== */
 
     .close-menu {
 
@@ -357,7 +301,6 @@
       transition: opacity 0.25s ease;
     }
 
-
     .close-menu::before,
     .close-menu::after {
 
@@ -373,235 +316,536 @@
 
       height: 1px;
 
-      background: #000000;
+      background: #000;
     }
-
 
     .close-menu::before {
       transform: rotate(45deg);
     }
-
 
     .close-menu::after {
       transform: rotate(-45deg);
     }
 
 
-    /* =========================
-       MENU ABIERTO
-    ========================= */
+    /* =====================================================
+       ANIMACION MENU ABIERTO
+    ===================================================== */
 
     .menu.open .trigger-dots {
-
       opacity: 0;
-
       pointer-events: none;
     }
 
-
     .menu.open .option {
-
       opacity: 1;
     }
 
-
-    /* =========================
-       PUNTO 1
-    ========================= */
-
     .menu.open .option:nth-child(1) .option-dot {
-
       opacity: 1;
-
       transform: translateY(0);
-
       transition-delay: 0.05s;
     }
 
-
-    /* =========================
-       PUNTO 2
-    ========================= */
-
     .menu.open .option:nth-child(2) .option-dot {
-
       opacity: 1;
-
       transform: translateY(0);
-
       transition-delay: 0.28s;
     }
 
-
-    /* =========================
-       PUNTO 3
-    ========================= */
-
     .menu.open .option:nth-child(3) .option-dot {
-
       opacity: 1;
-
       transform: translateY(0);
-
       transition-delay: 0.51s;
     }
 
-
-    /* =========================
-       LÍNEAS
-    ========================= */
-
     .menu.open .option:nth-child(1) .option-line {
-
       width: 22px;
-
       transition-delay: 0.72s;
     }
 
-
     .menu.open .option:nth-child(2) .option-line {
-
       width: 22px;
-
       transition-delay: 0.95s;
     }
 
-
     .menu.open .option:nth-child(3) .option-line {
-
       width: 22px;
-
       transition-delay: 1.18s;
     }
 
-
-    /* =========================
-       TEXTO
-    ========================= */
-
     .menu.open .option:nth-child(1) .option-text {
-
       opacity: 1;
-
       transform: translateX(0);
-
       transition-delay: 1.17s;
     }
 
-
     .menu.open .option:nth-child(2) .option-text {
-
       opacity: 1;
-
       transform: translateX(0);
-
       transition-delay: 1.40s;
     }
 
-
     .menu.open .option:nth-child(3) .option-text {
-
       opacity: 1;
-
       transform: translateX(0);
-
       transition-delay: 1.63s;
     }
 
-
-    /* =========================
-       X VISIBLE
-    ========================= */
-
     .menu.open .close-menu {
-
       opacity: 1;
-
       pointer-events: auto;
-
       transition-delay: 1.75s;
     }
 
 
-    /* =========================
-       CERRANDO
-    ========================= */
+    /* =====================================================
+       ANIMACION CIERRE
+    ===================================================== */
 
     .menu.closing .option-text {
-
       opacity: 0;
-
       transform: translateX(5px);
-
       transition-delay: 0s;
     }
 
-
     .menu.closing .option-line {
-
       width: 0;
-
       transition-delay: 0.08s;
     }
 
-
     .menu.closing .option-dot {
-
       opacity: 0;
-
       transform: translateY(-40px);
-
       transition-delay: 0.25s;
     }
 
-
     .menu.closing .close-menu {
-
       opacity: 0;
-
       pointer-events: none;
     }
 
-
     .menu.closing .trigger-dots {
-
       opacity: 1;
-
       transition-delay: 0.65s;
     }
 
 
-    /* =========================
-       RESPONSIVE
-    ========================= */
+    /* =====================================================
+       CONTENIDO PRINCIPAL
+    ===================================================== */
+
+    .main {
+
+      width: min(720px, calc(100% - 40px));
+
+      margin: 55px auto 60px;
+    }
+
+
+    /* =====================================================
+       RESUMEN
+    ===================================================== */
+
+    .overview {
+
+      display: grid;
+
+      grid-template-columns: 1fr auto;
+
+      align-items: end;
+
+      gap: 20px;
+
+      padding-bottom: 24px;
+
+      border-bottom: 1px solid #000;
+    }
+
+    .overview-label {
+
+      font-size: 9px;
+
+      letter-spacing: 0.16em;
+
+      text-transform: uppercase;
+
+      opacity: 0.55;
+
+      margin-bottom: 8px;
+    }
+
+    .overview-number {
+
+      font-size: 38px;
+
+      font-weight: 400;
+
+      line-height: 1;
+    }
+
+    .overview-number span {
+
+      font-size: 10px;
+
+      letter-spacing: 0.08em;
+
+      opacity: 0.55;
+
+      margin-left: 7px;
+    }
+
+    .today-summary {
+
+      text-align: right;
+
+      font-size: 10px;
+
+      line-height: 1.7;
+
+      letter-spacing: 0.04em;
+    }
+
+
+    /* =====================================================
+       CALENDARIO
+    ===================================================== */
+
+    .calendar-section {
+
+      padding: 27px 0 25px;
+
+      border-bottom: 1px solid #ddd;
+    }
+
+    .calendar-header {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      margin-bottom: 17px;
+    }
+
+    .calendar-title {
+
+      font-size: 10px;
+
+      letter-spacing: 0.14em;
+
+      text-transform: uppercase;
+    }
+
+    .calendar-controls {
+
+      display: flex;
+
+      gap: 2px;
+    }
+
+    .calendar-controls button {
+
+      width: 28px;
+
+      height: 28px;
+
+      border: none;
+
+      background: transparent;
+
+      cursor: pointer;
+
+      font-size: 14px;
+
+      font-weight: 300;
+    }
+
+    .calendar-week {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(7, 1fr);
+
+      margin-bottom: 7px;
+    }
+
+    .weekday {
+
+      text-align: center;
+
+      font-size: 8px;
+
+      letter-spacing: 0.04em;
+
+      opacity: 0.45;
+    }
+
+    .calendar-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(7, 1fr);
+
+      gap: 4px;
+    }
+
+    .calendar-day {
+
+      position: relative;
+
+      height: 31px;
+
+      border: none;
+
+      background: transparent;
+
+      cursor: pointer;
+
+      font-size: 10px;
+
+      font-family: inherit;
+
+      color: #000;
+    }
+
+    .calendar-day:hover {
+
+      background: #f5f5f5;
+    }
+
+    .calendar-day.today {
+
+      font-weight: 700;
+    }
+
+    .calendar-day.selected {
+
+      background: #000;
+
+      color: #fff;
+    }
+
+    .calendar-day.has-task::after {
+
+      content: "";
+
+      position: absolute;
+
+      bottom: 3px;
+
+      left: 50%;
+
+      width: 3px;
+
+      height: 3px;
+
+      background: currentColor;
+
+      border-radius: 50%;
+
+      transform: translateX(-50%);
+    }
+
+    .calendar-day.empty {
+
+      cursor: default;
+    }
+
+
+    /* =====================================================
+       SECCIONES
+    ===================================================== */
+
+    .section {
+
+      padding-top: 28px;
+    }
+
+    .section-header {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+
+      font-size: 9px;
+
+      letter-spacing: 0.16em;
+
+      text-transform: uppercase;
+    }
+
+    .section-link {
+
+      border: none;
+
+      background: transparent;
+
+      cursor: pointer;
+
+      font-size: 9px;
+
+      letter-spacing: 0.05em;
+
+      color: #666;
+    }
+
+
+    /* =====================================================
+       TAREAS
+    ===================================================== */
+
+    .task {
+
+      display: grid;
+
+      grid-template-columns:
+        18px 1fr auto;
+
+      gap: 10px;
+
+      align-items: center;
+
+      padding: 13px 0;
+
+      border-bottom: 1px solid #eee;
+    }
+
+    .task-marker {
+
+      width: 7px;
+
+      height: 7px;
+
+      border: 1px solid #000;
+
+      border-radius: 50%;
+    }
+
+    .task-name {
+
+      font-size: 12px;
+
+      letter-spacing: 0.01em;
+    }
+
+    .task-date {
+
+      font-size: 8px;
+
+      letter-spacing: 0.06em;
+
+      opacity: 0.55;
+
+      white-space: nowrap;
+    }
+
+    .task.overdue .task-marker {
+
+      background: #000;
+    }
+
+    .task.overdue .task-date {
+
+      opacity: 1;
+    }
+
+    .more-tasks {
+
+      padding-top: 13px;
+
+      font-size: 9px;
+
+      letter-spacing: 0.05em;
+
+      opacity: 0.55;
+    }
+
+
+    /* =====================================================
+       NAVEGACION INFERIOR
+    ===================================================== */
+
+    .bottom-navigation {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      margin-top: 35px;
+
+      padding-top: 15px;
+
+      border-top: 1px solid #000;
+    }
+
+    .nav-button {
+
+      border: none;
+
+      background: transparent;
+
+      cursor: pointer;
+
+      padding: 9px 4px;
+
+      font-size: 8px;
+
+      letter-spacing: 0.08em;
+
+      color: #000;
+    }
+
+
+    /* =====================================================
+       MOVIL
+    ===================================================== */
 
     @media (max-width: 600px) {
 
       .header {
 
-        top: 25px;
+        padding-top: 25px;
       }
-
 
       .brand-name {
 
         font-size: 21px;
       }
 
-
-      .greeting {
-
-        margin-top: 14px;
-
-        font-size: 12px;
-      }
-
-
       .menu {
 
         top: 25px;
 
         right: 20px;
+      }
+
+      .main {
+
+        width: calc(100% - 32px);
+
+        margin-top: 48px;
+      }
+
+      .overview-number {
+
+        font-size: 32px;
+      }
+
+      .calendar-day {
+
+        height: 30px;
       }
 
     }
@@ -613,9 +857,9 @@
 <body>
 
 
-  <!-- =========================
+  <!-- =====================================================
        ENCABEZADO
-  ========================= -->
+  ===================================================== -->
 
   <header class="header">
 
@@ -631,23 +875,20 @@
       class="greeting"
       id="greeting"
     >
-      Buenos días
+      Buenas tardes
     </p>
 
   </header>
 
 
-  <!-- =========================
+  <!-- =====================================================
        MENU
-  ========================= -->
+  ===================================================== -->
 
   <div
     class="menu"
     id="menu"
   >
-
-
-    <!-- TRES PUNTOS -->
 
     <button
       class="menu-trigger"
@@ -669,8 +910,6 @@
     </button>
 
 
-    <!-- X -->
-
     <button
       class="close-menu"
       id="closeMenu"
@@ -678,12 +917,7 @@
     ></button>
 
 
-    <!-- OPCIONES -->
-
     <nav class="options">
-
-
-      <!-- LISTAS -->
 
       <div class="option">
 
@@ -698,8 +932,6 @@
       </div>
 
 
-      <!-- NOTAS -->
-
       <div class="option">
 
         <span class="option-dot"></span>
@@ -713,8 +945,6 @@
       </div>
 
 
-      <!-- DASHBOARD -->
-
       <div class="option">
 
         <span class="option-dot"></span>
@@ -727,26 +957,317 @@
 
       </div>
 
-
     </nav>
 
   </div>
 
 
-  <!-- =========================
+  <!-- =====================================================
+       CONTENIDO
+  ===================================================== -->
+
+  <main class="main">
+
+
+    <!-- RESUMEN -->
+
+    <section class="overview">
+
+      <div>
+
+        <div class="overview-label">
+          Pendientes activos
+        </div>
+
+        <div class="overview-number">
+
+          12
+
+          <span>
+            pendientes
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="today-summary">
+
+        4 para hoy<br>
+
+        2 próximos
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         CALENDARIO
+    ================================================= -->
+
+    <section class="calendar-section">
+
+      <div class="calendar-header">
+
+        <div
+          class="calendar-title"
+          id="calendarTitle"
+        >
+          Octubre 2026
+        </div>
+
+
+        <div class="calendar-controls">
+
+          <button
+            type="button"
+            id="previousMonth"
+            aria-label="Mes anterior"
+          >
+            ‹
+          </button>
+
+          <button
+            type="button"
+            id="nextMonth"
+            aria-label="Mes siguiente"
+          >
+            ›
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="calendar-week">
+
+        <div class="weekday">L</div>
+
+        <div class="weekday">M</div>
+
+        <div class="weekday">M</div>
+
+        <div class="weekday">J</div>
+
+        <div class="weekday">V</div>
+
+        <div class="weekday">S</div>
+
+        <div class="weekday">D</div>
+
+      </div>
+
+
+      <div
+        class="calendar-grid"
+        id="calendarGrid"
+      ></div>
+
+    </section>
+
+
+    <!-- =================================================
+         HOY
+    ================================================= -->
+
+    <section class="section">
+
+      <div class="section-header">
+
+        <div class="section-title">
+          Hoy
+        </div>
+
+        <button
+          class="section-link"
+          type="button"
+        >
+          ver todo
+        </button>
+
+      </div>
+
+
+      <div class="task overdue">
+
+        <span class="task-marker"></span>
+
+        <span class="task-name">
+          Enviar documentos
+        </span>
+
+        <span class="task-date">
+          VENCIDO
+        </span>
+
+      </div>
+
+
+      <div class="task">
+
+        <span class="task-marker"></span>
+
+        <span class="task-name">
+          Revisar propuesta
+        </span>
+
+        <span class="task-date">
+          16:00
+        </span>
+
+      </div>
+
+
+      <div class="task">
+
+        <span class="task-marker"></span>
+
+        <span class="task-name">
+          Comprar concentrado
+        </span>
+
+        <span class="task-date">
+          HOY
+        </span>
+
+      </div>
+
+
+      <div class="task">
+
+        <span class="task-marker"></span>
+
+        <span class="task-name">
+          Llamar a cliente
+        </span>
+
+        <span class="task-date">
+          18:30
+        </span>
+
+      </div>
+
+
+      <div class="more-tasks">
+        + 8 pendientes más
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         PROXIMAMENTE
+    ================================================= -->
+
+    <section class="section">
+
+      <div class="section-header">
+
+        <div class="section-title">
+          Próximamente
+        </div>
+
+        <button
+          class="section-link"
+          type="button"
+        >
+          ver agenda
+        </button>
+
+      </div>
+
+
+      <div class="task">
+
+        <span class="task-marker"></span>
+
+        <span class="task-name">
+          Pago mensual
+        </span>
+
+        <span class="task-date">
+          06 OCT
+        </span>
+
+      </div>
+
+
+      <div class="task">
+
+        <span class="task-marker"></span>
+
+        <span class="task-name">
+          Reunión de trabajo
+        </span>
+
+        <span class="task-date">
+          08 OCT · 09:00
+        </span>
+
+      </div>
+
+
+    </section>
+
+
+    <!-- =================================================
+         NAVEGACION
+    ================================================= -->
+
+    <nav class="bottom-navigation">
+
+      <button
+        class="nav-button"
+        type="button"
+      >
+        Listas
+      </button>
+
+      <button
+        class="nav-button"
+        type="button"
+      >
+        Notas
+      </button>
+
+      <button
+        class="nav-button"
+        type="button"
+      >
+        Agenda
+      </button>
+
+      <button
+        class="nav-button"
+        type="button"
+      >
+        Dashboard
+      </button>
+
+    </nav>
+
+
+  </main>
+
+
+  <!-- =====================================================
        JAVASCRIPT
-  ========================= -->
+  ===================================================== -->
 
   <script>
 
 
-    /* =========================
-       SALUDO SEGÚN LA HORA
-    ========================= */
+    /* =====================================================
+       SALUDO
+    ===================================================== */
 
     function actualizarSaludo() {
 
-      const hora = new Date().getHours();
+      const hora =
+        new Date().getHours();
 
       const greeting =
         document.getElementById("greeting");
@@ -754,19 +1275,22 @@
 
       if (hora >= 5 && hora < 12) {
 
-        greeting.textContent = "Buenos días";
+        greeting.textContent =
+          "Buenos días";
 
       }
 
       else if (hora >= 12 && hora < 19) {
 
-        greeting.textContent = "Buenas tardes";
+        greeting.textContent =
+          "Buenas tardes";
 
       }
 
       else {
 
-        greeting.textContent = "Buenas noches";
+        greeting.textContent =
+          "Buenas noches";
 
       }
 
@@ -776,9 +1300,9 @@
     actualizarSaludo();
 
 
-    /* =========================
+    /* =====================================================
        MENU
-    ========================= */
+    ===================================================== */
 
     const menu =
       document.getElementById("menu");
@@ -789,10 +1313,6 @@
     const closeMenu =
       document.getElementById("closeMenu");
 
-
-    /* =========================
-       ABRIR
-    ========================= */
 
     menuTrigger.addEventListener(
       "click",
@@ -811,10 +1331,6 @@
     );
 
 
-    /* =========================
-       CERRAR
-    ========================= */
-
     closeMenu.addEventListener(
       "click",
       () => {
@@ -829,19 +1345,275 @@
         );
 
 
-        setTimeout(() => {
+        setTimeout(
+          () => {
 
-          menu.classList.remove("closing");
+            menu.classList.remove("closing");
 
-        }, 900);
+          },
+          900
+        );
 
       }
     );
 
 
-    /* =========================
+    /* =====================================================
+       CALENDARIO
+    ===================================================== */
+
+    const calendarGrid =
+      document.getElementById("calendarGrid");
+
+    const calendarTitle =
+      document.getElementById("calendarTitle");
+
+    const previousMonth =
+      document.getElementById("previousMonth");
+
+    const nextMonth =
+      document.getElementById("nextMonth");
+
+
+    let calendarDate =
+      new Date();
+
+
+    /*
+      Días que actualmente tienen
+      tareas de ejemplo.
+    */
+
+    const taskDays = {
+      "2026-10-03": true,
+      "2026-10-06": true,
+      "2026-10-08": true,
+      "2026-10-13": true,
+      "2026-10-17": true
+    };
+
+
+    function renderCalendar() {
+
+      calendarGrid.innerHTML = "";
+
+
+      const year =
+        calendarDate.getFullYear();
+
+      const month =
+        calendarDate.getMonth();
+
+
+      const monthNames = [
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre"
+      ];
+
+
+      calendarTitle.textContent =
+        `${monthNames[month]} ${year}`;
+
+
+      /*
+        Primer día del mes.
+
+        JavaScript:
+        domingo = 0
+        lunes = 1
+
+        Lo convertimos para que
+        nuestra semana empiece en lunes.
+      */
+
+      const firstDay =
+        new Date(year, month, 1);
+
+      let startingDay =
+        firstDay.getDay();
+
+      startingDay =
+        startingDay === 0
+          ? 6
+          : startingDay - 1;
+
+
+      const daysInMonth =
+        new Date(
+          year,
+          month + 1,
+          0
+        ).getDate();
+
+
+      const today =
+        new Date();
+
+
+      /*
+        Espacios antes del primer día.
+      */
+
+      for (
+        let i = 0;
+        i < startingDay;
+        i++
+      ) {
+
+        const empty =
+          document.createElement("div");
+
+        empty.className =
+          "calendar-day empty";
+
+        calendarGrid.appendChild(
+          empty
+        );
+
+      }
+
+
+      /*
+        Días del mes.
+      */
+
+      for (
+        let day = 1;
+        day <= daysInMonth;
+        day++
+      ) {
+
+        const button =
+          document.createElement("button");
+
+        button.type = "button";
+
+        button.className =
+          "calendar-day";
+
+        button.textContent =
+          day;
+
+
+        const dateKey =
+          `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+
+        /*
+          Marcar días con tareas.
+        */
+
+        if (taskDays[dateKey]) {
+
+          button.classList.add(
+            "has-task"
+          );
+
+        }
+
+
+        /*
+          Marcar hoy.
+        */
+
+        if (
+          day === today.getDate() &&
+          month === today.getMonth() &&
+          year === today.getFullYear()
+        ) {
+
+          button.classList.add(
+            "today"
+          );
+
+          button.classList.add(
+            "selected"
+          );
+
+        }
+
+
+        /*
+          Seleccionar día.
+        */
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            document
+              .querySelectorAll(
+                ".calendar-day.selected"
+              )
+              .forEach(
+                item =>
+                  item.classList.remove(
+                    "selected"
+                  )
+              );
+
+
+            button.classList.add(
+              "selected"
+            );
+
+          }
+        );
+
+
+        calendarGrid.appendChild(
+          button
+        );
+
+      }
+
+    }
+
+
+    previousMonth.addEventListener(
+      "click",
+      () => {
+
+        calendarDate.setMonth(
+          calendarDate.getMonth() - 1
+        );
+
+        renderCalendar();
+
+      }
+    );
+
+
+    nextMonth.addEventListener(
+      "click",
+      () => {
+
+        calendarDate.setMonth(
+          calendarDate.getMonth() + 1
+        );
+
+        renderCalendar();
+
+      }
+    );
+
+
+    renderCalendar();
+
+
+    /* =====================================================
        SERVICE WORKER
-    ========================= */
+    ===================================================== */
 
     if ("serviceWorker" in navigator) {
 
@@ -851,14 +1623,16 @@
 
           navigator.serviceWorker
             .register("/service-worker.js")
-            .catch(error => {
+            .catch(
+              error => {
 
-              console.log(
-                "Service Worker:",
-                error
-              );
+                console.log(
+                  "Service Worker:",
+                  error
+                );
 
-            });
+              }
+            );
 
         }
       );
