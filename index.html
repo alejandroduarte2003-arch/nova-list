@@ -6,11 +6,13 @@
 
     <meta name="theme-color" content="#ffffff">
     <meta name="description" content="Nova List - INCOROVA">
+
     <link rel="manifest" href="manifest.json">
 
     <title>Nova List</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -30,6 +32,8 @@
             padding: 25px 20px 100px;
         }
 
+        /* HEADER */
+
         header {
             display: flex;
             align-items: center;
@@ -40,42 +44,54 @@
         .menu {
             width: 42px;
             height: 42px;
-            border: 1px solid #111;
+            border: 1px solid #111111;
             border-radius: 50%;
-            background: white;
+            background: #ffffff;
             font-size: 22px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-       .logo {
-    display: flex;
-    align-items: center;
-}
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.logo img {
-    height: 32px;
-    width: auto;
-    display: block;
-}
+        .logo img {
+            display: block;
+            width: auto;
+            height: 32px;
+            max-width: 180px;
+            object-fit: contain;
+        }
 
         .space {
             width: 42px;
         }
 
+        /* DATE */
+
         .date {
-            color: #777;
+            color: #777777;
             font-size: 13px;
             margin-bottom: 8px;
         }
+
+        /* TITLE */
 
         h1 {
             font-size: 32px;
             margin-bottom: 28px;
         }
 
+        /* ADD TASK */
+
         .add {
             display: flex;
-            border: 1px solid #ddd;
+            border: 1px solid #dddddd;
             border-radius: 14px;
             overflow: hidden;
             margin-bottom: 30px;
@@ -87,16 +103,19 @@
             outline: none;
             padding: 16px;
             font-size: 15px;
+            background: #ffffff;
         }
 
         .add button {
             width: 55px;
             border: none;
-            background: #111;
-            color: white;
+            background: #111111;
+            color: #ffffff;
             font-size: 24px;
             cursor: pointer;
         }
+
+        /* STATS */
 
         .stats {
             display: grid;
@@ -118,13 +137,16 @@
         }
 
         .label {
-            color: #777;
+            color: #777777;
             font-size: 12px;
         }
+
+        /* SECTION */
 
         .section-title {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-bottom: 14px;
         }
 
@@ -133,9 +155,11 @@
         }
 
         .section-title span {
-            color: #777;
+            color: #777777;
             font-size: 12px;
         }
+
+        /* TASKS */
 
         .tasks {
             display: flex;
@@ -150,20 +174,21 @@
             padding: 15px;
             border: 1px solid #e1e1e1;
             border-radius: 14px;
+            background: #ffffff;
         }
 
         .check {
             width: 22px;
             height: 22px;
-            border: 1px solid #111;
+            border: 1px solid #111111;
             border-radius: 50%;
-            background: white;
+            background: #ffffff;
             cursor: pointer;
             flex-shrink: 0;
         }
 
         .task.done .check {
-            background: #111;
+            background: #111111;
         }
 
         .task-title {
@@ -173,24 +198,28 @@
 
         .task.done .task-title {
             text-decoration: line-through;
-            color: #999;
+            color: #999999;
         }
 
         .delete {
             border: none;
             background: none;
-            color: #999;
+            color: #999999;
             font-size: 20px;
             cursor: pointer;
         }
 
+        /* EMPTY */
+
         .empty {
             text-align: center;
             padding: 35px 20px;
-            color: #888;
-            border: 1px dashed #ddd;
+            color: #888888;
+            border: 1px dashed #dddddd;
             border-radius: 14px;
         }
+
+        /* MOBILE */
 
         @media (max-width: 500px) {
 
@@ -213,7 +242,14 @@
             .number {
                 font-size: 21px;
             }
+
+            .logo img {
+                height: 28px;
+                max-width: 150px;
+            }
+
         }
+
     </style>
 </head>
 
@@ -223,23 +259,36 @@
 
     <header>
 
-        <button class="menu" onclick="openMenu()">
+        <button
+            class="menu"
+            onclick="openMenu()"
+            aria-label="Abrir menú"
+        >
             ⋯
         </button>
 
-       <div class="logo">
-    <img src="nova-logo.png" alt="Nova List">
-</div>
+        <div class="logo">
+            <img
+                src="nova-logo.png"
+                alt="Nova List"
+            >
+        </div>
 
         <div class="space"></div>
 
     </header>
 
-    <div class="date" id="date"></div>
+
+    <div
+        class="date"
+        id="date"
+    ></div>
+
 
     <h1>
         Mis pendientes
     </h1>
+
 
     <div class="add">
 
@@ -247,32 +296,70 @@
             id="taskInput"
             type="text"
             placeholder="¿Qué necesitas hacer?"
+            autocomplete="off"
         >
 
-        <button onclick="addTask()">
+        <button
+            onclick="addTask()"
+            aria-label="Agregar tarea"
+        >
             +
         </button>
 
     </div>
 
+
     <div class="stats">
 
         <div class="stat">
-            <div class="number" id="total">0</div>
-            <div class="label">Pendientes</div>
+
+            <div
+                class="number"
+                id="total"
+            >
+                0
+            </div>
+
+            <div class="label">
+                Pendientes
+            </div>
+
         </div>
 
-        <div class="stat">
-            <div class="number" id="completed">0</div>
-            <div class="label">Completadas</div>
-        </div>
 
         <div class="stat">
-            <div class="number" id="remaining">0</div>
-            <div class="label">Restantes</div>
+
+            <div
+                class="number"
+                id="completed"
+            >
+                0
+            </div>
+
+            <div class="label">
+                Completadas
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div
+                class="number"
+                id="remaining"
+            >
+                0
+            </div>
+
+            <div class="label">
+                Restantes
+            </div>
+
         </div>
 
     </div>
+
 
     <div class="section-title">
 
@@ -286,6 +373,7 @@
 
     </div>
 
+
     <div
         class="tasks"
         id="tasks"
@@ -293,13 +381,22 @@
 
 </div>
 
+
 <script>
+
+    /* =========================
+       DATOS
+    ========================= */
 
     let tasks =
         JSON.parse(
             localStorage.getItem("novaListTasks")
         ) || [];
 
+
+    /* =========================
+       GUARDAR
+    ========================= */
 
     function save() {
 
@@ -311,6 +408,10 @@
     }
 
 
+    /* =========================
+       AGREGAR TAREA
+    ========================= */
+
     function addTask() {
 
         const input =
@@ -319,7 +420,9 @@
         const title =
             input.value.trim();
 
-        if (!title) return;
+        if (!title) {
+            return;
+        }
 
         tasks.unshift({
 
@@ -339,6 +442,10 @@
 
     }
 
+
+    /* =========================
+       COMPLETAR TAREA
+    ========================= */
 
     function toggleTask(id) {
 
@@ -362,6 +469,10 @@
     }
 
 
+    /* =========================
+       ELIMINAR TAREA
+    ========================= */
+
     function deleteTask(id) {
 
         tasks =
@@ -376,10 +487,15 @@
     }
 
 
+    /* =========================
+       MOSTRAR TAREAS
+    ========================= */
+
     function render() {
 
         const container =
             document.getElementById("tasks");
+
 
         if (tasks.length === 0) {
 
@@ -395,12 +511,15 @@
                 tasks.map(task => `
 
                     <div class="task ${
-                        task.completed ? "done" : ""
+                        task.completed
+                            ? "done"
+                            : ""
                     }">
 
                         <button
                             class="check"
                             onclick="toggleTask(${task.id})"
+                            aria-label="Completar tarea"
                         ></button>
 
                         <div class="task-title">
@@ -410,6 +529,7 @@
                         <button
                             class="delete"
                             onclick="deleteTask(${task.id})"
+                            aria-label="Eliminar tarea"
                         >
                             ×
                         </button>
@@ -425,35 +545,52 @@
     }
 
 
+    /* =========================
+       ESTADÍSTICAS
+    ========================= */
+
     function updateStats() {
 
-        const total = tasks.length;
+        const total =
+            tasks.length;
+
 
         const completed =
             tasks.filter(
                 task => task.completed
             ).length;
 
+
         const remaining =
             total - completed;
+
 
         document.getElementById("total")
             .textContent = total;
 
+
         document.getElementById("completed")
             .textContent = completed;
+
 
         document.getElementById("remaining")
             .textContent = remaining;
 
+
         document.getElementById("count")
             .textContent =
             `${total} ${
-                total === 1 ? "tarea" : "tareas"
+                total === 1
+                    ? "tarea"
+                    : "tareas"
             }`;
 
     }
 
+
+    /* =========================
+       SEGURIDAD HTML
+    ========================= */
 
     function escapeHTML(text) {
 
@@ -467,6 +604,10 @@
     }
 
 
+    /* =========================
+       MENÚ
+    ========================= */
+
     function openMenu() {
 
         alert(
@@ -475,6 +616,10 @@
 
     }
 
+
+    /* =========================
+       ENTER PARA AGREGAR
+    ========================= */
 
     document
         .getElementById("taskInput")
@@ -492,7 +637,13 @@
         );
 
 
-    const today = new Date();
+    /* =========================
+       FECHA
+    ========================= */
+
+    const today =
+        new Date();
+
 
     document.getElementById("date")
         .textContent =
@@ -506,22 +657,32 @@
         );
 
 
+    /* =========================
+       INICIAR APP
+    ========================= */
+
     render();
 
- if ("serviceWorker" in navigator) {
 
-        window.addEventListener("load", function() {
+    /* =========================
+       SERVICE WORKER
+    ========================= */
 
-            navigator.serviceWorker.register(
-                "service-worker.js"
-            );
+    if ("serviceWorker" in navigator) {
 
-        });
+        window.addEventListener(
+            "load",
+            function() {
+
+                navigator.serviceWorker.register(
+                    "service-worker.js"
+                );
+
+            }
+        );
 
     }
 
-
-    
 </script>
 
 </body>
