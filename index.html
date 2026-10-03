@@ -1,21 +1,43 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="theme-color" content="#ffffff">
-    <meta name="description" content="Nova List - INCOROVA">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="manifest" href="manifest.json">
+    <meta
+        name="theme-color"
+        content="#ffffff"
+    >
 
-<link rel="apple-touch-icon" sizes="180x180" href="nova-icon.png">
-<link rel="apple-touch-icon" sizes="152x152" href="nova-icon.png">
-<link rel="apple-touch-icon" sizes="120x120" href="nova-icon.png">
+    <meta
+        name="description"
+        content="Nova List - una APP de Incorova"
+    >
 
-    <title>Nova List</title>
+    <link
+        rel="manifest"
+        href="/manifest.json"
+    >
+
+    <link
+        rel="apple-touch-icon"
+        href="/nova-icon.png"
+    >
+
+    <title>Nova-List</title>
+
 
     <style>
+
+        /* =========================
+           BASE
+        ========================= */
 
         * {
             box-sizing: border-box;
@@ -23,663 +45,782 @@
             padding: 0;
         }
 
+
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray: #777777;
+        }
+
+
+        html,
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #ffffff;
-            color: #111111;
-        }
-
-        .app {
             width: 100%;
-            max-width: 700px;
-            margin: auto;
-            padding: 25px 20px 100px;
+            min-height: 100%;
         }
 
-        /* HEADER */
 
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 40px;
+        body {
+            background: var(--white);
+            color: var(--black);
+
+            /*
+             * GEOMETRIC SANS
+             *
+             * Si la fuente está instalada en el dispositivo,
+             * se utilizará directamente.
+             *
+             * Si no, se utiliza una alternativa geométrica.
+             */
+            font-family:
+                "Geometric Sans",
+                "Century Gothic",
+                "Avenir Next",
+                Avenir,
+                Montserrat,
+                Arial,
+                sans-serif;
+
+            overflow-x: hidden;
         }
 
-        .menu {
-            width: 42px;
-            height: 42px;
-            border: 1px solid #111111;
-            border-radius: 50%;
+
+        button {
+            font-family: inherit;
+        }
+
+
+        /* =========================
+           CONTENEDOR PRINCIPAL
+        ========================= */
+
+        .nova-page {
+            position: relative;
+
+            width: 100%;
+            min-height: 100vh;
+
             background: #ffffff;
-            font-size: 22px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logo img {
-            display: block;
-            width: auto;
-            height: 32px;
-            max-width: 180px;
-            object-fit: contain;
-        }
-
-        .space {
-            width: 42px;
-        }
-
-        /* DATE */
-
-        .date {
-            color: #777777;
-            font-size: 13px;
-            margin-bottom: 8px;
-        }
-
-        /* TITLE */
-
-        h1 {
-            font-size: 32px;
-            margin-bottom: 28px;
-        }
-
-        /* ADD TASK */
-
-        .add {
-            display: flex;
-            border: 1px solid #dddddd;
-            border-radius: 14px;
             overflow: hidden;
-            margin-bottom: 30px;
         }
 
-        .add input {
-            flex: 1;
-            border: none;
-            outline: none;
-            padding: 16px;
-            font-size: 15px;
+
+        /* =========================
+           PANEL DE NOTIFICACIONES
+        ========================= */
+
+        .notification-panel {
+
+            position: fixed;
+
+            left: 0;
+            bottom: 0;
+
+            width: 300px;
+            max-width: 80vw;
+
+            padding: 0 0 30px 24px;
+
+            z-index: 20;
+
+            pointer-events: none;
+        }
+
+
+        .notification {
+
+            position: relative;
+
+            width: 250px;
+
+            padding: 17px 20px;
+
+            margin-top: 10px;
+
             background: #ffffff;
+
+            border: 1px solid #e7e7e7;
+
+            border-radius: 0;
+
+            box-shadow:
+                0 8px 30px rgba(0, 0, 0, 0.05);
+
+            opacity: 0;
+
+            transform:
+                translateY(80px);
+
+            animation:
+                notificationIn
+                0.8s cubic-bezier(.16,1,.3,1)
+                forwards;
         }
 
-        .add button {
-            width: 55px;
-            border: none;
-            background: #111111;
-            color: #ffffff;
-            font-size: 24px;
-            cursor: pointer;
+
+        .notification:nth-child(1) {
+            animation-delay: .2s;
         }
 
-        /* STATS */
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 35px;
+        .notification:nth-child(2) {
+            animation-delay: .45s;
         }
 
-        .stat {
-            border: 1px solid #e2e2e2;
-            border-radius: 14px;
-            padding: 15px;
+
+        .notification:nth-child(3) {
+            animation-delay: .7s;
         }
 
-        .number {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
 
-        .label {
-            color: #777777;
-            font-size: 12px;
-        }
+        .notification-small {
+            font-size: 9px;
 
-        /* SECTION */
+            letter-spacing: 1.5px;
 
-        .section-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 14px;
-        }
+            text-transform: uppercase;
 
-        .section-title h2 {
-            font-size: 18px;
-        }
-
-        .section-title span {
-            color: #777777;
-            font-size: 12px;
-        }
-
-        /* TASKS */
-
-        .tasks {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .task {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 15px;
-            border: 1px solid #e1e1e1;
-            border-radius: 14px;
-            background: #ffffff;
-        }
-
-        .check {
-            width: 22px;
-            height: 22px;
-            border: 1px solid #111111;
-            border-radius: 50%;
-            background: #ffffff;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-
-        .task.done .check {
-            background: #111111;
-        }
-
-        .task-title {
-            flex: 1;
-            font-size: 15px;
-        }
-
-        .task.done .task-title {
-            text-decoration: line-through;
-            color: #999999;
-        }
-
-        .delete {
-            border: none;
-            background: none;
-            color: #999999;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        /* EMPTY */
-
-        .empty {
-            text-align: center;
-            padding: 35px 20px;
             color: #888888;
-            border: 1px dashed #dddddd;
-            border-radius: 14px;
+
+            margin-bottom: 7px;
         }
 
-        /* MOBILE */
 
-        @media (max-width: 500px) {
+        .notification-title {
+            font-size: 13px;
 
-            .app {
-                padding: 20px 16px 80px;
+            font-weight: 600;
+
+            letter-spacing: -.2px;
+        }
+
+
+        .notification-time {
+            margin-top: 7px;
+
+            font-size: 10px;
+
+            color: #777777;
+        }
+
+
+        @keyframes notificationIn {
+
+            from {
+                opacity: 0;
+                transform: translateY(80px);
             }
 
-            h1 {
-                font-size: 28px;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
 
-            .stats {
-                gap: 8px;
+        }
+
+
+        /* =========================
+           IDENTIDAD CENTRAL
+        ========================= */
+
+        .brand {
+
+            position: absolute;
+
+            top: 50%;
+            left: 50%;
+
+            transform:
+                translate(-50%, -50%);
+
+            text-align: center;
+
+            white-space: nowrap;
+        }
+
+
+        .brand-name {
+
+            font-size: clamp(38px, 6vw, 76px);
+
+            font-weight: 600;
+
+            letter-spacing: -3px;
+
+            line-height: .9;
+        }
+
+
+        .brand-subtitle {
+
+            margin-top: 15px;
+
+            font-size: clamp(9px, 1vw, 12px);
+
+            letter-spacing: 2.5px;
+
+            color: #777777;
+
+            text-transform: lowercase;
+        }
+
+
+        /* =========================
+           BOTÓN DE TRES PUNTOS
+        ========================= */
+
+        .menu-trigger {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 58px;
+            height: 58px;
+
+            border: none;
+
+            background: transparent;
+
+            cursor: pointer;
+
+            z-index: 50;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 0;
+        }
+
+
+        .dots {
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 4px;
+
+            transition:
+                gap .35s cubic-bezier(.16,1,.3,1);
+        }
+
+
+        .dot {
+
+            width: 3px;
+            height: 3px;
+
+            border-radius: 50%;
+
+            background: #000000;
+
+            transition:
+                transform .45s cubic-bezier(.16,1,.3,1),
+                width .45s cubic-bezier(.16,1,.3,1),
+                height .45s cubic-bezier(.16,1,.3,1);
+        }
+
+
+        /* Efecto al pasar el mouse */
+
+        .menu-trigger:hover .dots {
+
+            gap: 7px;
+        }
+
+
+        .menu-trigger:hover .dot {
+
+            width: 4px;
+            height: 4px;
+        }
+
+
+        /* =========================
+           MENÚ ABIERTO
+        ========================= */
+
+        .menu-panel {
+
+            position: fixed;
+
+            top: 58px;
+            left: 0;
+
+            z-index: 40;
+
+            display: flex;
+
+            flex-direction: column;
+
+            width: 240px;
+
+            pointer-events: none;
+        }
+
+
+        .menu-option {
+
+            position: relative;
+
+            height: 48px;
+
+            display: flex;
+
+            align-items: center;
+
+            padding-left: 58px;
+
+            background: #ffffff;
+
+            color: #000000;
+
+            font-size: 11px;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+
+            text-decoration: none;
+
+            opacity: 0;
+
+            transform:
+                translateY(-18px)
+                translateX(-20px);
+
+            border-bottom: 1px solid #eeeeee;
+
+            transition:
+                opacity .45s ease,
+                transform .6s cubic-bezier(.16,1,.3,1);
+        }
+
+
+        .menu-option::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            top: 0;
+
+            width: 0;
+            height: 1px;
+
+            background: #000000;
+
+            transition:
+                width .65s cubic-bezier(.16,1,.3,1);
+        }
+
+
+        .menu-option:hover::before {
+
+            width: 100%;
+        }
+
+
+        /* =========================
+           ANIMACIÓN AL ABRIR
+        ========================= */
+
+        .nova-page.menu-open
+        .menu-panel {
+
+            pointer-events: auto;
+        }
+
+
+        .nova-page.menu-open
+        .menu-option {
+
+            opacity: 1;
+
+            transform:
+                translateY(0)
+                translateX(0);
+        }
+
+
+        .nova-page.menu-open
+        .menu-option:nth-child(1) {
+
+            transition-delay: .05s;
+        }
+
+
+        .nova-page.menu-open
+        .menu-option:nth-child(2) {
+
+            transition-delay: .15s;
+        }
+
+
+        .nova-page.menu-open
+        .menu-option:nth-child(3) {
+
+            transition-delay: .25s;
+        }
+
+
+        /* =========================
+           MOVIMIENTO DE LOS PUNTOS
+        ========================= */
+
+        .nova-page.menu-open
+        .dot:nth-child(1) {
+
+            transform:
+                translateY(7px);
+        }
+
+
+        .nova-page.menu-open
+        .dot:nth-child(2) {
+
+            transform:
+                translateY(0);
+        }
+
+
+        .nova-page.menu-open
+        .dot:nth-child(3) {
+
+            transform:
+                translateY(-7px);
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            .brand-name {
+
+                letter-spacing: -2px;
+
+                font-size: 43px;
             }
 
-            .stat {
-                padding: 12px;
+
+            .brand-subtitle {
+
+                margin-top: 12px;
+
+                font-size: 9px;
+
+                letter-spacing: 2px;
             }
 
-            .number {
-                font-size: 21px;
+
+            .notification-panel {
+
+                width: 260px;
+
+                padding-left: 16px;
+
+                padding-bottom: 20px;
             }
 
-            .logo img {
-                height: 28px;
-                max-width: 150px;
+
+            .notification {
+
+                width: 225px;
+
+                padding: 15px 17px;
+            }
+
+
+            .menu-panel {
+
+                width: 210px;
+            }
+
+
+            .menu-option {
+
+                height: 46px;
+
+                padding-left: 48px;
+
+                font-size: 10px;
+            }
+
+        }
+
+
+        /* =========================
+           REDUCIR ANIMACIONES
+           SI EL DISPOSITIVO LO PIDE
+        ========================= */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+
+                animation-duration: .01ms !important;
+
+                animation-iteration-count: 1 !important;
+
+                transition-duration: .01ms !important;
             }
 
         }
 
     </style>
+
 </head>
+
 
 <body>
 
-<div class="app">
 
-    <header>
-
-        <button
-            class="menu"
-            onclick="openMenu()"
-            aria-label="Abrir menú"
-        >
-            ⋯
-        </button>
-
-        <div class="logo">
-            <img
-                src="nova-logo.png"
-                alt="Nova List"
-            >
-        </div>
-
-        <div class="space"></div>
-
-    </header>
+<div
+    class="nova-page"
+    id="novaPage"
+>
 
 
-    <div
-        class="date"
-        id="date"
-    ></div>
+    <!-- =========================
+         BOTÓN MENÚ
+    ========================== -->
 
+    <button
+        class="menu-trigger"
+        id="menuTrigger"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+    >
 
-    <h1>
-        Mis pendientes
-    </h1>
+        <span class="dots">
 
+            <span class="dot"></span>
 
-    <div class="add">
+            <span class="dot"></span>
 
-        <input
-            id="taskInput"
-            type="text"
-            placeholder="¿Qué necesitas hacer?"
-            autocomplete="off"
-        >
+            <span class="dot"></span>
 
-        <button
-            onclick="addTask()"
-            aria-label="Agregar tarea"
-        >
-            +
-        </button>
-
-    </div>
-
-
-    <div class="stats">
-
-        <div class="stat">
-
-            <div
-                class="number"
-                id="total"
-            >
-                0
-            </div>
-
-            <div class="label">
-                Pendientes
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div
-                class="number"
-                id="completed"
-            >
-                0
-            </div>
-
-            <div class="label">
-                Completadas
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div
-                class="number"
-                id="remaining"
-            >
-                0
-            </div>
-
-            <div class="label">
-                Restantes
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="section-title">
-
-        <h2>
-            Mis tareas
-        </h2>
-
-        <span id="count">
-            0 tareas
         </span>
 
-    </div>
+    </button>
 
 
-    <div
-        class="tasks"
-        id="tasks"
-    ></div>
+    <!-- =========================
+         MENÚ
+    ========================== -->
+
+    <nav
+        class="menu-panel"
+        id="menuPanel"
+    >
+
+        <a
+            href="#"
+            class="menu-option"
+            onclick="return false;"
+        >
+            Listas
+        </a>
+
+
+        <a
+            href="#"
+            class="menu-option"
+            onclick="return false;"
+        >
+            Notas
+        </a>
+
+
+        <a
+            href="#"
+            class="menu-option"
+            onclick="return false;"
+        >
+            Dashboard
+        </a>
+
+    </nav>
+
+
+    <!-- =========================
+         MARCA CENTRAL
+    ========================== -->
+
+    <main class="brand">
+
+        <h1 class="brand-name">
+            Nova-List
+        </h1>
+
+
+        <p class="brand-subtitle">
+            una APP de Incorova
+        </p>
+
+    </main>
+
+
+    <!-- =========================
+         NOTIFICACIONES
+    ========================== -->
+
+    <aside
+        class="notification-panel"
+        aria-label="Notificaciones"
+    >
+
+        <div class="notification">
+
+            <div class="notification-small">
+                Próximo
+            </div>
+
+            <div class="notification-title">
+                Revisar pendiente
+            </div>
+
+            <div class="notification-time">
+                Requiere atención
+            </div>
+
+        </div>
+
+
+        <div class="notification">
+
+            <div class="notification-small">
+                Hoy
+            </div>
+
+            <div class="notification-title">
+                Tarea pendiente
+            </div>
+
+            <div class="notification-time">
+                Próxima a vencer
+            </div>
+
+        </div>
+
+
+        <div class="notification">
+
+            <div class="notification-small">
+                Atención
+            </div>
+
+            <div class="notification-title">
+                Tienes un pendiente
+            </div>
+
+            <div class="notification-time">
+                Revisar ahora
+            </div>
+
+        </div>
+
+    </aside>
+
 
 </div>
 
 
 <script>
 
-    /* =========================
-       DATOS
-    ========================= */
 
-    let tasks =
-        JSON.parse(
-            localStorage.getItem("novaListTasks")
-        ) || [];
-
-
-    /* =========================
-       GUARDAR
-    ========================= */
-
-    function save() {
-
-        localStorage.setItem(
-            "novaListTasks",
-            JSON.stringify(tasks)
+    const novaPage =
+        document.getElementById(
+            "novaPage"
         );
 
-    }
+
+    const menuTrigger =
+        document.getElementById(
+            "menuTrigger"
+        );
 
 
-    /* =========================
-       AGREGAR TAREA
-    ========================= */
+    menuTrigger.addEventListener(
+        "click",
+        function() {
 
-    function addTask() {
-
-        const input =
-            document.getElementById("taskInput");
-
-        const title =
-            input.value.trim();
-
-        if (!title) {
-            return;
-        }
-
-        tasks.unshift({
-
-            id: Date.now(),
-
-            title: title,
-
-            completed: false
-
-        });
-
-        input.value = "";
-
-        save();
-
-        render();
-
-    }
+            const isOpen =
+                novaPage.classList.toggle(
+                    "menu-open"
+                );
 
 
-    /* =========================
-       COMPLETAR TAREA
-    ========================= */
-
-    function toggleTask(id) {
-
-        tasks = tasks.map(task => {
-
-            if (task.id === id) {
-
-                task.completed =
-                    !task.completed;
-
-            }
-
-            return task;
-
-        });
-
-        save();
-
-        render();
-
-    }
-
-
-    /* =========================
-       ELIMINAR TAREA
-    ========================= */
-
-    function deleteTask(id) {
-
-        tasks =
-            tasks.filter(
-                task => task.id !== id
+            menuTrigger.setAttribute(
+                "aria-expanded",
+                isOpen
             );
 
-        save();
-
-        render();
-
-    }
+        }
+    );
 
 
-    /* =========================
-       MOSTRAR TAREAS
-    ========================= */
+    /*
+     * Cerrar el menú al hacer clic
+     * fuera de él.
+     */
 
-    function render() {
+    document.addEventListener(
+        "click",
+        function(event) {
 
-        const container =
-            document.getElementById("tasks");
+            if (
+                !menuTrigger.contains(event.target) &&
+                !document
+                    .getElementById("menuPanel")
+                    .contains(event.target)
+            ) {
 
+                novaPage.classList.remove(
+                    "menu-open"
+                );
 
-        if (tasks.length === 0) {
+                menuTrigger.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
 
-            container.innerHTML = `
-                <div class="empty">
-                    No tienes pendientes todavía.
-                </div>
-            `;
-
-        } else {
-
-            container.innerHTML =
-                tasks.map(task => `
-
-                    <div class="task ${
-                        task.completed
-                            ? "done"
-                            : ""
-                    }">
-
-                        <button
-                            class="check"
-                            onclick="toggleTask(${task.id})"
-                            aria-label="Completar tarea"
-                        ></button>
-
-                        <div class="task-title">
-                            ${escapeHTML(task.title)}
-                        </div>
-
-                        <button
-                            class="delete"
-                            onclick="deleteTask(${task.id})"
-                            aria-label="Eliminar tarea"
-                        >
-                            ×
-                        </button>
-
-                    </div>
-
-                `).join("");
+            }
 
         }
-
-        updateStats();
-
-    }
+    );
 
 
-    /* =========================
-       ESTADÍSTICAS
-    ========================= */
+    /*
+     * Service Worker
+     */
 
-    function updateStats() {
-
-        const total =
-            tasks.length;
-
-
-        const completed =
-            tasks.filter(
-                task => task.completed
-            ).length;
-
-
-        const remaining =
-            total - completed;
-
-
-        document.getElementById("total")
-            .textContent = total;
-
-
-        document.getElementById("completed")
-            .textContent = completed;
-
-
-        document.getElementById("remaining")
-            .textContent = remaining;
-
-
-        document.getElementById("count")
-            .textContent =
-            `${total} ${
-                total === 1
-                    ? "tarea"
-                    : "tareas"
-            }`;
-
-    }
-
-
-    /* =========================
-       SEGURIDAD HTML
-    ========================= */
-
-    function escapeHTML(text) {
-
-        const div =
-            document.createElement("div");
-
-        div.textContent = text;
-
-        return div.innerHTML;
-
-    }
-
-
-    /* =========================
-       MENÚ
-    ========================= */
-
-    function openMenu() {
-
-        alert(
-            "El menú de Nova List estará disponible próximamente."
-        );
-
-    }
-
-
-    /* =========================
-       ENTER PARA AGREGAR
-    ========================= */
-
-    document
-        .getElementById("taskInput")
-        .addEventListener(
-            "keydown",
-            function(event) {
-
-                if (event.key === "Enter") {
-
-                    addTask();
-
-                }
-
-            }
-        );
-
-
-    /* =========================
-       FECHA
-    ========================= */
-
-    const today =
-        new Date();
-
-
-    document.getElementById("date")
-        .textContent =
-        today.toLocaleDateString(
-            "es-ES",
-            {
-                weekday: "long",
-                day: "numeric",
-                month: "long"
-            }
-        );
-
-
-    /* =========================
-       INICIAR APP
-    ========================= */
-
-    render();
-
-
-    /* =========================
-       SERVICE WORKER
-    ========================= */
-
-    if ("serviceWorker" in navigator) {
+    if (
+        "serviceWorker"
+        in navigator
+    ) {
 
         window.addEventListener(
             "load",
             function() {
 
                 navigator.serviceWorker.register(
-                    "service-worker.js"
+                    "/service-worker.js"
                 );
 
             }
@@ -689,5 +830,7 @@
 
 </script>
 
+
 </body>
+
 </html>
