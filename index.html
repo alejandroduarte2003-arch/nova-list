@@ -38,7 +38,7 @@
     }
 
     /* =========================
-       HEADER
+       ENCABEZADO
     ========================= */
 
     .header {
@@ -67,77 +67,30 @@
 
 
     /* =========================
-       NOTIFICACIONES
-    ========================= */
-
-    .notification-panel {
-      position: fixed;
-      top: 30px;
-      right: 24px;
-      width: 145px;
-      z-index: 15;
-    }
-
-    .notification {
-      padding: 9px 0;
-      border-bottom: 1px solid #000000;
-
-      opacity: 0;
-      transform: translateY(-15px);
-
-      animation: notificationIn 0.7s ease forwards;
-    }
-
-    .notification:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-
-    .notification:nth-child(3) {
-      animation-delay: 0.4s;
-    }
-
-    .notification-label {
-      font-size: 7px;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      opacity: 0.45;
-      margin-bottom: 3px;
-    }
-
-    .notification-title {
-      font-size: 10px;
-      letter-spacing: 0.03em;
-    }
-
-    .notification-time {
-      margin-top: 3px;
-      font-size: 7px;
-      opacity: 0.45;
-    }
-
-    @keyframes notificationIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-
-    /* =========================
        MENU
     ========================= */
 
     .menu {
       position: fixed;
+
+      /* Posición estética */
       top: 28px;
-      left: 0;
+      left: 24px;
+
       width: 330px;
       height: 190px;
+
       z-index: 30;
     }
 
+
+    /* =========================
+       BOTÓN DE LOS 3 PUNTOS
+    ========================= */
+
     .menu-trigger {
       position: absolute;
+
       top: 0;
       left: 0;
 
@@ -153,6 +106,7 @@
 
     .trigger-dots {
       position: absolute;
+
       top: 14px;
       left: 0;
 
@@ -165,6 +119,7 @@
     .trigger-dot {
       width: 5px;
       height: 5px;
+
       background: #000000;
       border-radius: 50%;
 
@@ -180,6 +135,7 @@
 
     .options {
       position: absolute;
+
       top: 0;
       left: 0;
 
@@ -191,9 +147,11 @@
 
     .option {
       position: absolute;
+
       left: 0;
 
       height: 25px;
+
       display: flex;
       align-items: center;
 
@@ -214,11 +172,12 @@
 
 
     /* =========================
-       PUNTO DE CADA OPCIÓN
+       PUNTOS DE LAS OPCIONES
     ========================= */
 
     .option-dot {
       position: absolute;
+
       left: 0;
 
       width: 5px;
@@ -238,7 +197,7 @@
 
 
     /* =========================
-       LÍNEA
+       LÍNEAS
     ========================= */
 
     .option-line {
@@ -274,6 +233,7 @@
       white-space: nowrap;
 
       opacity: 0;
+
       transform: translateX(-5px);
 
       transition:
@@ -343,32 +303,43 @@
       opacity: 1;
     }
 
+
     /* Punto 1 */
+
     .menu.open .option:nth-child(1) .option-dot {
       opacity: 1;
+
       transform: translateY(0);
 
       transition-delay: 0.05s;
     }
 
+
     /* Punto 2 */
+
     .menu.open .option:nth-child(2) .option-dot {
       opacity: 1;
+
       transform: translateY(0);
 
       transition-delay: 0.28s;
     }
 
+
     /* Punto 3 */
+
     .menu.open .option:nth-child(3) .option-dot {
       opacity: 1;
+
       transform: translateY(0);
 
       transition-delay: 0.51s;
     }
 
 
-    /* Líneas más cortas */
+    /* =========================
+       LÍNEAS
+    ========================= */
 
     .menu.open .option:nth-child(1) .option-line {
       width: 22px;
@@ -386,31 +357,42 @@
     }
 
 
-    /* Texto aparece después de la línea */
+    /* =========================
+       TEXTO
+    ========================= */
 
     .menu.open .option:nth-child(1) .option-text {
       opacity: 1;
+
       transform: translateX(0);
+
       transition-delay: 1.17s;
     }
 
     .menu.open .option:nth-child(2) .option-text {
       opacity: 1;
+
       transform: translateX(0);
+
       transition-delay: 1.40s;
     }
 
     .menu.open .option:nth-child(3) .option-text {
       opacity: 1;
+
       transform: translateX(0);
+
       transition-delay: 1.63s;
     }
 
 
-    /* X */
+    /* =========================
+       X
+    ========================= */
 
     .menu.open .close-menu {
       opacity: 1;
+
       pointer-events: auto;
 
       transition-delay: 1.75s;
@@ -418,22 +400,26 @@
 
 
     /* =========================
-       CIERRE
+       CERRANDO
     ========================= */
 
     .menu.closing .option-text {
       opacity: 0;
+
       transform: translateX(-5px);
+
       transition-delay: 0s;
     }
 
     .menu.closing .option-line {
       width: 0;
+
       transition-delay: 0.08s;
     }
 
     .menu.closing .option-dot {
       opacity: 0;
+
       transform: translateY(-40px);
 
       transition-delay: 0.25s;
@@ -441,6 +427,7 @@
 
     .menu.closing .close-menu {
       opacity: 0;
+
       pointer-events: none;
     }
 
@@ -465,14 +452,9 @@
         font-size: 21px;
       }
 
-      .notification-panel {
-        top: 27px;
-        right: 17px;
-        width: 115px;
-      }
-
       .menu {
         top: 25px;
+        left: 20px;
       }
     }
 
@@ -482,38 +464,32 @@
 
 <body>
 
-  <!-- HEADER -->
+
+  <!-- =========================
+       ENCABEZADO
+  ========================= -->
 
   <header class="header">
-    <h1 class="brand-name">Nova-List</h1>
-    <p class="brand-subtitle">una APP de Incorova</p>
+
+    <h1 class="brand-name">
+      Nova-List
+    </h1>
+
+    <p class="brand-subtitle">
+      una APP de Incorova
+    </p>
+
   </header>
 
 
-  <!-- NOTIFICACIONES -->
-
-  <aside class="notification-panel">
-
-    <div class="notification">
-      <div class="notification-label">Próximo</div>
-      <div class="notification-title">Revisar pendiente</div>
-      <div class="notification-time">Requiere atención</div>
-    </div>
-
-    <div class="notification">
-      <div class="notification-label">Hoy</div>
-      <div class="notification-title">Nueva tarea</div>
-      <div class="notification-time">Pendiente</div>
-    </div>
-
-  </aside>
-
-
-  <!-- MENU -->
+  <!-- =========================
+       MENU
+  ========================= -->
 
   <div class="menu" id="menu">
 
-    <!-- Tres puntos -->
+
+    <!-- TRES PUNTOS -->
 
     <button
       class="menu-trigger"
@@ -521,13 +497,17 @@
       aria-label="Abrir menú"
       aria-expanded="false"
     >
+
       <span class="trigger-dots">
 
         <span class="trigger-dot"></span>
+
         <span class="trigger-dot"></span>
+
         <span class="trigger-dot"></span>
 
       </span>
+
     </button>
 
 
@@ -544,6 +524,9 @@
 
     <nav class="options">
 
+
+      <!-- LISTAS -->
+
       <div class="option">
 
         <span class="option-dot"></span>
@@ -556,6 +539,8 @@
 
       </div>
 
+
+      <!-- NOTAS -->
 
       <div class="option">
 
@@ -570,6 +555,8 @@
       </div>
 
 
+      <!-- DASHBOARD -->
+
       <div class="option">
 
         <span class="option-dot"></span>
@@ -582,19 +569,30 @@
 
       </div>
 
+
     </nav>
 
   </div>
 
 
+  <!-- =========================
+       JAVASCRIPT
+  ========================= -->
+
   <script>
 
     const menu = document.getElementById("menu");
-    const menuTrigger = document.getElementById("menuTrigger");
-    const closeMenu = document.getElementById("closeMenu");
+
+    const menuTrigger =
+      document.getElementById("menuTrigger");
+
+    const closeMenu =
+      document.getElementById("closeMenu");
 
 
-    /* ABRIR */
+    /* =========================
+       ABRIR MENU
+    ========================= */
 
     menuTrigger.addEventListener("click", () => {
 
@@ -602,12 +600,17 @@
 
       menu.classList.add("open");
 
-      menuTrigger.setAttribute("aria-expanded", "true");
+      menuTrigger.setAttribute(
+        "aria-expanded",
+        "true"
+      );
 
     });
 
 
-    /* CERRAR */
+    /* =========================
+       CERRAR MENU
+    ========================= */
 
     closeMenu.addEventListener("click", () => {
 
@@ -615,7 +618,10 @@
 
       menu.classList.add("closing");
 
-      menuTrigger.setAttribute("aria-expanded", "false");
+      menuTrigger.setAttribute(
+        "aria-expanded",
+        "false"
+      );
 
 
       setTimeout(() => {
@@ -627,15 +633,23 @@
     });
 
 
-    /* SERVICE WORKER */
+    /* =========================
+       SERVICE WORKER
+    ========================= */
 
     if ("serviceWorker" in navigator) {
 
       window.addEventListener("load", () => {
 
-        navigator.serviceWorker.register("/service-worker.js")
+        navigator.serviceWorker
+          .register("/service-worker.js")
           .catch(error => {
-            console.log("Service Worker:", error);
+
+            console.log(
+              "Service Worker:",
+              error
+            );
+
           });
 
       });
@@ -643,6 +657,7 @@
     }
 
   </script>
+
 
 </body>
 </html>
