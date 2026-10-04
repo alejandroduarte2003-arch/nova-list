@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -25,7 +26,6 @@ header{display:flex;justify-content:space-between;align-items:flex-start;gap:12p
 h1{font-weight:800;font-size:clamp(28px,7vw,40px);letter-spacing:-.04em;line-height:1}
 .sub{font-size:clamp(12px,3vw,14px);color:var(--mut);margin-top:6px}
 .greet{font-size:clamp(24px,6vw,34px);font-weight:300;letter-spacing:-.02em;margin:clamp(28px,6vw,44px) 0 clamp(20px,5vw,32px)}
-
 .menu{position:relative;width:34px;height:34px;flex:none;z-index:20}
 .scrim{position:fixed;inset:0;z-index:-1;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .3s}
 .menu.open .scrim{opacity:.95;pointer-events:auto}
@@ -91,11 +91,62 @@ textarea{min-height:90px;resize:vertical}
 .lst div{display:flex;justify-content:space-between;font-weight:600}.lst span{color:var(--mut);font-weight:400;font-size:13px}
 .n2t{font-size:12px;color:var(--mut);text-decoration:underline;white-space:nowrap}
 .late{color:#ff3b30}
+
+.auth{
+position:fixed;
+inset:0;
+background:var(--bg);
+color:var(--fg);
+z-index:100;
+display:none;
+align-items:center;
+justify-content:center;
+padding:28px;
+}
+.auth.show{display:flex}
+.authbox{width:min(100%,420px);text-align:center}
+.authbox h2{font-size:40px;margin-bottom:8px}
+.authbox p{color:var(--mut);font-size:14px;margin-bottom:30px}
+.google{
+width:100%;
+border:1px solid var(--fg);
+border-radius:999px;
+padding:15px 20px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+font-weight:600;
+}
+.google svg{width:20px;height:20px}
+.authsmall{margin-top:18px!important;font-size:12px!important}
+.userbar{font-size:12px;color:var(--mut);margin-top:8px}
+.logout{font-size:12px;text-decoration:underline;color:var(--mut);margin-top:12px}
+
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 
 <body>
+
+<div id="auth" class="auth">
+  <div class="authbox">
+    <h2>Nova-List</h2>
+    <p>Inicia sesión para guardar tus datos y acceder a ellos desde cualquier dispositivo.</p>
+
+    <button class="google" id="googleLogin">
+      <svg viewBox="0 0 24 24">
+        <path d="M21.8 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.5a4.7 4.7 0 0 1-2 3.1v2.6h3.2c1.9-1.8 3.1-4.4 3.1-7.5z" fill="currentColor" stroke="none"/>
+        <path d="M12 22c2.7 0 5-.9 6.7-2.5l-3.2-2.6c-.9.6-2 1-3.5 1-2.7 0-5-1.8-5.8-4.2H2.9v2.7A10 10 0 0 0 12 22z" fill="currentColor" stroke="none"/>
+        <path d="M6.2 13.7A6 6 0 0 1 5.9 12c0-.6.1-1.2.3-1.7V7.6H2.9A10 10 0 0 0 2 12c0 1.6.4 3.1 1 4.4l3.2-2.7z" fill="currentColor" stroke="none"/>
+        <path d="M12 6.1c1.5 0 2.8.5 3.8 1.5l2.8-2.8C17 3.1 14.7 2 12 2a10 10 0 0 0-9.1 5.6l3.3 2.7C7 7.9 9.3 6.1 12 6.1z" fill="currentColor" stroke="none"/>
+      </svg>
+      Continuar con Google
+    </button>
+
+    <p class="authsmall">Tus listas, notas y pendientes se guardarán en tu cuenta.</p>
+  </div>
+</div>
 
 <div id="app"></div>
 
@@ -116,83 +167,29 @@ textarea{min-height:90px;resize:vertical}
   </button>
 </nav>
 
-<script>
+<script type="module">
 
 /* =========================================================
-   NOVA LIST — SISTEMA DE ALMACENAMIENTO
-   IndexedDB = almacenamiento principal
-   localStorage = respaldo + migración
-========================================================= */
+   SUPABASE
+   ========================================================= */
 
-const DB_NAME = 'NovaListDB';
-const DB_VERSION = 1;
-const STORE_NAME = 'nova';
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-let db = null;
+const SUPABASE_URL = 'https://udvxmrbqymhrlaiojzex.supabase.co';
 
-function openDB(){
-  return new Promise((resolve,reject)=>{
-    if(db){
-      resolve(db);
-      return;
-    }
+/*
+   PEGA AQUÍ TU PUBLISHABLE KEY / ANON KEY DE SUPABASE.
 
-    if(!('indexedDB' in window)){
-      reject(new Error('IndexedDB no disponible'));
-      return;
-    }
+   NO pongas aquí el service_role key.
+*/
+const SUPABASE_KEY = 'sb_publishable_VaSGlZ8OA38jbM9QHCTwZw_eNVq__On';
 
-    const request = indexedDB.open(DB_NAME,DB_VERSION);
-
-    request.onupgradeneeded = e=>{
-      const database = e.target.result;
-
-      if(!database.objectStoreNames.contains(STORE_NAME)){
-        database.createObjectStore(STORE_NAME);
-      }
-    };
-
-    request.onsuccess = e=>{
-      db=e.target.result;
-      resolve(db);
-    };
-
-    request.onerror = ()=>{
-      reject(request.error);
-    };
-  });
-}
-
-async function dbGet(){
-  const database=await openDB();
-
-  return new Promise((resolve,reject)=>{
-    const tx=database.transaction(STORE_NAME,'readonly');
-    const store=tx.objectStore(STORE_NAME);
-    const request=store.get('data');
-
-    request.onsuccess=()=>resolve(request.result||null);
-    request.onerror=()=>reject(request.error);
-  });
-}
-
-async function dbSave(data){
-  const database=await openDB();
-
-  return new Promise((resolve,reject)=>{
-    const tx=database.transaction(STORE_NAME,'readwrite');
-    const store=tx.objectStore(STORE_NAME);
-    const request=store.put(data,'data');
-
-    request.onsuccess=()=>resolve(true);
-    request.onerror=()=>reject(request.error);
-  });
-}
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 
 /* =========================================================
-   ESTADO
-========================================================= */
+   APP
+   ========================================================= */
 
 const $=s=>document.querySelector(s);
 
@@ -206,176 +203,43 @@ const S={
   ],
   view:'home',
   day:null,
-  cur:0
+  cur:0,
+  user:null
 };
 
-
-/* =========================================================
-   CARGA Y MIGRACIÓN DE DATOS
-========================================================= */
-
-async function loadData(){
-
-  let indexedData=null;
-
-  try{
-    indexedData=await dbGet();
-  }catch(e){
-    console.warn('IndexedDB no disponible:',e);
-  }
-
-  /*
-    Si ya existen datos en IndexedDB,
-    usamos esos datos.
-  */
-  if(indexedData){
-    S.todos=indexedData.todos||[];
-    S.notes=indexedData.notes||[];
-
-    if(indexedData.lists&&indexedData.lists.length){
-      S.lists=indexedData.lists;
-    }
-
-    return;
-  }
-
-  /*
-    Si no hay datos en IndexedDB,
-    buscamos los datos antiguos de localStorage.
-  */
-
-  try{
-
-    const old=JSON.parse(
-      localStorage.getItem('nova')||'null'
-    );
-
-    if(old){
-
-      S.todos=old.todos||[];
-      S.notes=old.notes||[];
-
-      if(old.lists&&old.lists.length){
-        S.lists=old.lists;
-      }
-
-      /*
-        Migramos automáticamente
-        los datos antiguos a IndexedDB.
-      */
-
-      try{
-        await dbSave({
-          todos:S.todos,
-          notes:S.notes,
-          lists:S.lists
-        });
-      }catch(e){
-        console.warn('No se pudo migrar a IndexedDB:',e);
-      }
-
-      return;
-    }
-
-  }catch(e){
-    console.warn('Error leyendo localStorage:',e);
-  }
-
-  /*
-    Si no había ningún dato,
-    guardamos la estructura inicial.
-  */
-
-  await save();
-}
-
-
-/* =========================================================
-   GUARDADO
-========================================================= */
-
-async function save(){
-
-  const data={
-    todos:S.todos,
-    notes:S.notes,
-    lists:S.lists
-  };
-
-  /*
-    Guardado principal
-  */
-  try{
-    await dbSave(data);
-  }catch(e){
-    console.warn('Error guardando en IndexedDB:',e);
-  }
-
-  /*
-    También mantenemos una copia
-    en localStorage como respaldo.
-  */
-  try{
-    localStorage.setItem('nova',JSON.stringify(data));
-  }catch(e){
-    console.warn('Error guardando respaldo:',e);
-  }
-}
-
-
-/* =========================================================
-   FUNCIONES GENERALES
-========================================================= */
+let cloudReady=false;
+let saving=false;
 
 const arrow='<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
-const sd=d=>new Date(
-  d.getFullYear(),
-  d.getMonth(),
-  d.getDate()
-);
+const sd=d=>new Date(d.getFullYear(),d.getMonth(),d.getDate());
 
 const key=d=>{
   const x=new Date(d);
-
-  return x.getFullYear()+
-    '-'+
-    String(x.getMonth()+1).padStart(2,'0')+
-    '-'+
+  return x.getFullYear()+'-'+
+    String(x.getMonth()+1).padStart(2,'0')+'-'+
     String(x.getDate()).padStart(2,'0');
 };
 
-const esc=s=>String(s).replace(
-  /[&<>"]/g,
-  c=>({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;'
-  }[c])
-);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({
+  '&':'&amp;',
+  '<':'&lt;',
+  '>':'&gt;',
+  '"':'&quot;'
+}[c]));
 
 const greeting=()=>{
   const h=new Date().getHours();
-
-  return h<12
-    ?'Buenos días'
-    :h<19
-      ?'Buenas tardes'
-      :'Buenas noches';
+  return h<12?'Buenos días':h<19?'Buenas tardes':'Buenas noches';
 };
 
-const at=t=>new Date(
-  t.due+'T'+(t.time||'23:59')
-).getTime();
+const at=t=>new Date(t.due+'T'+(t.time||'23:59')).getTime();
 
-const overdue=()=>S.todos.filter(
-  t=>!t.done&&t.due&&at(t)<Date.now()
-);
+const overdue=()=>S.todos.filter(t=>!t.done&&t.due&&at(t)<Date.now());
 
-const today=()=>S.todos.filter(
-  t=>t.due===key(new Date()) &&
-  !(!t.done&&at(t)<Date.now())
+const today=()=>S.todos.filter(t=>
+  t.due===key(new Date()) &&
+  !(!t.done&&t.due&&at(t)<Date.now())
 );
 
 const soon=()=>{
@@ -405,20 +269,17 @@ const stat=n=>{
   return{
     total:a.length,
     done:d,
-    p:a.length
-      ?Math.round(d/a.length*100)
-      :0
+    p:a.length?Math.round(d/a.length*100):0
   };
 };
 
 const bar=p=>`
-<div
-  class="bar"
-  role="progressbar"
-  aria-valuenow="${p}"
-  aria-valuemin="0"
-  aria-valuemax="100">
-  <i style="width:${p}%;background:hsl(${p*1.2} 75% 45%)"></i>
+<div class="bar"
+role="progressbar"
+aria-valuenow="${p}"
+aria-valuemin="0"
+aria-valuemax="100">
+<i style="width:${p}%"></i>
 </div>`;
 
 const opts=[
@@ -429,700 +290,837 @@ const opts=[
 
 
 /* =========================================================
-   HEADER
-========================================================= */
+   AUTH
+   ========================================================= */
+
+async function signInWithGoogle(){
+
+  const {error}=await supabase.auth.signInWithOAuth({
+    provider:'google',
+    options:{
+      redirectTo:window.location.href
+    }
+  });
+
+  if(error){
+    alert('No se pudo iniciar sesión con Google: '+error.message);
+  }
+}
+
+async function signOut(){
+
+  await supabase.auth.signOut();
+
+  S.user=null;
+  S.todos=[];
+  S.notes=[];
+  S.lists=[
+    {name:'Personal',secs:[]},
+    {name:'Trabajo',secs:[]},
+    {name:'Compras',secs:[]}
+  ];
+
+  $('#auth').classList.add('show');
+}
+
+
+/* =========================================================
+   CLOUD DATA
+   ========================================================= */
+
+async function loadCloud(){
+
+  if(!S.user)return;
+
+  const uid=S.user.id;
+
+  const [
+    todosRes,
+    notesRes,
+    listsRes
+  ]=await Promise.all([
+
+    supabase
+      .from('todos')
+      .select('*')
+      .eq('user_id',uid)
+      .order('created_at',{ascending:true}),
+
+    supabase
+      .from('notes')
+      .select('*')
+      .eq('user_id',uid)
+      .order('created_at',{ascending:false}),
+
+    supabase
+      .from('lists')
+      .select('*')
+      .eq('user_id',uid)
+      .order('created_at',{ascending:true})
+
+  ]);
+
+  if(todosRes.error){
+    console.error(todosRes.error);
+    alert('Error cargando tus to-dos.');
+    return;
+  }
+
+  if(notesRes.error){
+    console.error(notesRes.error);
+    alert('Error cargando tus notas.');
+    return;
+  }
+
+  if(listsRes.error){
+    console.error(listsRes.error);
+    alert('Error cargando tus listas.');
+    return;
+  }
+
+  S.todos=todosRes.data||[];
+  S.notes=notesRes.data||[];
+
+  if(listsRes.data&&listsRes.data.length){
+    S.lists=listsRes.data.map(l=>({
+      id:l.id,
+      name:l.name,
+      secs:Array.isArray(l.secs)?l.secs:[]
+    }));
+  }else{
+
+    /*
+      Usuario nuevo:
+      creamos las tres listas iniciales.
+    */
+
+    const initial=[
+      {name:'Personal',secs:[]},
+      {name:'Trabajo',secs:[]},
+      {name:'Compras',secs:[]}
+    ];
+
+    const rows=initial.map(l=>({
+      user_id:uid,
+      name:l.name,
+      secs:l.secs
+    }));
+
+    const {data,error}=await supabase
+      .from('lists')
+      .insert(rows)
+      .select();
+
+    if(error){
+      console.error(error);
+      alert('No se pudieron crear tus listas iniciales.');
+      return;
+    }
+
+    S.lists=(data||[]).map(l=>({
+      id:l.id,
+      name:l.name,
+      secs:Array.isArray(l.secs)?l.secs:[]
+    }));
+  }
+
+  cloudReady=true;
+  render();
+}
+
+
+/* =========================================================
+   SAVE HELPERS
+   ========================================================= */
+
+async function saveTodo(todo){
+
+  if(!S.user)return;
+
+  const row={
+    id:todo.id,
+    user_id:S.user.id,
+    title:todo.title,
+    list:todo.list,
+    sec:todo.sec||'',
+    due:todo.due||null,
+    time:todo.time||null,
+    done:!!todo.done
+  };
+
+  const {error}=await supabase
+    .from('todos')
+    .upsert(row);
+
+  if(error){
+    console.error(error);
+    alert('No se pudo guardar el to-do.');
+  }
+}
+
+async function deleteTodo(id){
+
+  if(!S.user)return;
+
+  const {error}=await supabase
+    .from('todos')
+    .delete()
+    .eq('id',id)
+    .eq('user_id',S.user.id);
+
+  if(error)console.error(error);
+}
+
+async function saveNote(note){
+
+  if(!S.user)return;
+
+  const row={
+    id:note.id,
+    user_id:S.user.id,
+    text:note.text
+  };
+
+  const {error}=await supabase
+    .from('notes')
+    .upsert(row);
+
+  if(error){
+    console.error(error);
+    alert('No se pudo guardar la nota.');
+  }
+}
+
+async function deleteNote(id){
+
+  if(!S.user)return;
+
+  const {error}=await supabase
+    .from('notes')
+    .delete()
+    .eq('id',id)
+    .eq('user_id',S.user.id);
+
+  if(error)console.error(error);
+}
+
+async function saveList(list){
+
+  if(!S.user)return;
+
+  const row={
+    user_id:S.user.id,
+    name:list.name,
+    secs:list.secs||[]
+  };
+
+  if(list.id)row.id=list.id;
+
+  const {data,error}=await supabase
+    .from('lists')
+    .upsert(row)
+    .select()
+    .single();
+
+  if(error){
+    console.error(error);
+    alert('No se pudo guardar la lista.');
+    return;
+  }
+
+  if(data){
+    list.id=data.id;
+  }
+}
+
+async function deleteList(id){
+
+  if(!S.user)return;
+
+  const {error}=await supabase
+    .from('lists')
+    .delete()
+    .eq('id',id)
+    .eq('user_id',S.user.id);
+
+  if(error)console.error(error);
+}
+
+
+/* =========================================================
+   IMPORTACIÓN DE DATOS LOCALES
+   ========================================================= */
+
+function getLocalData(){
+
+  try{
+    return JSON.parse(
+      localStorage.getItem('nova')||'null'
+    );
+  }catch(e){
+    return null;
+  }
+}
+
+async function migrateLocalData(){
+
+  if(!S.user)return;
+
+  const local=getLocalData();
+
+  if(!local)return;
+
+  const hasLocal=
+    (local.todos&&local.todos.length) ||
+    (local.notes&&local.notes.length) ||
+    (local.lists&&local.lists.length);
+
+  if(!hasLocal)return;
+
+  const answer=confirm(
+    'Encontramos datos guardados anteriormente en este dispositivo. ¿Quieres subirlos a tu cuenta de Nova List?'
+  );
+
+  if(!answer)return;
+
+  const uid=S.user.id;
+
+  if(local.todos?.length){
+
+    for(const t of local.todos){
+
+      const id=
+        typeof t.id==='string'&&
+        t.id.includes('-')
+        ?t.id
+        :crypto.randomUUID();
+
+      await supabase.from('todos').upsert({
+        id,
+        user_id:uid,
+        title:t.title||'',
+        list:t.list||'',
+        sec:t.sec||'',
+        due:t.due||null,
+        time:t.time||null,
+        done:!!t.done
+      });
+    }
+  }
+
+  if(local.notes?.length){
+
+    for(const n of local.notes){
+
+      const id=
+        typeof n.id==='string'&&
+        n.id.includes('-')
+        ?n.id
+        :crypto.randomUUID();
+
+      await supabase.from('notes').upsert({
+        id,
+        user_id:uid,
+        text:n.text||''
+      });
+    }
+  }
+
+  if(local.lists?.length){
+
+    for(const l of local.lists){
+
+      await supabase.from('lists').insert({
+        user_id:uid,
+        name:l.name||'Sin nombre',
+        secs:Array.isArray(l.secs)?l.secs:[]
+      });
+    }
+  }
+
+  localStorage.removeItem('nova');
+
+  await loadCloud();
+}
+
+
+/* =========================================================
+   UI
+   ========================================================= */
 
 function head(){
 
-return `
+  return `
 <header>
+  <div>
+    <h1>Nova-List</h1>
+    <div class="sub">una app de INCOROVA</div>
+    ${S.user?`
+      <div class="userbar">
+        ${esc(S.user.email||'Cuenta conectada')}
+      </div>
+    `:''}
+  </div>
 
-<div>
-<h1>Nova-List</h1>
-<div class="sub">una app de INCOROVA</div>
-</div>
+  <div class="menu" id="menu">
+    <div class="scrim"></div>
 
-<div class="menu" id="menu">
-
-<div class="scrim"></div>
-
-${opts.map((o,i)=>`
-<button
-  class="opt"
-  style="--i:${i};--dx:${o[2]}"
-  data-go="${o[0]}"
-  aria-label="${o[1]}">
-
-<span class="lb">${o[1]}</span>
-<span class="ln"></span>
-<i></i>
-
-</button>
-`).join('')}
-
-</div>
-
+    ${opts.map((o,i)=>`
+      <button
+        class="opt"
+        style="--i:${i};--dx:${o[2]}"
+        data-go="${o[0]}"
+        aria-label="${o[1]}">
+        <span class="lb">${o[1]}</span>
+        <span class="ln"></span>
+        <i></i>
+      </button>
+    `).join('')}
+  </div>
 </header>`;
 }
 
-
-/* =========================================================
-   CALENDARIO
-========================================================= */
-
 function calendar(){
 
-const n=new Date();
-const y=n.getFullYear();
-const m=n.getMonth();
+  const n=new Date();
+  const y=n.getFullYear();
+  const m=n.getMonth();
+  const first=new Date(y,m,1).getDay();
+  const dim=new Date(y,m+1,0).getDate();
 
-const first=new Date(y,m,1).getDay();
-const dim=new Date(y,m+1,0).getDate();
+  const due=new Set(
+    S.todos.map(t=>t.due).filter(Boolean)
+  );
 
-const due=new Set(
-  S.todos
-    .map(t=>t.due)
-    .filter(Boolean)
-);
+  let c='';
 
-let c='';
+  ['D','L','M','M','J','V','S']
+    .forEach(d=>c+=`<b>${d}</b>`);
 
-['D','L','M','M','J','V','S']
-.forEach(d=>c+=`<b>${d}</b>`);
+  for(let i=0;i<first;i++)c+='<span></span>';
 
-for(let i=0;i<first;i++){
-  c+='<span></span>';
+  for(let d=1;d<=dim;d++){
+
+    const k=key(new Date(y,m,d));
+
+    c+=`
+      <button
+        data-day="${k}"
+        aria-label="Día ${d}"
+        class="${d===n.getDate()?'today':''} ${due.has(k)?'has':''}">
+        ${d}
+      </button>`;
+  }
+
+  return `
+  <div class="cal">
+    <h3>
+      ${(m=>m[0].toUpperCase()+m.slice(1))(
+        n.toLocaleDateString('es',{month:'long',year:'numeric'})
+      )}
+    </h3>
+
+    <div class="grid">${c}</div>
+  </div>`;
 }
-
-for(let d=1;d<=dim;d++){
-
-  const k=key(new Date(y,m,d));
-
-  c+=`
-  <button
-    data-day="${k}"
-    aria-label="Día ${d}"
-    class="${d===n.getDate()?'today':''} ${due.has(k)?'has':''}">
-    ${d}
-  </button>`;
-}
-
-return `
-<div class="cal">
-
-<h3>
-${(m=>{
-  const x=m[0].toUpperCase()+m.slice(1);
-  return x;
-})(n.toLocaleDateString('es',{
-  month:'long',
-  year:'numeric'
-}))}
-</h3>
-
-<div class="grid">
-${c}
-</div>
-
-</div>`;
-}
-
-
-/* =========================================================
-   ITEMS
-========================================================= */
 
 function items(a,empty){
 
-return a.length
+  return a.length
+    ?a.map(t=>`
+      <div class="item">
 
-? a.map(t=>`
-<div class="item">
+        <button
+          class="chk ${t.done?'on':''}"
+          data-done="${t.id}"
+          aria-label="Completar">
+        </button>
 
-<button
-  class="chk ${t.done?'on':''}"
-  data-done="${t.id}"
-  aria-label="Completar">
-</button>
+        <div style="${t.done?'text-decoration:line-through;color:var(--mut)':''}">
+          ${esc(t.title)}
+          <small>
+            ${esc(t.list||'')}
+            ${t.sec?' › '+esc(t.sec):''}
+            ${t.due?' · '+t.due+(t.time?' '+t.time:''):''}
+          </small>
+        </div>
 
-<div style="${
-  t.done
-  ?'text-decoration:line-through;color:var(--mut)'
-  :''
-}">
-${esc(t.title)}
+        <button
+          class="x"
+          data-del="${t.id}"
+          aria-label="Eliminar">
+          ×
+        </button>
 
-<small>
-${esc(t.list)}
-${t.sec?' › '+esc(t.sec):''}
-${t.due?' · '+t.due+(t.time?' '+t.time:''):''}
-</small>
+      </div>
+    `).join('')
 
-</div>
-
-<button
-  class="x"
-  data-del="${t.id}"
-  aria-label="Eliminar">
-×
-</button>
-
-</div>
-`).join('')
-
-:(empty
-  ?`<p class="empty">${empty}</p>`
-  :'');
+    :(empty?`<p class="empty">${empty}</p>`:'');
 }
 
-
-/* =========================================================
-   PÁGINAS
-========================================================= */
-
 const page=(t,b)=>
-head()+
-`<div style="margin-top:28px">
-<button class="back" data-go="home">← Inicio</button>
-<h2>${t}</h2>
-${b}
-</div>`;
+  head()+
+  `<div style="margin-top:28px">
+    <button class="back" data-go="home">← Inicio</button>
+    <h2>${t}</h2>
+    ${b}
+  </div>`;
 
 const listSel=()=>`
 <select id="tl">
-${S.lists.map(l=>`
-<option>${esc(l.name)}</option>
-`).join('')}
+  ${S.lists.map(l=>
+    `<option>${esc(l.name)}</option>`
+  ).join('')}
 </select>`;
 
-
-/* =========================================================
-   VISTAS
-========================================================= */
 
 const V={
 
 home:()=>{
 
-const o=overdue().length;
+  const o=overdue().length;
 
-return head()+`
+  return head()+`
+    <div class="greet">${greeting()}</div>
 
-<div class="greet">
-${greeting()}
-</div>
+    <div class="row">
+      ${calendar()}
 
-<div class="row">
+      <div class="ov">
+        <h3>Mis listas</h3>
 
-${calendar()}
+        ${S.lists.map(l=>`
+          <p>
+            ${esc(l.name)}
+            <span>${stat(l.name).total}</span>
+          </p>
+        `).join('')}
+      </div>
+    </div>
 
-<div class="ov">
+    <button class="big" data-go="today">
+      <span class="lbl">
+        Hoy
+        ${o?`
+          <b class="bdg" aria-label="${o} vencidos">
+            ${o>99?'99+':o}
+          </b>
+        `:''}
+      </span>
+      ${arrow}
+    </button>
 
-<h3>Mis listas</h3>
-
-${S.lists.map(l=>`
-<p>
-${esc(l.name)}
-<span>${stat(l.name).total}</span>
-</p>
-`).join('')}
-
-</div>
-
-</div>
-
-<button class="big" data-go="today">
-
-<span class="lbl">
-Hoy
-${o?`
-<b
- class="bdg"
- aria-label="${o} vencidos">
- ${o>99?'99+':o}
-</b>`:''}
-</span>
-
-${arrow}
-
-</button>
-
-<button class="big" data-go="soon">
-Próximamente
-${arrow}
-</button>
-
-`;
+    <button class="big" data-go="soon">
+      Próximamente ${arrow}
+    </button>
+  `;
 },
 
 today:()=>{
 
-const o=overdue();
-const t=today();
+  const o=overdue();
+  const t=today();
 
-return page(
-  'Hoy',
-
-  (o.length
-    ?`
-    <h3
-      class="sec late"
-      style="margin-top:0">
-      Vencidos
-    </h3>
-    ${items(o)}
-    `
-    :''
-  )+
-
-  `
-  <h3
-    class="sec"
-    ${o.length?'':'style="margin-top:0"'}>
-    Para hoy
-  </h3>
-  `+
-
-  items(
-    t,
-    'No tienes más pendientes para hoy.'
-  )
-);
-
+  return page(
+    'Hoy',
+    (o.length
+      ?`<h3 class="sec late" style="margin-top:0">Vencidos</h3>${items(o)}`
+      :'')
+    +
+    `<h3 class="sec" ${o.length?'':'style="margin-top:0"'}>
+      Para hoy
+    </h3>`
+    +
+    items(t,'No tienes más pendientes para hoy.')
+  );
 },
 
 soon:()=>page(
   'Próximamente',
-  items(
-    soon(),
-    'Nada vence en las próximas 48 horas.'
-  )
+  items(soon(),'Nada vence en las próximas 48 horas.')
 ),
 
 notes:()=>page(
   'Notas rápidas',
-
   `
-  <textarea
-    id="nt"
-    placeholder="Escribe una nota">
-  </textarea>
-
-  <button
-    class="pri"
-    data-addnote>
-    Guardar nota
-  </button>
+  <textarea id="nt" placeholder="Escribe una nota"></textarea>
+  <button class="pri" data-addnote>Guardar nota</button>
 
   ${
     S.notes.map(n=>`
-    <div class="note">
-
-      <span>
-      ${esc(n.text)}
-      </span>
-
-      <button
-        class="x"
-        data-delnote="${n.id}"
-        aria-label="Eliminar">
-        ×
-      </button>
-
-    </div>
+      <div class="note">
+        <span>${esc(n.text)}</span>
+        <button
+          class="x"
+          data-delnote="${n.id}"
+          aria-label="Eliminar">
+          ×
+        </button>
+      </div>
     `).join('')
-
-    ||'<p class="empty">Aún no hay notas.</p>'
+    ||
+    '<p class="empty">Aún no hay notas.</p>'
   }
   `
 ),
 
 new:()=>page(
   'Nuevo to-do',
-
   `
-  <input
-    id="ti"
-    placeholder="¿Qué hay que hacer?">
-
+  <input id="ti" placeholder="¿Qué hay que hacer?">
   ${listSel()}
-
-  <input
-    id="td"
-    type="date"
-    value="${key(new Date())}">
-
-  <input
-    id="tt"
-    type="time">
-
-  <button
-    class="pri"
-    data-addtodo>
-    Agregar to-do
-  </button>
+  <input id="td" type="date" value="${key(new Date())}">
+  <input id="tt" type="time">
+  <button class="pri" data-addtodo>Agregar to-do</button>
   `
 ),
 
 plan:()=>{
 
-const o=overdue().length;
-const pend=S.todos.filter(t=>!t.done).length;
-const hoy=today().filter(t=>!t.done).length;
+  const o=overdue().length;
+  const pend=S.todos.filter(t=>!t.done).length;
+  const hoy=today().filter(t=>!t.done).length;
 
-return page(
-  'Planificador',
+  return page(
+    'Planificador',
+    `
+    <div class="stats">
+      <div class="stat">
+        <b>${pend}</b>
+        <span>Pendientes</span>
+      </div>
 
-  `
-  <div class="stats">
+      <div class="stat">
+        <b>${hoy}</b>
+        <span>Para hoy</span>
+      </div>
 
-    <div class="stat">
-      <b>${pend}</b>
-      <span>Pendientes</span>
+      <div class="stat">
+        <b class="${o?'late':''}">${o}</b>
+        <span>Vencidos</span>
+      </div>
     </div>
 
-    <div class="stat">
-      <b>${hoy}</b>
-      <span>Para hoy</span>
+    <div class="dash">
+
+      <section class="panel">
+        <h3>
+          Dar seguimiento
+          <span>vencidos</span>
+        </h3>
+        ${items(overdue(),'Todo al día.')}
+      </section>
+
+      <section class="panel">
+        <h3>
+          Lo más próximo
+          <span>por fecha</span>
+        </h3>
+        ${items(upcoming(),'Sin pendientes con fecha.')}
+      </section>
+
+      <section class="panel">
+        <h3>
+          Listas
+          <span>% completado</span>
+        </h3>
+
+        ${S.lists.map((l,i)=>{
+
+          const s=stat(l.name);
+
+          return `
+          <button class="lst" data-open="${i}">
+            <div>
+              ${esc(l.name)}
+              <span>${s.done}/${s.total} · ${s.p}%</span>
+            </div>
+            ${bar(s.p)}
+          </button>`;
+        }).join('')}
+      </section>
+
+      <section class="panel">
+        <h3>
+          Notas rápidas
+          <span>${S.notes.length}</span>
+        </h3>
+
+        ${
+          S.notes.slice(0,5).map(n=>`
+            <div class="item">
+              <span style="white-space:pre-wrap;min-width:0;overflow-wrap:anywhere">
+                ${esc(n.text)}
+              </span>
+
+              <button class="n2t" data-n2t="${n.id}">
+                Pasar a to-do
+              </button>
+            </div>
+          `).join('')
+          ||
+          '<p class="empty">Aún no hay notas.</p>'
+        }
+      </section>
+
     </div>
-
-    <div class="stat">
-      <b class="${o?'late':''}">
-        ${o}
-      </b>
-      <span>Vencidos</span>
-    </div>
-
-  </div>
-
-  <div class="dash">
-
-    <section class="panel">
-      <h3>
-        Dar seguimiento
-        <span>vencidos</span>
-      </h3>
-
-      ${items(overdue(),'Todo al día.')}
-    </section>
-
-    <section class="panel">
-      <h3>
-        Lo más próximo
-        <span>por fecha</span>
-      </h3>
-
-      ${items(
-        upcoming(),
-        'Sin pendientes con fecha.'
-      )}
-    </section>
-
-    <section class="panel">
-
-      <h3>
-        Listas
-        <span>% completado</span>
-      </h3>
-
-      ${S.lists.map((l,i)=>{
-
-        const s=stat(l.name);
-
-        return `
-        <button
-          class="lst"
-          data-open="${i}">
-
-          <div>
-            ${esc(l.name)}
-
-            <span>
-              ${s.done}/${s.total} · ${s.p}%
-            </span>
-          </div>
-
-          ${bar(s.p)}
-
-        </button>
-        `;
-
-      }).join('')}
-
-    </section>
-
-    <section class="panel">
-
-      <h3>
-        Notas rápidas
-        <span>${S.notes.length}</span>
-      </h3>
-
-      ${
-        S.notes.slice(0,5).map(n=>`
-
-        <div class="item">
-
-          <span
-            style="
-            white-space:pre-wrap;
-            min-width:0;
-            overflow-wrap:anywhere">
-
-            ${esc(n.text)}
-
-          </span>
-
-          <button
-            class="n2t"
-            data-n2t="${n.id}">
-            Pasar a to-do
-          </button>
-
-        </div>
-
-        `).join('')
-
-        ||'<p class="empty">Aún no hay notas.</p>'
-      }
-
-    </section>
-
-  </div>
-  `
-);
-
+    `
+  );
 },
 
 day:()=>{
 
-const [y,m,d]=S.day
-  .split('-')
-  .map(Number);
+  const [y,m,d]=S.day.split('-').map(Number);
 
-let l=new Date(
-  y,
-  m-1,
-  d
-).toLocaleDateString(
-  'es',
-  {
-    weekday:'long',
-    day:'numeric',
-    month:'long'
-  }
-);
+  let l=new Date(y,m-1,d)
+    .toLocaleDateString('es',{
+      weekday:'long',
+      day:'numeric',
+      month:'long'
+    });
 
-l=l[0].toUpperCase()+l.slice(1);
+  l=l[0].toUpperCase()+l.slice(1);
 
-const a=S.todos
-  .filter(t=>t.due===S.day)
-  .sort((p,q)=>
-    (p.time||'').localeCompare(q.time||'')
+  const a=S.todos
+    .filter(t=>t.due===S.day)
+    .sort((p,q)=>(p.time||'').localeCompare(q.time||''));
+
+  return page(
+    l,
+    items(a,'No hay pendientes este día.')
+    +
+    `
+    <h3 class="sec">
+      Nuevo to-do para este día
+    </h3>
+
+    <input id="ti" placeholder="¿Qué hay que hacer?">
+    ${listSel()}
+    <input id="tt" type="time" aria-label="Hora">
+
+    <button class="pri" data-addday>
+      Agregar to-do
+    </button>
+    `
   );
-
-return page(
-  l,
-
-  items(
-    a,
-    'No hay pendientes este día.'
-  )+
-
-  `
-  <h3 class="sec">
-    Nuevo to-do para este día
-  </h3>
-
-  <input
-    id="ti"
-    placeholder="¿Qué hay que hacer?">
-
-  ${listSel()}
-
-  <input
-    id="tt"
-    type="time"
-    aria-label="Hora">
-
-  <button
-    class="pri"
-    data-addday>
-    Agregar to-do
-  </button>
-  `
-);
-
 },
 
 lists:()=>page(
-
   'Mis listas',
-
   `
   <div class="add">
-
-    <input
-      id="nl"
-      placeholder="Nueva lista">
-
-    <button
-      data-newlist
-      aria-label="Crear lista">
-      +
-    </button>
-
+    <input id="nl" placeholder="Nueva lista">
+    <button data-newlist aria-label="Crear lista">+</button>
   </div>
 
-  ${S.lists.map((l,i)=>{
+  ${
+    S.lists.map((l,i)=>{
 
-    const s=stat(l.name);
+      const s=stat(l.name);
 
-    return `
-    <button
-      class="lst"
-      data-open="${i}">
-
-      <div>
-        ${esc(l.name)}
-
-        <span>
-          ${s.done}/${s.total} · ${s.p}%
-        </span>
-      </div>
-
-      ${bar(s.p)}
-
-    </button>
-    `;
-
-  }).join('')}
+      return `
+      <button class="lst" data-open="${i}">
+        <div>
+          ${esc(l.name)}
+          <span>${s.done}/${s.total} · ${s.p}%</span>
+        </div>
+        ${bar(s.p)}
+      </button>`;
+    }).join('')
+  }
   `
 ),
 
 list:()=>{
 
-const l=S.lists[S.cur];
-const s=stat(l.name);
-const gs=['',...l.secs];
+  const l=S.lists[S.cur];
 
-return page(
-  esc(l.name),
+  if(!l)return go('lists');
 
-  `
-  <div>
+  const s=stat(l.name);
+  const gs=['',...l.secs];
 
-    ${bar(s.p)}
+  return page(
+    esc(l.name),
+    `
+    <div>
+      ${bar(s.p)}
+      <p class="sub">
+        ${s.done} de ${s.total} completadas · ${s.p}%
+      </p>
+    </div>
 
-    <p class="sub">
-      ${s.done} de ${s.total} completadas · ${s.p}%
+    ${
+      gs.map((g,i)=>{
+
+        const a=S.todos.filter(t=>
+          t.list===l.name &&
+          (t.sec||'')===g
+        );
+
+        return (
+          (g||l.secs.length||a.length
+            ?`<h3 class="sec">${g?esc(g):'Sin subtítulo'}</h3>`
+            :'')
+          +
+          items(a)
+          +
+          `
+          <div class="add">
+            <input placeholder="Agregar tarea">
+            <button
+              data-addt="${i}"
+              aria-label="Agregar tarea">
+              +
+            </button>
+          </div>
+          `
+        );
+
+      }).join('')
+    }
+
+    <h3 class="sec">Nuevo subtítulo</h3>
+
+    <div class="add">
+      <input placeholder="Ej. Esta semana">
+      <button data-addsec aria-label="Crear subtítulo">+</button>
+    </div>
+
+    <p style="margin-top:32px">
+      <button class="pri" data-go="lists">Listo</button>
     </p>
 
-  </div>
-
-  ${gs.map((g,i)=>{
-
-    const a=S.todos.filter(
-      t=>
-        t.list===l.name &&
-        (t.sec||'')===g
-    );
-
-    return (
-
-      (
-        g||l.secs.length||a.length
-      )
-      ?`
-      <h3 class="sec">
-        ${g?esc(g):'Sin subtítulo'}
-      </h3>
-      `
-      :''
-      )+
-
-      items(a)+
-
-      `
-      <div class="add">
-
-        <input
-          placeholder="Agregar tarea">
-
-        <button
-          data-addt="${i}"
-          aria-label="Agregar tarea">
-          +
-        </button>
-
-      </div>
-      `
-    );
-
-  }).join('')+
-
-  `
-  <h3 class="sec">
-    Nuevo subtítulo
-  </h3>
-
-  <div class="add">
-
-    <input
-      placeholder="Ej. Esta semana">
-
-    <button
-      data-addsec
-      aria-label="Crear subtítulo">
-      +
-    </button>
-
-  </div>
-
-  <p style="margin-top:32px">
-
-    <button
-      class="pri"
-      data-go="lists">
-      Listo
-    </button>
-
-  </p>
-
-  <p style="margin-top:28px">
-
-    <button
-      class="n2t"
-      data-dellist>
-      Eliminar esta lista
-    </button>
-
-  </p>
-  `
-);
-
+    <p style="margin-top:28px">
+      <button class="n2t" data-dellist>
+        Eliminar esta lista
+      </button>
+    </p>
+    `
+  );
 },
 
 settings:()=>page(
   'Ajustes',
-
   `
-  <button
-    class="pri"
-    data-theme>
+  <button class="pri" data-theme>
     Cambiar claro / oscuro
   </button>
+
+  <p style="margin-top:28px">
+    <button class="n2t" data-logout>
+      Cerrar sesión
+    </button>
+  </p>
   `
 ),
 
 about:()=>page(
   'Acerca de',
-
   `
   <p>
-    Nova-List es una app de INCOROVA
-    para ordenar notas, pendientes y planes
-    en un solo lugar.
+    Nova-List es una app de INCOROVA para ordenar
+    notas, pendientes y planes en un solo lugar.
   </p>
   `
 )
@@ -1132,413 +1130,417 @@ about:()=>page(
 
 /* =========================================================
    RENDER
-========================================================= */
+   ========================================================= */
 
 function render(){
 
-$('#app').innerHTML=V[S.view]();
+  $('#app').innerHTML=V[S.view]();
 
-window.scrollTo(0,0);
+  window.scrollTo(0,0);
 }
 
 function go(v){
 
-S.view=v;
+  S.view=v;
 
-render();
+  render();
 }
 
 const keep=()=>{
 
-const y=window.scrollY;
+  const y=window.scrollY;
 
-$('#app').innerHTML=V[S.view]();
+  $('#app').innerHTML=V[S.view]();
 
-window.scrollTo(0,y);
+  window.scrollTo(0,y);
 };
 
 
 /* =========================================================
    EVENTOS
-========================================================= */
+   ========================================================= */
 
 document.addEventListener('click',async e=>{
 
-const t=e.target.closest('button');
-const menu=$('#menu');
+  const t=e.target.closest('button');
+  const menu=$('#menu');
 
-const open=
-  menu&&
-  menu.classList.contains('open');
+  const open=
+    menu&&menu.classList.contains('open');
 
-if(
-  open &&
-  !(t&&t.classList.contains('opt'))
-){
-  menu.classList.remove('open');
-}
+  if(
+    open&&
+    !(t&&t.classList.contains('opt'))
+  ){
+    menu.classList.remove('open');
+  }
 
-if(!t)return;
+  if(!t)return;
 
-const D=t.dataset;
+  const D=t.dataset;
 
-
-/* MENÚ */
-
-if(t.classList.contains('opt')){
-
-  if(!open){
-    menu.classList.add('open');
+  if(t.id==='googleLogin'){
+    await signInWithGoogle();
     return;
   }
 
-  return go(D.go);
-}
-
-
-/* NAVEGACIÓN */
-
-if(D.go)return go(D.go);
-
-
-/* CALENDARIO */
-
-if(D.day){
-
-  S.day=D.day;
-
-  return go('day');
-}
-
-
-/* LISTA */
-
-if(D.open!==undefined){
-
-  S.cur=+D.open;
-
-  return go('list');
-}
-
-
-/* COMPLETAR */
-
-if(D.done){
-
-  const x=S.todos.find(
-    i=>i.id==D.done
-  );
-
-  if(x){
-    x.done=!x.done;
-    await save();
+  if(t.hasAttribute('data-logout')){
+    await signOut();
+    return;
   }
 
-  return keep();
-}
+  if(t.classList.contains('opt')){
 
+    if(!open){
+      menu.classList.add('open');
+      return;
+    }
 
-/* ELIMINAR TO-DO */
+    return go(D.go);
+  }
 
-if(D.del){
+  if(D.go)return go(D.go);
 
-  S.todos=S.todos.filter(
-    i=>i.id!=D.del
-  );
+  if(D.day){
 
-  await save();
+    S.day=D.day;
 
-  return keep();
-}
+    return go('day');
+  }
 
+  if(D.open!==undefined){
 
-/* ELIMINAR NOTA */
+    S.cur=+D.open;
 
-if(D.delnote){
+    return go('list');
+  }
 
-  S.notes=S.notes.filter(
-    i=>i.id!=D.delnote
-  );
+  if(D.done){
 
-  await save();
+    const x=S.todos.find(i=>i.id===D.done);
 
-  return render();
-}
+    if(!x)return;
 
+    x.done=!x.done;
 
-/* PASAR NOTA A TO-DO */
+    await saveTodo(x);
 
-if(D.n2t){
+    return keep();
+  }
 
-  const n=S.notes.find(
-    i=>i.id==D.n2t
-  );
+  if(D.del){
 
-  if(n){
+    S.todos=S.todos.filter(i=>i.id!==D.del);
 
-    S.todos.push({
-      id:Date.now(),
+    await deleteTodo(D.del);
+
+    return keep();
+  }
+
+  if(D.delnote){
+
+    S.notes=S.notes.filter(i=>i.id!==D.delnote);
+
+    await deleteNote(D.delnote);
+
+    return render();
+  }
+
+  if(D.n2t){
+
+    const n=S.notes.find(i=>i.id===D.n2t);
+
+    if(!n)return;
+
+    const todo={
+      id:crypto.randomUUID(),
       title:n.text.slice(0,120),
-      list:S.lists[0].name,
+      list:S.lists[0]?.name||'Personal',
       sec:'',
       due:key(new Date()),
       time:'',
       done:false
-    });
+    };
 
-    S.notes=S.notes.filter(
-      i=>i!==n
+    S.todos.push(todo);
+    S.notes=S.notes.filter(i=>i!==n);
+
+    await saveTodo(todo);
+    await deleteNote(n.id);
+
+    return keep();
+  }
+
+  if(t.hasAttribute('data-addnote')){
+
+    const v=$('#nt').value.trim();
+
+    if(!v){
+      $('#nt').focus();
+      return;
+    }
+
+    const note={
+      id:crypto.randomUUID(),
+      text:v
+    };
+
+    S.notes.unshift(note);
+
+    await saveNote(note);
+
+    return render();
+  }
+
+  if(t.hasAttribute('data-newlist')){
+
+    const v=$('#nl').value.trim();
+
+    if(
+      !v||
+      S.lists.some(l=>l.name===v)
+    ){
+      $('#nl').focus();
+      return;
+    }
+
+    const list={
+      name:v,
+      secs:[]
+    };
+
+    await saveList(list);
+
+    S.lists.push(list);
+
+    return render();
+  }
+
+  if(D.addt!==undefined){
+
+    const l=S.lists[S.cur];
+
+    if(!l)return;
+
+    const input=t.previousElementSibling;
+    const v=input.value.trim();
+
+    if(!v){
+      input.focus();
+      return;
+    }
+
+    const todo={
+      id:crypto.randomUUID(),
+      title:v,
+      list:l.name,
+      sec:['',...l.secs][+D.addt],
+      due:'',
+      time:'',
+      done:false
+    };
+
+    S.todos.push(todo);
+
+    await saveTodo(todo);
+
+    return keep();
+  }
+
+  if(t.hasAttribute('data-addsec')){
+
+    const l=S.lists[S.cur];
+
+    if(!l)return;
+
+    const input=t.previousElementSibling;
+    const v=input.value.trim();
+
+    if(
+      !v||
+      l.secs.includes(v)
+    ){
+      input.focus();
+      return;
+    }
+
+    l.secs.push(v);
+
+    await saveList(l);
+
+    return keep();
+  }
+
+  if(t.hasAttribute('data-dellist')){
+
+    const l=S.lists[S.cur];
+
+    if(
+      !l||
+      S.lists.length<2||
+      !confirm('¿Eliminar "'+l.name+'" y sus tareas?')
+    ){
+      return;
+    }
+
+    const oldTodos=S.todos.filter(
+      x=>x.list===l.name
     );
 
-    await save();
+    S.todos=S.todos.filter(
+      x=>x.list!==l.name
+    );
+
+    for(const todo of oldTodos){
+      await deleteTodo(todo.id);
+    }
+
+    await deleteList(l.id);
+
+    S.lists.splice(S.cur,1);
+
+    return go('lists');
   }
-
-  return keep();
-}
-
-
-/* NUEVA NOTA */
-
-if(t.hasAttribute('data-addnote')){
-
-  const v=$('#nt').value.trim();
-
-  if(v){
-
-    S.notes.unshift({
-      id:Date.now(),
-      text:v
-    });
-
-    await save();
-
-    render();
-  }
-
-  return;
-}
-
-
-/* NUEVA LISTA */
-
-if(t.hasAttribute('data-newlist')){
-
-  const v=$('#nl').value.trim();
 
   if(
-    !v||
-    S.lists.some(l=>l.name===v)
-  ){
-    $('#nl').focus();
-    return;
-  }
-
-  S.lists.push({
-    name:v,
-    secs:[]
-  });
-
-  await save();
-
-  return render();
-}
-
-
-/* NUEVA TAREA DENTRO DE LISTA */
-
-if(D.addt!==undefined){
-
-  const l=S.lists[S.cur];
-
-  const v=
-    t.previousElementSibling.value.trim();
-
-  if(!v){
-
-    t.previousElementSibling.focus();
-
-    return;
-  }
-
-  S.todos.push({
-    id:Date.now(),
-    title:v,
-    list:l.name,
-    sec:['',...l.secs][+D.addt],
-    due:'',
-    time:'',
-    done:false
-  });
-
-  await save();
-
-  return keep();
-}
-
-
-/* NUEVO SUBTÍTULO */
-
-if(t.hasAttribute('data-addsec')){
-
-  const l=S.lists[S.cur];
-
-  const v=
-    t.previousElementSibling.value.trim();
-
-  if(
-    !v||
-    l.secs.includes(v)
+    t.hasAttribute('data-addtodo')||
+    t.hasAttribute('data-addday')
   ){
 
-    t.previousElementSibling.focus();
+    const v=$('#ti').value.trim();
+
+    if(!v){
+      $('#ti').focus();
+      return;
+    }
+
+    const inDay=t.hasAttribute('data-addday');
+
+    const todo={
+      id:crypto.randomUUID(),
+      title:v,
+      list:$('#tl').value,
+      sec:'',
+      due:inDay
+        ?S.day
+        :($('#td').value||key(new Date())),
+      time:$('#tt').value,
+      done:false
+    };
+
+    S.todos.push(todo);
+
+    await saveTodo(todo);
+
+    return inDay
+      ?render()
+      :go('home');
+  }
+
+  if(t.hasAttribute('data-theme')){
+
+    const r=document.documentElement;
+
+    const d=
+      getComputedStyle(r)
+        .getPropertyValue('--bg')
+        .trim()==='#000';
+
+    r.dataset.theme=d?'light':'dark';
 
     return;
   }
-
-  l.secs.push(v);
-
-  await save();
-
-  return keep();
-}
-
-
-/* ELIMINAR LISTA */
-
-if(t.hasAttribute('data-dellist')){
-
-  const l=S.lists[S.cur];
-
-  if(
-    S.lists.length<2||
-    !confirm(
-      '¿Eliminar "'+
-      l.name+
-      '" y sus tareas?'
-    )
-  ){
-    return;
-  }
-
-  S.todos=S.todos.filter(
-    x=>x.list!==l.name
-  );
-
-  S.lists.splice(
-    S.cur,
-    1
-  );
-
-  await save();
-
-  return go('lists');
-}
-
-
-/* NUEVO TO-DO */
-
-if(
-  t.hasAttribute('data-addtodo')||
-  t.hasAttribute('data-addday')
-){
-
-  const v=$('#ti').value.trim();
-
-  if(!v){
-
-    $('#ti').focus();
-
-    return;
-  }
-
-  const inDay=
-    t.hasAttribute('data-addday');
-
-  S.todos.push({
-    id:Date.now(),
-    title:v,
-    list:$('#tl').value,
-    sec:'',
-    due:
-      inDay
-      ?S.day
-      :($('#td').value||key(new Date())),
-    time:$('#tt').value,
-    done:false
-  });
-
-  await save();
-
-  return inDay
-    ?render()
-    :go('home');
-}
-
-
-/* CAMBIAR TEMA */
-
-if(t.hasAttribute('data-theme')){
-
-  const r=document.documentElement;
-
-  const d=
-    getComputedStyle(r)
-      .getPropertyValue('--bg')
-      .trim()==='#000';
-
-  r.dataset.theme=
-    d
-    ?'light'
-    :'dark';
-}
 
 });
 
 
-/* ESC */
+/* =========================================================
+   AUTH STATE
+   ========================================================= */
 
-document.addEventListener(
-  'keydown',
-  e=>{
-    if(e.key==='Escape'){
-      $('#menu')?.classList.remove('open');
+supabase.auth.onAuthStateChange(
+  async(event,session)=>{
+
+    if(session?.user){
+
+      S.user=session.user;
+
+      $('#auth').classList.remove('show');
+
+      if(!cloudReady){
+
+        await loadCloud();
+
+        await migrateLocalData();
+
+      }else{
+
+        render();
+
+      }
+
+    }else{
+
+      S.user=null;
+
+      $('#auth').classList.add('show');
     }
+
   }
 );
 
 
-/* ACTUALIZACIÓN AUTOMÁTICA */
+/* =========================================================
+   INICIO
+   ========================================================= */
+
+async function init(){
+
+  const {
+    data:{
+      session
+    }
+  }=await supabase.auth.getSession();
+
+  if(session?.user){
+
+    S.user=session.user;
+
+    $('#auth').classList.remove('show');
+
+    await loadCloud();
+
+    await migrateLocalData();
+
+  }else{
+
+    $('#auth').classList.add('show');
+  }
+
+}
+
+document.addEventListener('keydown',e=>{
+
+  if(e.key==='Escape'){
+    $('#menu')?.classList.remove('open');
+  }
+
+});
 
 setInterval(()=>{
 
   if(
     S.view==='home' &&
-    !$('#menu').classList.contains('open')
+    !$('#menu')?.classList.contains('open')
   ){
     keep();
   }
 
 },60000);
 
-
-/* =========================================================
-   INICIO DE NOVA LIST
-========================================================= */
-
-(async function(){
-
-  /*
-    Primero recuperamos los datos.
-    Después mostramos la aplicación.
-  */
-
-  await loadData();
-
-  render();
-
-})();
+init();
 
 </script>
-
 </body>
 </html>
+```
