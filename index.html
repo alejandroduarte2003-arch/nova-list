@@ -115,4 +115,79 @@ const stat=n=>{const a=S.todos.filter(t=>t.list===n),d=a.filter(t=>t.done).lengt
 const bar=p=>`<div class="bar" role="progressbar" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100"><i style="width:${p}%;background:hsl(${p*1.2} 75% 45%)"></i></div>`;
 const opts=[['lists','Mis listas',-22],['settings','Ajustes',-11],['about','Acerca de',0]];
 
-function head(){return `<header><div><h1>Nova-List</h1><div
+function head(){return `<header><div><h1>Nova-List</h1><div class="sub">una app de INCOROVA</div></div>
+<div class="menu" id="menu"><div class="scrim"></div>${opts.map((o,i)=>`<button class="opt" style="--i:${i};--dx:${o[2]}" data-go="${o[0]}" aria-label="${o[1]}"><span class="lb">${o[1]}</span><span class="ln"></span><i></i></button>`).join('')}</div></header>`}
+
+function calendar(){const n=new Date(),y=n.getFullYear(),m=n.getMonth(),first=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate();
+const due=new Set(S.todos.map(t=>t.due).filter(Boolean));let c='';['D','L','M','M','J','V','S'].forEach(d=>c+=`<b>${d}</b>`);
+for(let i=0;i<first;i++)c+='<span></span>';
+for(let d=1;d<=dim;d++){const k=key(new Date(y,m,d));c+=`<button data-day="${k}" aria-label="Día ${d}" class="${d===n.getDate()?'today':''} ${due.has(k)?'has':''}">${d}</button>`}
+return `<div class="cal"><h3>${(m=>m[0].toUpperCase()+m.slice(1))(n.toLocaleDateString('es',{month:'long',year:'numeric'}))}</h3><div class="grid">${c}</div></div>`}
+
+function items(a,empty){return a.length?a.map(t=>`<div class="item"><button class="chk ${t.done?'on':''}" data-done="${t.id}" aria-label="Completar"></button><div style="${t.done?'text-decoration:line-through;color:var(--mut)':''}">${esc(t.title)}<small>${esc(t.list)}${t.sec?' › '+esc(t.sec):''}${t.due?' · '+t.due+(t.time?' '+t.time:''):''}</small></div><button class="x" data-del="${t.id}" aria-label="Eliminar">×</button></div>`).join(''):(empty?`<p class="empty">${empty}</p>`:'')}
+const page=(t,b)=>head()+`<div style="margin-top:28px"><button class="back" data-go="home">← Inicio</button><h2>${t}</h2>${b}</div>`;
+const listSel=()=>`<select id="tl">${S.lists.map(l=>`<option>${esc(l.name)}</option>`).join('')}</select>`;
+
+const V={
+home:()=>{const o=overdue().length;return head()+`<div class="greet">${greeting()}</div>
+<div class="row">${calendar()}<div class="ov"><h3>Mis listas</h3>${S.lists.map(l=>`<p>${esc(l.name)}<span>${stat(l.name).total}</span></p>`).join('')}</div></div>
+<button class="big" data-go="today"><span class="lbl">Hoy${o?`<b class="bdg" aria-label="${o} vencidos">${o>99?'99+':o}</b>`:''}</span>${arrow}</button><button class="big" data-go="soon">Próximamente ${arrow}</button>`},
+today:()=>{const o=overdue(),t=today();return page('Hoy',(o.length?`<h3 class="sec late" style="margin-top:0">Vencidos</h3>${items(o)}`:'')+`<h3 class="sec" ${o.length?'':'style="margin-top:0"'}>Para hoy</h3>`+items(t,'No tienes más pendientes para hoy.'))},
+soon:()=>page('Próximamente',items(soon(),'Nada vence en las próximas 48 horas.')),
+notes:()=>page('Notas rápidas',`<textarea id="nt" placeholder="Escribe una nota"></textarea><button class="pri" data-addnote>Guardar nota</button>`+(S.notes.map(n=>`<div class="note"><span>${esc(n.text)}</span><button class="x" data-delnote="${n.id}" aria-label="Eliminar">×</button></div>`).join('')||'<p class="empty">Aún no hay notas.</p>')),
+new:()=>page('Nuevo to-do',`<input id="ti" placeholder="¿Qué hay que hacer?">${listSel()}<input id="td" type="date" value="${key(new Date())}"><input id="tt" type="time"><button class="pri" data-addtodo>Agregar to-do</button>`),
+plan:()=>{const o=overdue().length,pend=S.todos.filter(t=>!t.done).length,hoy=today().filter(t=>!t.done).length;
+ return page('Planificador',`<div class="stats"><div class="stat"><b>${pend}</b><span>Pendientes</span></div><div class="stat"><b>${hoy}</b><span>Para hoy</span></div><div class="stat"><b class="${o?'late':''}">${o}</b><span>Vencidos</span></div></div>
+<div class="dash">
+<section class="panel"><h3>Dar seguimiento<span>vencidos</span></h3>${items(overdue(),'Todo al día.')}</section>
+<section class="panel"><h3>Lo más próximo<span>por fecha</span></h3>${items(upcoming(),'Sin pendientes con fecha.')}</section>
+<section class="panel"><h3>Listas<span>% completado</span></h3>${S.lists.map((l,i)=>{const s=stat(l.name);return `<button class="lst" data-open="${i}"><div>${esc(l.name)}<span>${s.done}/${s.total} · ${s.p}%</span></div>${bar(s.p)}</button>`}).join('')}</section>
+<section class="panel"><h3>Notas rápidas<span>${S.notes.length}</span></h3>${S.notes.slice(0,5).map(n=>`<div class="item"><span style="white-space:pre-wrap;min-width:0;overflow-wrap:anywhere">${esc(n.text)}</span><button class="n2t" data-n2t="${n.id}">Pasar a to-do</button></div>`).join('')||'<p class="empty">Aún no hay notas.</p>'}</section>
+</div>`)},
+day:()=>{const [y,m,d]=S.day.split('-').map(Number);let l=new Date(y,m-1,d).toLocaleDateString('es',{weekday:'long',day:'numeric',month:'long'});l=l[0].toUpperCase()+l.slice(1);
+ const a=S.todos.filter(t=>t.due===S.day).sort((p,q)=>(p.time||'').localeCompare(q.time||''));
+ return page(l,items(a,'No hay pendientes este día.')+`<h3 class="sec">Nuevo to-do para este día</h3><input id="ti" placeholder="¿Qué hay que hacer?">${listSel()}<input id="tt" type="time" aria-label="Hora"><button class="pri" data-addday>Agregar to-do</button>`)},
+lists:()=>page('Mis listas',`<div class="add"><input id="nl" placeholder="Nueva lista"><button data-newlist aria-label="Crear lista">+</button></div>`+S.lists.map((l,i)=>{const s=stat(l.name);return `<button class="lst" data-open="${i}"><div>${esc(l.name)}<span>${s.done}/${s.total} · ${s.p}%</span></div>${bar(s.p)}</button>`}).join('')),
+list:()=>{const l=S.lists[S.cur],s=stat(l.name),gs=['',...l.secs];
+ return page(esc(l.name),`<div>${bar(s.p)}<p class="sub">${s.done} de ${s.total} completadas · ${s.p}%</p></div>`+gs.map((g,i)=>{const a=S.todos.filter(t=>t.list===l.name&&(t.sec||'')===g);
+  return (g||l.secs.length||a.length?`<h3 class="sec">${g?esc(g):'Sin subtítulo'}</h3>`:'')+items(a)+`<div class="add"><input placeholder="Agregar tarea"><button data-addt="${i}" aria-label="Agregar tarea">+</button></div>`}).join('')
+  +`<h3 class="sec">Nuevo subtítulo</h3><div class="add"><input placeholder="Ej. Esta semana"><button data-addsec aria-label="Crear subtítulo">+</button></div><p style="margin-top:32px"><button class="pri" data-go="lists">Listo</button></p><p style="margin-top:28px"><button class="n2t" data-dellist>Eliminar esta lista</button></p>`)},
+settings:()=>page('Ajustes',`<button class="pri" data-theme>Cambiar claro / oscuro</button>`),
+about:()=>page('Acerca de',`<p>Nova-List es una app de INCOROVA para ordenar notas, pendientes y planes en un solo lugar.</p>`)
+};
+
+function render(){$('#app').innerHTML=V[S.view]();window.scrollTo(0,0)}
+function go(v){S.view=v;render()}
+const keep=()=>{const y=window.scrollY;$('#app').innerHTML=V[S.view]();window.scrollTo(0,y)};
+
+document.addEventListener('click',e=>{
+ const t=e.target.closest('button'),menu=$('#menu');
+ const open=menu&&menu.classList.contains('open');
+ if(open&&!(t&&t.classList.contains('opt')))menu.classList.remove('open');
+ if(!t)return;
+ const D=t.dataset;
+ if(t.classList.contains('opt')){if(!open){menu.classList.add('open');return}return go(D.go)}
+ if(D.go)return go(D.go);
+ if(D.day){S.day=D.day;return go('day')}
+ if(D.open!==undefined){S.cur=+D.open;return go('list')}
+ if(D.done){const x=S.todos.find(i=>i.id==D.done);x.done=!x.done;save();return keep()}
+ if(D.del){S.todos=S.todos.filter(i=>i.id!=D.del);save();return keep()}
+ if(D.delnote){S.notes=S.notes.filter(i=>i.id!=D.delnote);save();return render()}
+ if(D.n2t){const n=S.notes.find(i=>i.id==D.n2t);S.todos.push({id:Date.now(),title:n.text.slice(0,120),list:S.lists[0].name,sec:'',due:key(new Date()),time:'',done:false});S.notes=S.notes.filter(i=>i!==n);save();return keep()}
+ if(t.hasAttribute('data-addnote')){const v=$('#nt').value.trim();if(v){S.notes.unshift({id:Date.now(),text:v});save();render()}return}
+ if(t.hasAttribute('data-newlist')){const v=$('#nl').value.trim();if(!v||S.lists.some(l=>l.name===v)){$('#nl').focus();return}S.lists.push({name:v,secs:[]});save();return render()}
+ if(D.addt!==undefined){const l=S.lists[S.cur],v=t.previousElementSibling.value.trim();if(!v){t.previousElementSibling.focus();return}
+  S.todos.push({id:Date.now(),title:v,list:l.name,sec:['',...l.secs][+D.addt],due:'',time:'',done:false});save();return keep()}
+ if(t.hasAttribute('data-addsec')){const l=S.lists[S.cur],v=t.previousElementSibling.value.trim();if(!v||l.secs.includes(v)){t.previousElementSibling.focus();return}l.secs.push(v);save();return keep()}
+ if(t.hasAttribute('data-dellist')){const l=S.lists[S.cur];if(S.lists.length<2||!confirm('¿Eliminar "'+l.name+'" y sus tareas?'))return;S.todos=S.todos.filter(x=>x.list!==l.name);S.lists.splice(S.cur,1);save();return go('lists')}
+ if(t.hasAttribute('data-addtodo')||t.hasAttribute('data-addday')){const v=$('#ti').value.trim();if(!v){$('#ti').focus();return}
+  const inDay=t.hasAttribute('data-addday');
+  S.todos.push({id:Date.now(),title:v,list:$('#tl').value,sec:'',due:inDay?S.day:($('#td').value||key(new Date())),time:$('#tt').value,done:false});save();return inDay?render():go('home')}
+ if(t.hasAttribute('data-theme')){const r=document.documentElement,d=getComputedStyle(r).getPropertyValue('--bg').trim()==='#000';r.dataset.theme=d?'light':'dark'}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#menu')?.classList.remove('open')});
+setInterval(()=>{if(S.view==='home'&&!$('#menu').classList.contains('open'))keep()},60000);
+render();
+</script>
+</body>
+</html>
