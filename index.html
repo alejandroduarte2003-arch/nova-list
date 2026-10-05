@@ -22,10 +22,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
 h1{font-weight:800;font-size:clamp(28px,7vw,38px);letter-spacing:-.04em;line-height:1}
 .sub{font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-top:10px}
-.hello{margin:clamp(40px,10vw,64px) 0 clamp(26px,6vw,38px)}
-.hello p{font-size:clamp(15px,4vw,18px);color:var(--mut);font-weight:400}
-.hello h2{font-size:clamp(32px,9vw,46px);font-weight:300;letter-spacing:-.035em;line-height:1.08;margin:6px 0 0;overflow-wrap:anywhere}
-.hello h2 b{font-weight:800}
+.hi{font-size:clamp(13px,3.6vw,15px);font-weight:500;margin-top:6px;overflow-wrap:anywhere}
+.row.first{margin-top:clamp(32px,8vw,48px)}
 /* menú */
 .menu{position:relative;width:34px;height:34px;flex:none;z-index:20}
 .scrim{position:fixed;inset:0;z-index:-1;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .3s}
@@ -46,9 +44,10 @@ h1{font-weight:800;font-size:clamp(28px,7vw,38px);letter-spacing:-.04em;line-hei
 .grid button{aspect-ratio:1;padding:0;border-radius:50%;font-size:inherit;position:relative;text-align:center}
 .grid .today{background:var(--fg);color:var(--bg)}
 .grid .has::after{content:"";position:absolute;bottom:2px;left:50%;width:3px;height:3px;margin-left:-1.5px;border-radius:50%;background:currentColor}
-.ov{flex:1;min-width:0;background:var(--card);border-radius:20px;padding:clamp(12px,3vw,18px);font-size:clamp(12px,3.2vw,15px);display:flex;flex-direction:column;gap:10px}
-.ov p{display:flex;justify-content:space-between;gap:6px}.ov span{color:var(--mut)}
-.ov h3{font-size:inherit;font-weight:600}
+.ov{flex:1;min-width:0;background:var(--card);border-radius:20px;padding:clamp(12px,3vw,18px);font-size:clamp(12px,3.2vw,15px);display:flex;flex-direction:column;gap:10px;text-align:left;transition:transform .2s}
+.ov:active{transform:scale(.97)}
+.ov .h{display:flex;justify-content:space-between;font-weight:600}
+.ov .r{display:flex;justify-content:space-between;gap:6px}.ov em{font-style:normal;color:var(--mut)}
 .big{display:flex;justify-content:space-between;align-items:center;width:100%;padding:20px 4px;border-bottom:1px solid var(--line);font-size:clamp(19px,5vw,24px);font-weight:600;letter-spacing:-.02em}
 .big svg{width:22px;height:22px}
 .big:first-of-type{margin-top:clamp(22px,5vw,32px);border-top:1px solid var(--line)}
@@ -119,6 +118,37 @@ textarea{min-height:90px;resize:vertical}
 .authbox .authsmall{margin:18px 0 0;font-size:12px}
 .loading{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:200;font-size:14px;font-weight:800;letter-spacing:-.02em}
 .loading.hide{display:none}
+/* planificador cuadrado */
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,2.5vw,16px)}
+.tile{aspect-ratio:1;background:var(--card);border-radius:clamp(18px,5vw,26px);padding:clamp(12px,3.5vw,20px);display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;text-align:left;transition:transform .2s,background .3s,color .3s}
+.tile b{font-size:clamp(32px,11vw,56px);font-weight:800;letter-spacing:-.05em;line-height:1}
+.tile span{font-size:clamp(11px,3vw,14px);font-weight:600}
+.tile.on{background:var(--fg);color:var(--bg)}
+.tile.warn:not(.on) b{color:var(--red)}
+.tile:active{transform:scale(.96)}
+@media (min-width:700px){.tile{aspect-ratio:1.5}}
+.lgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:10px}
+@media (min-width:700px){.lgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.lgrid .lst{background:var(--bg);border-radius:16px;padding:14px;border:0}
+.lgrid .lst div{flex-direction:column;gap:2px}
+/* animaciones */
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#app.in{animation:rise .38s cubic-bezier(.2,.8,.2,1)}
+.saved{position:fixed;left:50%;top:50%;width:108px;height:108px;margin:-54px 0 0 -54px;border-radius:50%;display:grid;place-items:center;background:var(--glass);-webkit-backdrop-filter:blur(24px) saturate(190%);backdrop-filter:blur(24px) saturate(190%);border:1px solid var(--gb);box-shadow:0 16px 40px var(--sh),inset 0 1px 0 var(--hl);z-index:300;opacity:0;pointer-events:none}
+.saved svg{position:absolute;width:52px;height:52px;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.saved .st{stroke:var(--fg);stroke-width:1.6;opacity:0}
+.saved .ck{stroke:#34c759;stroke-width:2.4;opacity:0}
+.saved .ck path{stroke-dasharray:24;stroke-dashoffset:24}
+.saved .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.saved.go{animation:svBox 1.7s ease forwards}
+.saved.go .st{animation:svStar 1.7s ease forwards}
+.saved.go .ck{animation:svCk 1.7s ease forwards}
+.saved.go .ck path{animation:svDraw 1.7s ease forwards}
+@keyframes svBox{0%{opacity:0;transform:scale(.7)}12%{opacity:1;transform:scale(1)}86%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.94)}}
+@keyframes svStar{0%{opacity:1;transform:rotate(0) scale(.6)}12%{transform:rotate(60deg) scale(1)}38%{opacity:1;transform:rotate(600deg) scale(1)}46%{opacity:0;transform:rotate(760deg) scale(.2)}100%{opacity:0}}
+@keyframes svCk{0%,40%{opacity:0;transform:scale(.5)}52%{opacity:1;transform:scale(1.12)}60%,100%{opacity:1;transform:scale(1)}}
+@keyframes svDraw{0%,42%{stroke-dashoffset:24}60%,100%{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.saved .st{display:none}#app.in{animation:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -133,6 +163,7 @@ textarea{min-height:90px;resize:vertical}
   <p class="authsmall">Tus listas, notas y pendientes se guardarán en tu cuenta.</p>
 </div></div>
 <div id="app"></div>
+<div id="saved" class="saved"><svg class="st" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3Q12 12 21 12Q12 12 12 21Q12 12 3 12Q12 12 12 3Z"/></svg><svg class="ck" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr" role="status"></span></div>
 <nav aria-label="Principal">
   <button data-go="notes"><svg viewBox="0 0 24 24"><path d="M5 4h14v10l-5 6H5z"/><path d="M14 20v-6h5"/><path d="M8 9h8M8 13h4"/></svg>Notas rápidas</button>
   <button data-go="new"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6Q12 12 18 12Q12 12 12 18Q12 12 6 12Q12 12 12 6Z"/></svg>Nuevo to-do</button>
@@ -145,7 +176,7 @@ const sb=createClient('https://udvxmrbqymhrlaiojzex.supabase.co','sb_publishable
 /* ---------- estado y utilidades ---------- */
 const $=s=>document.querySelector(s);
 const DEF=['Personal','Trabajo','Compras'];
-const S={todos:[],notes:[],lists:DEF.map(name=>({name,secs:[]})),view:'home',day:null,cur:0,user:null,conv:null};
+const S={todos:[],notes:[],lists:DEF.map(name=>({name,secs:[]})),view:'home',day:null,cur:0,user:null,conv:null,pp:null,adding:false};
 let cloudReady=false,asking=false;
 const arrow='<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 const sd=d=>new Date(d.getFullYear(),d.getMonth(),d.getDate());
@@ -239,7 +270,7 @@ async function migrateLocalData(){
 }
 
 /* ---------- componentes ---------- */
-function head(){return `<header><div><h1>Nova-List</h1><div class="sub">una app de INCOROVA</div></div>
+function head(){return `<header><div><h1>Nova-List</h1><div class="sub">una app de INCOROVA</div>${S.view==='home'?`<div class="hi">${hello()}${getUserName()?', '+esc(getUserName()):''}</div>`:''}</div>
 <div class="menu" id="menu"><div class="scrim"></div>${opts.map((o,i)=>`<button class="opt" style="--i:${i};--dx:${o[2]}" data-go="${o[0]}" aria-label="${o[1]}"><span class="lb">${o[1]}</span><span class="ln"></span><i></i></button>`).join('')}</div></header>`}
 
 function calendar(){
@@ -281,46 +312,48 @@ async function createListFromTodo(){
 /* ---------- vistas ---------- */
 const V={
 home:()=>{const o=overdue().length,nm=getUserName();
-  return head()+`<section class="hello"><p>${hello()}${nm?',':''}</p>${nm?`<h2><b>${esc(nm)}</b></h2>`:''}</section>
-<div class="row">${calendar()}<div class="ov"><h3>Mis listas</h3>${S.lists.map(l=>`<p>${esc(l.name)}<span>${stat(l.name).total}</span></p>`).join('')}</div></div>
+  return head()+`<div class="row first">${calendar()}<button class="ov" data-go="lists" aria-label="Abrir mis listas"><span class="h">Mis listas<span aria-hidden="true">›</span></span>${S.lists.map(l=>`<span class="r">${esc(l.name)}<em>${stat(l.name).total}</em></span>`).join('')}</button></div>
 <button class="big" data-go="today"><span class="lbl">Hoy${o?`<b class="bdg" aria-label="${o} vencidos">${o>99?'99+':o}</b>`:''}</span>${arrow}</button>
 <button class="big" data-go="soon">Próximamente ${arrow}</button>`},
 today:()=>{const o=overdue();return page('Hoy',(o.length?`<h3 class="sec late" style="margin-top:0">Vencidos</h3>${items(o)}`:'')+`<h3 class="sec" ${o.length?'':'style="margin-top:0"'}>Para hoy</h3>`+items(today(),'No tienes más pendientes para hoy.'))},
 soon:()=>page('Próximamente',items(soon(),'Nada vence en las próximas 48 horas.')),
 notes:()=>page('Notas rápidas',`<textarea id="nt" placeholder="Escribe una nota"></textarea><button class="pri" data-addnote>Guardar nota</button><div style="margin-top:24px">${S.notes.map(noteRow).join('')||'<p class="empty">Aún no hay notas.</p>'}</div>`),
 new:()=>page('Nuevo to-do',`<input id="ti" placeholder="¿Qué hay que hacer?">${listSel()}<input id="td" type="date" value="${key(new Date())}"><input id="tt" type="time"><button class="pri" data-addtodo>Agregar to-do</button>`),
-plan:()=>{const o=overdue().length,pend=S.todos.filter(t=>!t.done).length,hoy=S.todos.filter(t=>!t.done&&t.due===key(new Date())).length,a=dueSoon(),b=soon().filter(t=>!t.done).sort((x,y)=>at(x)-at(y));
-  return page('Planificador',`<div class="stats"><div class="stat"><b>${pend}</b><span>Pendientes</span></div><div class="stat"><b>${hoy}</b><span>Para hoy</span></div><div class="stat"><b class="${o?'late':''}">${o}</b><span>Vencidos</span></div></div>
-<div class="dash">
-<section class="panel"><h3>Próximas a vencer<span>vencidas y de hoy</span></h3>${items(a,'Todo al día.')}</section>
-<section class="panel"><h3>Próximas 48 horas<span>mañana y pasado</span></h3>${items(b,'Nada vence en 48 horas.')}</section>
-<section class="panel wide"><h3>Notas<span>${S.notes.length} por organizar</span></h3>
+plan:()=>{const L=overdue(),T=S.todos.filter(t=>!t.done&&t.due===key(new Date())&&!isLate(t)).sort((x,y)=>at(x)-at(y)),N=soon().filter(t=>!t.done).sort((x,y)=>at(x)-at(y));
+  const sel=S.pp||(L.length?'late':'today');
+  const G={late:['Vencidas',L,'Nada vencido. ¡Buen trabajo!'],today:['Hoy',T,'Nada más para hoy.'],soon:['Próximas 48 horas',N,'Nada vence en 48 horas.']};
+  const tile=(k,lab)=>`<button class="tile ${sel===k?'on':''} ${k==='late'&&L.length?'warn':''}" data-pp="${k}" aria-pressed="${sel===k}"><b>${G[k][1].length}</b><span>${lab}</span></button>`;
+  return page('Planificador',`<div class="tiles">${tile('late','Vencidas')}${tile('today','Hoy')}${tile('soon','48 horas')}</div>
+<div class="dash" style="margin-top:clamp(14px,3vw,20px)">
+<section class="panel"><h3>${G[sel][0]}<span>${G[sel][1].length}</span></h3>${items(G[sel][1],G[sel][2])}</section>
+<section class="panel"><h3>Notas<span>${S.notes.length} por organizar</span></h3>
 <div class="cap"><input id="qn" placeholder="Captura una idea…" aria-label="Nueva nota"><button data-qnote aria-label="Guardar nota">+</button></div>
-${S.notes.map(noteRow).join('')||'<p class="empty">Captura una nota y conviértela en to-do cuando estés listo.</p>'}</section>
-<section class="panel wide"><h3>Listas<span>% completado</span></h3>${S.lists.map((l,i)=>{const s=stat(l.name);return `<button class="lst" data-open="${i}"><div>${esc(l.name)}<span>${s.done}/${s.total} · ${s.p}%</span></div>${bar(s.p)}</button>`}).join('')}</section>
+${S.notes.slice(0,3).map(noteRow).join('')||'<p class="empty">Captura una nota y conviértela en to-do cuando estés listo.</p>'}${S.notes.length>3?`<button class="n2t" data-go="notes" style="margin-top:8px">Ver todas (${S.notes.length})</button>`:''}</section>
+<section class="panel wide"><h3>Listas<span>% completado</span></h3><div class="lgrid">${S.lists.map((l,i)=>{const s=stat(l.name);return `<button class="lst" data-open="${i}"><div>${esc(l.name)}<span>${s.done}/${s.total} · ${s.p}%</span></div>${bar(s.p)}</button>`}).join('')}</div></section>
 </div>`)},
 day:()=>{const [y,m,d]=S.day.split('-').map(Number);let l=new Date(y,m-1,d).toLocaleDateString('es',{weekday:'long',day:'numeric',month:'long'});l=l[0].toUpperCase()+l.slice(1);
   const a=S.todos.filter(t=>t.due===S.day).sort((p,q)=>(p.time||'').localeCompare(q.time||''));
   return page(l,items(a,'No hay pendientes este día.')+`<h3 class="sec">Nuevo to-do para este día</h3><input id="ti" placeholder="¿Qué hay que hacer?">${listSel()}<input id="tt" type="time" aria-label="Hora"><button class="pri" data-addday>Agregar to-do</button>`)},
 lists:()=>page('Mis listas',`<div class="add"><input id="nl" placeholder="Nueva lista"><button data-newlist aria-label="Crear lista">+</button></div>`+S.lists.map((l,i)=>{const s=stat(l.name);return `<button class="lst" data-open="${i}"><div>${esc(l.name)}<span>${s.done}/${s.total} · ${s.p}%</span></div>${bar(s.p)}</button>`}).join('')),
 list:()=>{const l=S.lists[S.cur];if(!l){S.view='lists';return V.lists()}
-  const s=stat(l.name),gs=['',...l.secs];
-  return page(esc(l.name),`<div>${bar(s.p)}<p class="sub" style="text-transform:none;letter-spacing:0;font-size:13px">${s.done} de ${s.total} completadas · ${s.p}%</p></div>`
+  const s=stat(l.name),gs=['',...l.secs],ed=S.adding;
+  return page(esc(l.name),`<div>${bar(s.p)}<p class="sub" style="text-transform:none;letter-spacing:0;font-size:13px">${s.done} de ${s.total} completadas · ${s.p}%</p></div><button class="pri sm" data-adding style="margin-top:18px">${ed?'Cerrar':'+ Nueva tarea'}</button>`
+   +(!ed&&!s.total?'<p class="empty" style="margin-top:14px">Aún no hay tareas. Toca "Nueva tarea" para empezar.</p>':'')
    +gs.map((g,i)=>{const a=S.todos.filter(t=>t.list===l.name&&(t.sec||'')===g);
-     return (g||l.secs.length||a.length?`<h3 class="sec">${g?esc(g):'Sin subtítulo'}</h3>`:'')+items(a)+`<div class="add"><input placeholder="Agregar tarea"><button data-addt="${i}" aria-label="Agregar tarea">+</button></div>`}).join('')
-   +`<h3 class="sec">Nuevo subtítulo</h3><div class="add"><input placeholder="Ej. Esta semana"><button data-addsec aria-label="Crear subtítulo">+</button></div>
-<p style="margin-top:32px"><button class="pri" data-go="lists">Listo</button></p><p style="margin-top:28px"><button class="n2t" data-dellist>Eliminar esta lista</button></p>`)},
+     return (g||l.secs.length||a.length||ed?`<h3 class="sec">${g?esc(g):'Sin subtítulo'}</h3>`:'')+items(a)+(ed?`<div class="add"><input placeholder="Agregar tarea"><button data-addt="${i}" aria-label="Agregar tarea">+</button></div>`:'')}).join('')
+   +(ed?`<h3 class="sec">Nuevo subtítulo</h3><div class="add"><input placeholder="Ej. Esta semana"><button data-addsec aria-label="Crear subtítulo">+</button></div>`:'')
+   +`<p style="margin-top:32px"><button class="pri" data-go="lists">Listo</button></p><p style="margin-top:28px"><button class="n2t" data-dellist>Eliminar esta lista</button></p>`)},
 settings:()=>page('Ajustes',`<button class="pri" data-theme>Cambiar claro / oscuro</button><p style="margin-top:22px"><button class="n2t" data-changename>Cambiar nombre</button></p><p style="margin-top:28px"><button class="n2t" data-logout>Cerrar sesión</button></p>`),
 about:()=>page('Acerca de',`<p style="line-height:1.55">Nova-List es una app de INCOROVA para ordenar notas, pendientes y planes en un solo lugar.</p>`)
 };
 
-function render(){
-  try{$('#app').innerHTML=V[S.view]();window.scrollTo(0,0)}
+function render(anim){
+  try{$('#app').innerHTML=V[S.view]();window.scrollTo(0,0);if(anim){const a=$('#app');a.classList.remove('in');void a.offsetWidth;a.classList.add('in')}}
   catch(e){console.error('RENDER:',e);$('#app').innerHTML='<div style="padding-top:60px;text-align:center"><h2>Nova-List</h2><p style="color:var(--mut);margin-top:12px">Ocurrió un problema al cargar la interfaz.</p><button class="pri" style="margin-top:24px" onclick="location.reload()">Recargar</button></div>'}
   const grp={notes:'notes',new:'new',plan:'plan'}[S.view];
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===grp));
 }
-const go=v=>{S.view=v;S.conv=null;render()};
+const go=v=>{S.view=v;S.conv=null;S.adding=false;render(true)};
 const keep=()=>{const y=window.scrollY;render();window.scrollTo(0,y)};
 
 /* ---------- eventos ---------- */
@@ -339,16 +372,18 @@ document.addEventListener('click',async e=>{
   if(D.done){const x=S.todos.find(i=>i.id===D.done);if(!x)return;x.done=!x.done;keep();await saveTodo(x);return}
   if(D.del){S.todos=S.todos.filter(i=>i.id!==D.del);keep();await deleteTodo(D.del);return}
   if(D.delnote){S.notes=S.notes.filter(i=>i.id!==D.delnote);if(S.conv===D.delnote)S.conv=null;keep();await deleteNote(D.delnote);return}
+  if(D.pp){S.pp=D.pp;return keep()}
+  if(has('data-adding')){S.adding=!S.adding;return keep()}
   if(D.conv){S.conv=S.conv===D.conv?null:D.conv;return keep()}
   if(D.doconv){
     const n=S.notes.find(i=>i.id===D.doconv);if(!n)return;
     const todo={id:uuid(),title:n.text.trim().slice(0,120),list:$('#cl').value,sec:'',due:$('#cd').value||'',time:$('#ct').value||'',done:false};
     S.todos.push(todo);S.notes=S.notes.filter(i=>i!==n);S.conv=null;keep();
-    await saveTodo(todo);await deleteNote(n.id);return;
+    if(await saveTodo(todo))flash();await deleteNote(n.id);return;
   }
   if(has('data-addnote')||has('data-qnote')){
     const inp=$(has('data-qnote')?'#qn':'#nt'),v=inp.value.trim();if(!v)return inp.focus();
-    const note={id:uuid(),text:v};S.notes.unshift(note);keep();await saveNote(note);return;
+    const note={id:uuid(),text:v};S.notes.unshift(note);keep();if(await saveNote(note))flash();return;
   }
   if(has('data-newlist')){
     const inp=$('#nl'),v=inp.value.trim();if(!v)return inp.focus();
@@ -359,7 +394,7 @@ document.addEventListener('click',async e=>{
   if(D.addt!==undefined){
     const l=S.lists[S.cur];if(!l)return;const inp=t.previousElementSibling,v=inp.value.trim();if(!v)return inp.focus();
     const todo={id:uuid(),title:v,list:l.name,sec:['',...l.secs][+D.addt],due:'',time:'',done:false};
-    S.todos.push(todo);keep();await saveTodo(todo);return;
+    S.todos.push(todo);keep();if(await saveTodo(todo))flash();return;
   }
   if(has('data-addsec')){
     const l=S.lists[S.cur];if(!l)return;const inp=t.previousElementSibling,v=inp.value.trim();
@@ -376,7 +411,7 @@ document.addEventListener('click',async e=>{
     const list=$('#tl').value;if(list==='__new__')return;
     const inDay=has('data-addday');
     const todo={id:uuid(),title:v,list,sec:'',due:inDay?S.day:($('#td').value||key(new Date())),time:$('#tt').value,done:false};
-    S.todos.push(todo);inDay?render():go('home');await saveTodo(todo);return;
+    S.todos.push(todo);inDay?render():go('home');if(await saveTodo(todo))flash();return;
   }
   if(has('data-theme')){
     const r=document.documentElement,dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
@@ -386,9 +421,12 @@ document.addEventListener('click',async e=>{
 document.addEventListener('change',e=>{if(e.target?.id==='tl'&&e.target.value==='__new__')createListFromTodo()});
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape')$('#menu')?.classList.remove('open');
-  if(e.key==='Enter'&&e.target.id==='qn')$('[data-qnote]')?.click();
+  if(e.key==='Enter'&&e.target.matches('.add input,.cap input'))e.target.nextElementSibling?.click();
 });
 try{const th=localStorage.getItem('nova-theme');if(th)document.documentElement.dataset.theme=th}catch(e){}
+
+/* ---------- animación de guardado ---------- */
+function flash(){const el=$('#saved');if(!el)return;el.classList.remove('go');void el.offsetWidth;el.classList.add('go');const r=el.querySelector('.sr');r.textContent='Guardado';setTimeout(()=>r.textContent='',1800)}
 
 /* ---------- inicio ---------- */
 async function start(session){
