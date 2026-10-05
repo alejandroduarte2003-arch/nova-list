@@ -1,16 +1,37 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, viewport-fit=cover"
+>
+
 <title>Nova-List</title>
 
-<link rel="apple-touch-icon" sizes="180x180" href="nova-icon.png">
-<link rel="icon" type="image/png" sizes="512x512" href="nova-icon.png">
+<link
+  rel="apple-touch-icon"
+  sizes="180x180"
+  href="nova-icon.png"
+>
 
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link
+  rel="icon"
+  type="image/png"
+  sizes="512x512"
+  href="nova-icon.png"
+>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&display=swap"
+  rel="stylesheet"
+>
 
 <style>
+
 :root{
   --bg:#fff;
   --fg:#000;
@@ -24,19 +45,23 @@
 }
 
 @media (min-width:700px){
+
   :root{
     --maxw:820px;
     --LW:140px
   }
+
 }
 
 @media (prefers-color-scheme:dark){
+
   :root:not([data-theme="light"]){
     --bg:#000;
     --fg:#fff;
     --mut:#9a9a9a;
     --line:#2b2b2b
   }
+
 }
 
 :root[data-theme="dark"]{
@@ -44,6 +69,13 @@
   --fg:#fff;
   --mut:#9a9a9a;
   --line:#2b2b2b
+}
+
+:root[data-theme="light"]{
+  --bg:#fff;
+  --fg:#000;
+  --mut:#707070;
+  --line:#d9d9d9
 }
 
 html{
@@ -507,6 +539,7 @@ textarea{
   display:block;
   height:100%;
   border-radius:9px;
+  background:var(--fg);
   transition:width .4s
 }
 
@@ -517,6 +550,7 @@ textarea{
 }
 
 @media (min-width:700px){
+
   .dash{
     grid-template-columns:repeat(2,minmax(0,1fr))
   }
@@ -524,6 +558,7 @@ textarea{
   .wide{
     grid-column:1/-1
   }
+
 }
 
 .panel{
@@ -673,17 +708,49 @@ textarea{
   margin-top:20px
 }
 
+.loading{
+  position:fixed;
+  inset:0;
+  background:var(--bg);
+  color:var(--fg);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:200;
+  font-size:14px
+}
+
+.loading.hide{
+  display:none
+}
+
 @media (prefers-reduced-motion:reduce){
+
   *{
     transition:none!important
   }
+
 }
+
 </style>
+
 </head>
 
 <body>
 
-<div id="auth" class="auth">
+<div
+  id="loading"
+  class="loading">
+
+  Nova-List
+
+</div>
+
+
+<div
+  id="auth"
+  class="auth">
+
   <div class="authbox">
 
     <h2>Nova-List</h2>
@@ -693,13 +760,36 @@ textarea{
       a ellos desde cualquier dispositivo.
     </p>
 
-    <button class="google" id="googleLogin">
+    <button
+      class="google"
+      id="googleLogin">
 
       <svg viewBox="0 0 24 24">
-        <path d="M21.8 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.5a4.7 4.7 0 0 1-2 3.1v2.6h3.2c1.9-1.8 3.1-4.4 3.1-7.5z" fill="currentColor" stroke="none"/>
-        <path d="M12 22c2.7 0 5-.9 6.7-2.5l-3.2-2.6c-.9.6-2 1-3.5 1-2.7 0-5-1.8-5.8-4.2H2.9v2.7A10 10 0 0 0 12 22z" fill="currentColor" stroke="none"/>
-        <path d="M6.2 13.7A6 6 0 0 1 5.9 12c0-.6.1-1.2.3-1.7V7.6H2.9A10 10 0 0 0 2 12c0 1.6.4 3.1 1 4.4l3.2-2.7z" fill="currentColor" stroke="none"/>
-        <path d="M12 6.1c1.5 0 2.8.5 3.8 1.5l2.8-2.8C17 3.1 14.7 2 12 2a10 10 0 0 0-9.1 5.6l3.3 2.7C7 7.9 9.3 6.1 12 6.1z" fill="currentColor" stroke="none"/>
+
+        <path
+          d="M21.8 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.5a4.7 4.7 0 0 1-2 3.1v2.6h3.2c1.9-1.8 3.1-4.4 3.1-7.5z"
+          fill="currentColor"
+          stroke="none"
+        />
+
+        <path
+          d="M12 22c2.7 0 5-.9 6.7-2.5l-3.2-2.6c-.9.6-2 1-3.5 1-2.7 0-5-1.8-5.8-4.2H2.9v2.7A10 10 0 0 0 12 22z"
+          fill="currentColor"
+          stroke="none"
+        />
+
+        <path
+          d="M6.2 13.7A6 6 0 0 1 5.9 12c0-.6.1-1.2.3-1.7V7.6H2.9A10 10 0 0 0 2 12c0 1.6.4 3.1 1 4.4l3.2-2.7z"
+          fill="currentColor"
+          stroke="none"
+        />
+
+        <path
+          d="M12 6.1c1.5 0 2.8.5 3.8 1.5l2.8-2.8C17 3.1 14.7 2 12 2a10 10 0 0 0-9.1 5.6l3.3 2.7C7 7.9 9.3 6.1 12 6.1z"
+          fill="currentColor"
+          stroke="none"
+        />
+
       </svg>
 
       Continuar con Google
@@ -711,41 +801,71 @@ textarea{
     </p>
 
   </div>
+
 </div>
 
+
 <div id="app"></div>
+
 
 <nav aria-label="Principal">
 
   <button data-go="notes">
+
     <svg viewBox="0 0 24 24">
+
       <path d="M5 4h14v10l-5 6H5z"/>
+
       <path d="M14 20v-6h5"/>
+
       <path d="M8 9h8M8 13h4"/>
+
     </svg>
+
     Notas rápidas
+
   </button>
+
 
   <button data-go="new">
+
     <svg viewBox="0 0 24 24">
+
       <circle cx="12" cy="12" r="10"/>
+
       <path d="M12 6Q12 12 18 12Q12 12 12 18Q12 12 6 12Q12 12 12 6Z"/>
+
     </svg>
+
     Nuevo to-do
+
   </button>
 
+
   <button data-go="plan">
+
     <svg viewBox="0 0 24 24">
+
       <path d="M4 20l1-4L15 6l3 3L8 19z"/>
+
       <path d="M13 8l3 3"/>
-      <path d="M19.5 2l.9 2 2 .9-2 .9-.9 2-.9-2-2-.9 2-.9z" stroke-width="1.2"/>
+
+      <path
+        d="M19.5 2l.9 2 2 .9-2 .9-.9 2-.9-2-2-.9 2-.9z"
+        stroke-width="1.2"
+      />
+
     </svg>
+
     Planificador
+
   </button>
 
 </nav>
 
+
 <script type="module">
+
 
 /* =========================================================
    SUPABASE
@@ -755,11 +875,14 @@ import {
   createClient
 } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
+
 const SUPABASE_URL =
   'https://udvxmrbqymhrlaiojzex.supabase.co';
 
+
 const SUPABASE_KEY =
   'sb_publishable_VaSGlZ8OA38jbM9QHCTwZw_eNVq__On';
+
 
 const supabase =
   createClient(
@@ -769,31 +892,57 @@ const supabase =
 
 
 /* =========================================================
-   APP
+   HELPERS
    ========================================================= */
 
-const $=s=>document.querySelector(s);
+const $=s=>
+  document.querySelector(s);
+
 
 const S={
+
   todos:[],
+
   notes:[],
+
   lists:[
-    {name:'Personal',secs:[]},
-    {name:'Trabajo',secs:[]},
-    {name:'Compras',secs:[]}
+
+    {
+      name:'Personal',
+      secs:[]
+    },
+
+    {
+      name:'Trabajo',
+      secs:[]
+    },
+
+    {
+      name:'Compras',
+      secs:[]
+    }
+
   ],
+
   view:'home',
+
   day:null,
+
   cur:0,
+
   user:null
+
 };
 
+
 let cloudReady=false;
-let saving=false;
+
 let askingForName=false;
+
 
 const arrow=
   '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
 
 const sd=d=>
   new Date(
@@ -802,30 +951,44 @@ const sd=d=>
     d.getDate()
   );
 
-const key=d=>{
-  const x=new Date(d);
 
-  return x.getFullYear()+'-'+
-    String(x.getMonth()+1).padStart(2,'0')+'-'+
-    String(x.getDate()).padStart(2,'0');
-};
+const key=d=>
+  d.getFullYear()+'-'+
+  String(d.getMonth()+1).padStart(2,'0')+'-'+
+  String(d.getDate()).padStart(2,'0');
+
 
 const esc=s=>
-  String(s).replace(/[&<>"]/g,c=>({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;'
-  }[c]));
+  String(s??'').replace(
+    /[&<>"]/g,
+    c=>({
+
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;'
+
+    }[c])
+  );
+
+
+/* =========================================================
+   NOMBRE DEL USUARIO
+   ========================================================= */
 
 const getUserName=()=>{
 
-  const name=
-    S.user?.user_metadata?.name;
+  const metadata=
+    S.user?.user_metadata||{};
 
-  return name?
-    String(name).trim():
+  const name=
+    metadata.name||
+    metadata.full_name||
+    metadata.fullName||
     '';
+
+  return String(name).trim();
+
 };
 
 
@@ -835,20 +998,28 @@ const getUserName=()=>{
 
 const greeting=()=>{
 
-  const h=new Date().getHours();
+  const h=
+    new Date().getHours();
 
   const text=
+
     h<12
       ?'Buenos días'
+
       :h<19
         ?'Buenas tardes'
+
         :'Buenas noches';
 
-  const name=getUserName();
+  const name=
+    getUserName();
 
   return name
+
     ?`${text}, ${esc(name)}`
+
     :text;
+
 };
 
 
@@ -858,59 +1029,77 @@ const greeting=()=>{
 
 const at=t=>
   new Date(
-    t.due+'T'+(t.time||'23:59')
+    t.due+'T'+
+    (t.time||'23:59')
   ).getTime();
+
 
 const overdue=()=>
   S.todos.filter(
-    t=>!t.done&&
-    t.due&&
-    at(t)<Date.now()
-  );
-
-const today=()=>
-  S.todos.filter(t=>
-    t.due===key(new Date()) &&
-    !(
+    t=>
       !t.done&&
       t.due&&
       at(t)<Date.now()
-    )
   );
+
+
+const today=()=>
+  S.todos.filter(
+    t=>
+      t.due===key(new Date())&&
+      !(
+        !t.done&&
+        t.due&&
+        at(t)<Date.now()
+      )
+  );
+
 
 const soon=()=>{
 
   const e=
-    sd(new Date()).getTime()+864e5;
+    sd(new Date()).getTime()+
+    864e5;
 
   const l=
-    e+1728e5;
+    e+
+    1728e5;
 
   return S.todos.filter(t=>{
 
-    if(!t.due)return false;
+    if(!t.due)
+      return false;
 
     const x=
       new Date(
-        t.due+'T'+(t.time||'00:00')
+        t.due+'T'+
+        (t.time||'00:00')
       ).getTime();
 
     return x>=e&&x<=l;
+
   });
+
 };
 
-const upcoming()=>
+
+const upcoming=()=>
   S.todos
+
     .filter(
       t=>
         !t.done&&
         t.due&&
         at(t)>=Date.now()
     )
+
     .sort(
-      (a,b)=>at(a)-at(b)
+      (a,b)=>
+        at(a)-at(b)
     )
+
     .slice(0,6);
+
 
 const stat=n=>{
 
@@ -925,51 +1114,96 @@ const stat=n=>{
     ).length;
 
   return{
+
     total:a.length,
+
     done:d,
+
     p:a.length
-      ?Math.round(d/a.length*100)
+      ?Math.round(
+        d/a.length*100
+      )
       :0
+
   };
+
 };
 
+
 const bar=p=>`
+
 <div
   class="bar"
   role="progressbar"
   aria-valuenow="${p}"
   aria-valuemin="0"
   aria-valuemax="100">
-  <i style="width:${p}%"></i>
+
+  <i
+    style="width:${p}%">
+  </i>
+
 </div>
+
 `;
 
+
 const opts=[
+
   ['lists','Mis listas',-22],
+
   ['settings','Ajustes',-11],
+
   ['about','Acerca de',0]
+
 ];
 
 
 /* =========================================================
-   AUTH
+   GOOGLE LOGIN
    ========================================================= */
 
 async function signInWithGoogle(){
 
-  const {error}=
-    await supabase.auth.signInWithOAuth({
-      provider:'google',
-      options:{
-        redirectTo:window.location.href
-      }
-    });
+  try{
 
-  if(error){
+    const {
+      error
+    }=
+      await supabase.auth.signInWithOAuth({
+
+        provider:'google',
+
+        options:{
+
+          redirectTo:
+            window.location.origin
+
+        }
+
+      });
+
+
+    if(error){
+
+      console.error(
+        'Google Login:',
+        error
+      );
+
+      alert(
+        'No se pudo iniciar sesión con Google:\n\n'+
+        error.message
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(error);
 
     alert(
-      'No se pudo iniciar sesión con Google: '+
-      error.message
+      'Ocurrió un error al iniciar sesión.'
     );
 
   }
@@ -978,7 +1212,7 @@ async function signInWithGoogle(){
 
 
 /* =========================================================
-   NOMBRE DEL USUARIO
+   NOMBRE
    ========================================================= */
 
 async function askForName(){
@@ -987,18 +1221,25 @@ async function askForName(){
     askingForName||
     getUserName()
   ){
+
     return true;
+
   }
+
 
   askingForName=true;
 
+
   let name='';
+
 
   while(!name){
 
-    name=prompt(
-      '¿Cómo te llamas?'
-    );
+    name=
+      prompt(
+        '¿Cómo te llamas?'
+      );
+
 
     if(name===null){
 
@@ -1007,6 +1248,7 @@ async function askForName(){
           'Necesitas ingresar un nombre para continuar con Nova List.'
         );
 
+
       if(!continueWithoutName){
 
         askingForName=false;
@@ -1014,13 +1256,20 @@ async function askForName(){
         await signOut();
 
         return false;
+
       }
 
+
       name='';
+
       continue;
+
     }
 
-    name=name.trim();
+
+    name=
+      name.trim();
+
 
     if(!name){
 
@@ -1032,33 +1281,60 @@ async function askForName(){
 
   }
 
-  const {data,error}=
-    await supabase.auth.updateUser({
 
-      data:{
-        name:name
-      }
+  try{
 
-    });
+    const {
+      data,
+      error
+    }=
+      await supabase.auth.updateUser({
 
-  if(error){
+        data:{
+          name:name
+        }
+
+      });
+
+
+    if(error){
+
+      console.error(
+        'Guardar nombre:',
+        error
+      );
+
+      alert(
+        'No se pudo guardar tu nombre.'
+      );
+
+      askingForName=false;
+
+      return false;
+
+    }
+
+
+    S.user=
+      data.user||
+      S.user;
+
+
+  }catch(error){
 
     console.error(error);
-
-    alert(
-      'No se pudo guardar tu nombre.'
-    );
 
     askingForName=false;
 
     return false;
+
   }
 
-  S.user=data.user;
 
   askingForName=false;
 
   return true;
+
 }
 
 
@@ -1071,17 +1347,21 @@ async function changeName(){
   const current=
     getUserName();
 
+
   let name=
     prompt(
       'Escribe tu nuevo nombre:',
       current
     );
 
-  if(name===null){
-    return;
-  }
 
-  name=name.trim();
+  if(name===null)
+    return;
+
+
+  name=
+    name.trim();
+
 
   if(!name){
 
@@ -1090,31 +1370,50 @@ async function changeName(){
     );
 
     return;
+
   }
 
-  const {data,error}=
-    await supabase.auth.updateUser({
 
-      data:{
-        name:name
-      }
+  try{
 
-    });
+    const {
+      data,
+      error
+    }=
+      await supabase.auth.updateUser({
 
-  if(error){
+        data:{
+          name:name
+        }
+
+      });
+
+
+    if(error){
+
+      console.error(error);
+
+      alert(
+        'No se pudo cambiar tu nombre.'
+      );
+
+      return;
+
+    }
+
+
+    S.user=
+      data.user||
+      S.user;
+
+
+    render();
+
+  }catch(error){
 
     console.error(error);
 
-    alert(
-      'No se pudo cambiar tu nombre.'
-    );
-
-    return;
   }
-
-  S.user=data.user;
-
-  render();
 
 }
 
@@ -1125,336 +1424,639 @@ async function changeName(){
 
 async function signOut(){
 
-  await supabase.auth.signOut();
+  try{
+
+    await supabase.auth.signOut();
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
 
   S.user=null;
 
   S.todos=[];
+
   S.notes=[];
 
   S.lists=[
-    {name:'Personal',secs:[]},
-    {name:'Trabajo',secs:[]},
-    {name:'Compras',secs:[]}
+
+    {
+      name:'Personal',
+      secs:[]
+    },
+
+    {
+      name:'Trabajo',
+      secs:[]
+    },
+
+    {
+      name:'Compras',
+      secs:[]
+    }
+
   ];
 
   cloudReady=false;
 
-  $('#auth').classList.add('show');
+
+  $('#app').innerHTML='';
+
+  $('#auth')
+    .classList
+    .add('show');
+
 }
 
 
 /* =========================================================
-   CLOUD DATA
+   CLOUD
    ========================================================= */
 
 async function loadCloud(){
 
-  if(!S.user)return;
+  if(!S.user){
 
-  const uid=S.user.id;
-
-  const [
-    todosRes,
-    notesRes,
-    listsRes
-  ]=await Promise.all([
-
-    supabase
-      .from('todos')
-      .select('*')
-      .eq('user_id',uid)
-      .order('created_at',{ascending:true}),
-
-    supabase
-      .from('notes')
-      .select('*')
-      .eq('user_id',uid)
-      .order('created_at',{ascending:false}),
-
-    supabase
-      .from('lists')
-      .select('*')
-      .eq('user_id',uid)
-      .order('created_at',{ascending:true})
-
-  ]);
-
-  if(todosRes.error){
-
-    console.error(todosRes.error);
-
-    alert(
-      'Error cargando tus to-dos.'
-    );
+    render();
 
     return;
+
   }
 
-  if(notesRes.error){
 
-    console.error(notesRes.error);
+  const uid=
+    S.user.id;
 
-    alert(
-      'Error cargando tus notas.'
-    );
 
-    return;
-  }
+  try{
 
-  if(listsRes.error){
+    const [
 
-    console.error(listsRes.error);
+      todosRes,
 
-    alert(
-      'Error cargando tus listas.'
-    );
+      notesRes,
 
-    return;
-  }
+      listsRes
 
-  S.todos=
-    todosRes.data||[];
+    ]=
+      await Promise.all([
 
-  S.notes=
-    notesRes.data||[];
 
-  if(
-    listsRes.data&&
-    listsRes.data.length
-  ){
+        supabase
 
-    S.lists=
-      listsRes.data.map(l=>({
+          .from('todos')
 
-        id:l.id,
-        name:l.name,
-        secs:
-          Array.isArray(l.secs)
-            ?l.secs
-            :[]
+          .select('*')
 
-      }));
+          .eq(
+            'user_id',
+            uid
+          )
 
-  }else{
+          .order(
+            'created_at',
+            {
+              ascending:true
+            }
+          ),
 
-    const initial=[
-      {
-        name:'Personal',
-        secs:[]
-      },
-      {
-        name:'Trabajo',
-        secs:[]
-      },
-      {
-        name:'Compras',
-        secs:[]
-      }
-    ];
 
-    const rows=
-      initial.map(l=>({
+        supabase
 
-        user_id:uid,
-        name:l.name,
-        secs:l.secs
+          .from('notes')
 
-      }));
+          .select('*')
 
-    const {data,error}=
-      await supabase
-        .from('lists')
-        .insert(rows)
-        .select();
+          .eq(
+            'user_id',
+            uid
+          )
 
-    if(error){
+          .order(
+            'created_at',
+            {
+              ascending:false
+            }
+          ),
 
-      console.error(error);
 
-      alert(
-        'No se pudieron crear tus listas iniciales.'
+        supabase
+
+          .from('lists')
+
+          .select('*')
+
+          .eq(
+            'user_id',
+            uid
+          )
+
+          .order(
+            'created_at',
+            {
+              ascending:true
+            }
+          )
+
+    ]);
+
+
+    /*
+     * TO-DOS
+     */
+
+    if(todosRes.error){
+
+      console.error(
+        'ERROR TODOS:',
+        todosRes.error
       );
 
-      return;
+    }else{
+
+      S.todos=
+        todosRes.data||[];
+
     }
 
-    S.lists=
-      (data||[]).map(l=>({
 
-        id:l.id,
-        name:l.name,
-        secs:
-          Array.isArray(l.secs)
-            ?l.secs
-            :[]
+    /*
+     * NOTAS
+     */
 
-      }));
+    if(notesRes.error){
+
+      console.error(
+        'ERROR NOTES:',
+        notesRes.error
+      );
+
+    }else{
+
+      S.notes=
+        notesRes.data||[];
+
+    }
+
+
+    /*
+     * LISTAS
+     */
+
+    if(listsRes.error){
+
+      console.error(
+        'ERROR LISTS:',
+        listsRes.error
+      );
+
+    }else{
+
+      if(
+        listsRes.data&&
+        listsRes.data.length
+      ){
+
+        S.lists=
+          listsRes.data.map(
+            l=>({
+
+              id:l.id,
+
+              name:l.name,
+
+              secs:
+                Array.isArray(l.secs)
+                  ?l.secs
+                  :[]
+
+            })
+          );
+
+      }
+
+    }
+
+
+    /*
+     * CREAR LISTAS INICIALES
+     */
+
+    if(
+
+      !listsRes.error&&
+
+      (
+        !listsRes.data||
+        !listsRes.data.length
+      )
+
+    ){
+
+      const initial=[
+
+        {
+          name:'Personal',
+          secs:[]
+        },
+
+        {
+          name:'Trabajo',
+          secs:[]
+        },
+
+        {
+          name:'Compras',
+          secs:[]
+        }
+
+      ];
+
+
+      const rows=
+        initial.map(
+          l=>({
+
+            user_id:uid,
+
+            name:l.name,
+
+            secs:l.secs
+
+          })
+        );
+
+
+      const {
+        data,
+        error
+      }=
+        await supabase
+
+          .from('lists')
+
+          .insert(rows)
+
+          .select();
+
+
+      if(error){
+
+        console.error(
+          'ERROR CREANDO LISTAS:',
+          error
+        );
+
+      }else{
+
+        S.lists=
+          (data||[]).map(
+            l=>({
+
+              id:l.id,
+
+              name:l.name,
+
+              secs:
+                Array.isArray(l.secs)
+                  ?l.secs
+                  :[]
+
+            })
+          );
+
+      }
+
+    }
+
+
+    cloudReady=true;
+
+
+  }catch(error){
+
+    console.error(
+      'ERROR GENERAL SUPABASE:',
+      error
+    );
 
   }
 
-  cloudReady=true;
+
+  /*
+   * SIEMPRE MOSTRAR LA APP
+   */
 
   render();
+
 }
 
 
 /* =========================================================
-   SAVE HELPERS
+   GUARDAR TODO
    ========================================================= */
 
 async function saveTodo(todo){
 
-  if(!S.user)return;
+  if(!S.user)
+    return;
 
-  const row={
 
-    id:todo.id,
-    user_id:S.user.id,
-    title:todo.title,
-    list:todo.list,
-    sec:todo.sec||'',
-    due:todo.due||null,
-    time:todo.time||null,
-    done:!!todo.done
+  try{
 
-  };
+    const row={
 
-  const {error}=
-    await supabase
-      .from('todos')
-      .upsert(row);
+      id:todo.id,
 
-  if(error){
+      user_id:S.user.id,
+
+      title:todo.title,
+
+      list:todo.list,
+
+      sec:todo.sec||'',
+
+      due:todo.due||null,
+
+      time:todo.time||null,
+
+      done:!!todo.done
+
+    };
+
+
+    const {
+      error
+    }=
+      await supabase
+
+        .from('todos')
+
+        .upsert(row);
+
+
+    if(error){
+
+      console.error(
+        'SAVE TODO:',
+        error
+      );
+
+    }
+
+  }catch(error){
 
     console.error(error);
-
-    alert(
-      'No se pudo guardar el to-do.'
-    );
 
   }
 
 }
+
 
 async function deleteTodo(id){
 
-  if(!S.user)return;
+  if(!S.user)
+    return;
 
-  const {error}=
-    await supabase
-      .from('todos')
-      .delete()
-      .eq('id',id)
-      .eq('user_id',S.user.id);
 
-  if(error)
+  try{
+
+    const {
+      error
+    }=
+      await supabase
+
+        .from('todos')
+
+        .delete()
+
+        .eq(
+          'id',
+          id
+        )
+
+        .eq(
+          'user_id',
+          S.user.id
+        );
+
+
+    if(error)
+      console.error(
+        'DELETE TODO:',
+        error
+      );
+
+  }catch(error){
+
     console.error(error);
 
+  }
+
 }
+
 
 async function saveNote(note){
 
-  if(!S.user)return;
+  if(!S.user)
+    return;
 
-  const row={
 
-    id:note.id,
-    user_id:S.user.id,
-    text:note.text
+  try{
 
-  };
+    const row={
 
-  const {error}=
-    await supabase
-      .from('notes')
-      .upsert(row);
+      id:note.id,
 
-  if(error){
+      user_id:S.user.id,
+
+      text:note.text
+
+    };
+
+
+    const {
+      error
+    }=
+      await supabase
+
+        .from('notes')
+
+        .upsert(row);
+
+
+    if(error){
+
+      console.error(
+        'SAVE NOTE:',
+        error
+      );
+
+    }
+
+  }catch(error){
 
     console.error(error);
-
-    alert(
-      'No se pudo guardar la nota.'
-    );
 
   }
 
 }
+
 
 async function deleteNote(id){
 
-  if(!S.user)return;
+  if(!S.user)
+    return;
 
-  const {error}=
-    await supabase
-      .from('notes')
-      .delete()
-      .eq('id',id)
-      .eq('user_id',S.user.id);
 
-  if(error)
+  try{
+
+    const {
+      error
+    }=
+      await supabase
+
+        .from('notes')
+
+        .delete()
+
+        .eq(
+          'id',
+          id
+        )
+
+        .eq(
+          'user_id',
+          S.user.id
+        );
+
+
+    if(error)
+      console.error(
+        'DELETE NOTE:',
+        error
+      );
+
+  }catch(error){
+
     console.error(error);
 
+  }
+
 }
+
 
 async function saveList(list){
 
-  if(!S.user)return;
+  if(!S.user)
+    return;
 
-  const row={
 
-    user_id:S.user.id,
-    name:list.name,
-    secs:list.secs||[]
+  try{
 
-  };
+    const row={
 
-  if(list.id)
-    row.id=list.id;
+      user_id:S.user.id,
 
-  const {data,error}=
-    await supabase
-      .from('lists')
-      .upsert(row)
-      .select()
-      .single();
+      name:list.name,
 
-  if(error){
+      secs:list.secs||[]
+
+    };
+
+
+    if(list.id)
+      row.id=list.id;
+
+
+    const {
+      data,
+      error
+    }=
+      await supabase
+
+        .from('lists')
+
+        .upsert(row)
+
+        .select()
+
+        .single();
+
+
+    if(error){
+
+      console.error(
+        'SAVE LIST:',
+        error
+      );
+
+      return;
+
+    }
+
+
+    if(data)
+      list.id=data.id;
+
+
+  }catch(error){
 
     console.error(error);
 
-    alert(
-      'No se pudo guardar la lista.'
-    );
-
-    return;
   }
-
-  if(data)
-    list.id=data.id;
 
 }
 
+
 async function deleteList(id){
 
-  if(!S.user)return;
+  if(!S.user)
+    return;
 
-  const {error}=
-    await supabase
-      .from('lists')
-      .delete()
-      .eq('id',id)
-      .eq('user_id',S.user.id);
 
-  if(error)
+  try{
+
+    const {
+      error
+    }=
+      await supabase
+
+        .from('lists')
+
+        .delete()
+
+        .eq(
+          'id',
+          id
+        )
+
+        .eq(
+          'user_id',
+          S.user.id
+        );
+
+
+    if(error)
+      console.error(
+        'DELETE LIST:',
+        error
+      );
+
+  }catch(error){
+
     console.error(error);
+
+  }
 
 }
 
 
 /* =========================================================
-   IMPORTACIÓN DE DATOS LOCALES
+   LOCAL STORAGE
    ========================================================= */
 
 function getLocalData(){
@@ -1465,7 +2067,9 @@ function getLocalData(){
       localStorage.getItem('nova')||'null'
     );
 
-  }catch(e){
+  }catch(error){
+
+    console.error(error);
 
     return null;
 
@@ -1473,52 +2077,96 @@ function getLocalData(){
 
 }
 
+
 async function migrateLocalData(){
 
-  if(!S.user)return;
+  if(!S.user)
+    return;
+
 
   const local=
     getLocalData();
 
-  if(!local)return;
+
+  if(!local)
+    return;
+
 
   const hasLocal=
-    (local.todos&&local.todos.length)||
-    (local.notes&&local.notes.length)||
-    (local.lists&&local.lists.length);
 
-  if(!hasLocal)return;
+    (
+      local.todos&&
+      local.todos.length
+    )
+
+    ||
+
+    (
+      local.notes&&
+      local.notes.length
+    )
+
+    ||
+
+    (
+      local.lists&&
+      local.lists.length
+    );
+
+
+  if(!hasLocal)
+    return;
+
 
   const answer=
     confirm(
       'Encontramos datos guardados anteriormente en este dispositivo. ¿Quieres subirlos a tu cuenta de Nova List?'
     );
 
-  if(!answer)return;
 
-  const uid=S.user.id;
+  if(!answer)
+    return;
+
+
+  const uid=
+    S.user.id;
+
 
   if(local.todos?.length){
 
-    for(const t of local.todos){
+    for(
+      const t of local.todos
+    ){
 
       const id=
         typeof t.id==='string'&&
         t.id.includes('-')
+
           ?t.id
+
           :crypto.randomUUID();
 
+
       await supabase
+
         .from('todos')
+
         .upsert({
 
-          id,
+          id:id,
+
           user_id:uid,
+
           title:t.title||'',
+
           list:t.list||'',
+
           sec:t.sec||'',
+
           due:t.due||null,
+
           time:t.time||null,
+
           done:!!t.done
 
         });
@@ -1527,22 +2175,32 @@ async function migrateLocalData(){
 
   }
 
+
   if(local.notes?.length){
 
-    for(const n of local.notes){
+    for(
+      const n of local.notes
+    ){
 
       const id=
         typeof n.id==='string'&&
         n.id.includes('-')
+
           ?n.id
+
           :crypto.randomUUID();
 
+
       await supabase
+
         .from('notes')
+
         .upsert({
 
-          id,
+          id:id,
+
           user_id:uid,
+
           text:n.text||''
 
         });
@@ -1551,16 +2209,23 @@ async function migrateLocalData(){
 
   }
 
+
   if(local.lists?.length){
 
-    for(const l of local.lists){
+    for(
+      const l of local.lists
+    ){
 
       await supabase
+
         .from('lists')
+
         .insert({
 
           user_id:uid,
+
           name:l.name||'Sin nombre',
+
           secs:
             Array.isArray(l.secs)
               ?l.secs
@@ -1572,41 +2237,56 @@ async function migrateLocalData(){
 
   }
 
+
   localStorage.removeItem('nova');
 
+
   await loadCloud();
+
 }
 
 
 /* =========================================================
-   UI
+   HEADER
    ========================================================= */
 
 function head(){
 
   return `
+
 <header>
 
   <div>
 
-    <h1>Nova-List</h1>
+    <h1>
+      Nova-List
+    </h1>
 
     <div class="sub">
       una app de INCOROVA
     </div>
 
-    ${S.user?`
+    ${
+      S.user
 
-      <div class="userbar">
-        ${esc(
-          getUserName()||
-          'Cuenta conectada'
-        )}
-      </div>
+        ?`
 
-    `:''}
+          <div class="userbar">
+
+            ${esc(
+              getUserName()||
+              'Cuenta conectada'
+            )}
+
+          </div>
+
+        `
+
+        :''
+    }
 
   </div>
+
 
   <div
     class="menu"
@@ -1614,29 +2294,45 @@ function head(){
 
     <div class="scrim"></div>
 
-    ${opts.map((o,i)=>`
 
-      <button
-        class="opt"
-        style="--i:${i};--dx:${o[2]}"
-        data-go="${o[0]}"
-        aria-label="${o[1]}">
+    ${
+      opts.map(
+        (o,i)=>`
 
-        <span class="lb">
-          ${o[1]}
-        </span>
+          <button
 
-        <span class="ln"></span>
+            class="opt"
 
-        <i></i>
+            style="
+              --i:${i};
+              --dx:${o[2]}
+            "
 
-      </button>
+            data-go="${o[0]}"
 
-    `).join('')}
+            aria-label="${o[1]}">
+
+            <span class="lb">
+              ${o[1]}
+            </span>
+
+            <span class="ln"></span>
+
+            <i></i>
+
+          </button>
+
+        `
+      ).join('')
+    }
+
 
   </div>
 
-</header>`;
+</header>
+
+`;
+
 }
 
 
@@ -1646,16 +2342,33 @@ function head(){
 
 function calendar(){
 
-  const n=new Date();
+  const n=
+    new Date();
 
-  const y=n.getFullYear();
-  const m=n.getMonth();
+
+  const y=
+    n.getFullYear();
+
+
+  const m=
+    n.getMonth();
+
 
   const first=
-    new Date(y,m,1).getDay();
+    new Date(
+      y,
+      m,
+      1
+    ).getDay();
+
 
   const dim=
-    new Date(y,m+1,0).getDate();
+    new Date(
+      y,
+      m+1,
+      0
+    ).getDate();
+
 
   const due=
     new Set(
@@ -1664,7 +2377,9 @@ function calendar(){
         .filter(Boolean)
     );
 
+
   let c='';
+
 
   [
     'D',
@@ -1674,16 +2389,24 @@ function calendar(){
     'J',
     'V',
     'S'
+
   ].forEach(
-    d=>c+=`<b>${d}</b>`
+    d=>
+      c+=`<b>${d}</b>`
   );
+
 
   for(
     let i=0;
     i<first;
     i++
-  )
-    c+='<span></span>';
+  ){
+
+    c+=
+      '<span></span>';
+
+  }
+
 
   for(
     let d=1;
@@ -1693,14 +2416,22 @@ function calendar(){
 
     const k=
       key(
-        new Date(y,m,d)
+        new Date(
+          y,
+          m,
+          d
+        )
       );
+
 
     c+=`
 
       <button
+
         data-day="${k}"
+
         aria-label="Día ${d}"
+
         class="${
           d===n.getDate()
             ?'today'
@@ -1719,29 +2450,39 @@ function calendar(){
 
   }
 
+
+  const month=
+    n.toLocaleDateString(
+      'es',
+      {
+        month:'long',
+        year:'numeric'
+      }
+    );
+
+
   return `
 
-  <div class="cal">
+    <div class="cal">
 
-    <h3>
-      ${(m=>m[0].toUpperCase()+m.slice(1))(
-        n.toLocaleDateString(
-          'es',
-          {
-            month:'long',
-            year:'numeric'
-          }
-        )
-      )}
-    </h3>
+      <h3>
+        ${
+          month.charAt(0)
+            .toUpperCase()+
+          month.slice(1)
+        }
+      </h3>
 
-    <div class="grid">
-      ${c}
+      <div class="grid">
+
+        ${c}
+
+      </div>
+
     </div>
 
-  </div>
-
   `;
+
 }
 
 
@@ -1753,64 +2494,91 @@ function items(a,empty){
 
   return a.length
 
-    ?a.map(t=>`
+    ?a.map(
+      t=>`
 
-      <div class="item">
+        <div class="item">
 
-        <button
-          class="chk ${t.done?'on':''}"
-          data-done="${t.id}"
-          aria-label="Completar">
-        </button>
+          <button
 
-        <div
-          style="${
-            t.done
-              ?'text-decoration:line-through;color:var(--mut)'
-              :''
-          }">
-
-          ${esc(t.title)}
-
-          <small>
-
-            ${esc(t.list||'')}
-
-            ${
-              t.sec
-                ?' › '+esc(t.sec)
+            class="chk ${
+              t.done
+                ?'on'
                 :''
-            }
+            }"
 
-            ${
-              t.due
-                ?' · '+t.due+
-                  (t.time
-                    ?' '+t.time
-                    :'')
+            data-done="${t.id}"
+
+            aria-label="Completar">
+
+          </button>
+
+
+          <div
+            style="${
+              t.done
+                ?'text-decoration:line-through;color:var(--mut)'
                 :''
-            }
+            }">
 
-          </small>
+            ${esc(t.title)}
+
+
+            <small>
+
+              ${esc(t.list||'')}
+
+              ${
+                t.sec
+
+                  ?' › '+esc(t.sec)
+
+                  :''
+              }
+
+
+              ${
+                t.due
+
+                  ?' · '+t.due+
+
+                    (
+                      t.time
+                        ?' '+t.time
+                        :''
+                    )
+
+                  :''
+              }
+
+            </small>
+
+          </div>
+
+
+          <button
+
+            class="x"
+
+            data-del="${t.id}"
+
+            aria-label="Eliminar">
+
+            ×
+
+          </button>
 
         </div>
 
-        <button
-          class="x"
-          data-del="${t.id}"
-          aria-label="Eliminar">
+      `
+    ).join('')
 
-          ×
+    :(
+      empty
+        ?`<p class="empty">${empty}</p>`
+        :''
+    );
 
-        </button>
-
-      </div>
-
-    `).join('')
-
-    :(empty
-      ?`<p class="empty">${empty}</p>`
-      :'');
 }
 
 
@@ -1818,28 +2586,42 @@ const page=(t,b)=>
 
   head()+
 
-  `<div style="margin-top:28px">
+  `
 
-    <button
-      class="back"
-      data-go="home">
-      ← Inicio
-    </button>
+    <div
+      style="margin-top:28px">
 
-    <h2>${t}</h2>
+      <button
+        class="back"
+        data-go="home">
 
-    ${b}
+        ← Inicio
 
-  </div>`;
+      </button>
+
+
+      <h2>
+        ${t}
+      </h2>
+
+
+      ${b}
+
+    </div>
+
+  `;
 
 
 const listSel=()=>`
 
 <select id="tl">
 
-  ${S.lists.map(l=>
-    `<option>${esc(l.name)}</option>`
-  ).join('')}
+  ${
+    S.lists.map(
+      l=>
+        `<option>${esc(l.name)}</option>`
+    ).join('')
+  }
 
 </select>
 
@@ -1852,20 +2634,26 @@ const listSel=()=>`
 
 const V={
 
+
 home:()=>{
 
   const o=
     overdue().length;
 
+
   return head()+`
 
     <div class="greet">
+
       ${greeting()}
+
     </div>
+
 
     <div class="row">
 
       ${calendar()}
+
 
       <div class="ov">
 
@@ -1873,52 +2661,71 @@ home:()=>{
           Mis listas
         </h3>
 
-        ${S.lists.map(l=>`
 
-          <p>
+        ${
+          S.lists.map(
+            l=>`
 
-            ${esc(l.name)}
+              <p>
 
-            <span>
-              ${stat(l.name).total}
-            </span>
+                ${esc(l.name)}
 
-          </p>
+                <span>
+                  ${stat(l.name).total}
+                </span>
 
-        `).join('')}
+              </p>
+
+            `
+          ).join('')
+        }
 
       </div>
 
     </div>
 
+
     <button
+
       class="big"
+
       data-go="today">
 
       <span class="lbl">
 
         Hoy
 
-        ${o?`
 
-          <b
-            class="bdg"
-            aria-label="${o} vencidos">
+        ${
+          o
 
-            ${o>99?'99+':o}
+            ?`
 
-          </b>
+              <b
+                class="bdg"
+                aria-label="${o} vencidos">
 
-        `:''}
+                ${o>99?'99+':o}
+
+              </b>
+
+            `
+
+            :''
+        }
 
       </span>
+
 
       ${arrow}
 
     </button>
 
+
     <button
+
       class="big"
+
       data-go="soon">
 
       Próximamente
@@ -1928,20 +2735,31 @@ home:()=>{
     </button>
 
   `;
+
 },
+
 
 today:()=>{
 
-  const o=overdue();
-  const t=today();
+  const o=
+    overdue();
+
+
+  const t=
+    today();
+
 
   return page(
 
     'Hoy',
 
+
     (
+
       o.length
+
         ?`
+
           <h3
             class="sec late"
             style="margin-top:0">
@@ -1950,24 +2768,35 @@ today:()=>{
 
           </h3>
 
+
           ${items(o)}
+
         `
+
         :''
     )
 
+
     +
 
-    `<h3
-      class="sec"
-      ${
-        o.length
-          ?''
-          :'style="margin-top:0"'
-      }>
+    `
 
-      Para hoy
+      <h3
 
-    </h3>`
+        class="sec"
+
+        ${
+          o.length
+            ?''
+            :'style="margin-top:0"'
+        }>
+
+        Para hoy
+
+      </h3>
+
+    `
+
 
     +
 
@@ -1980,6 +2809,7 @@ today:()=>{
 
 },
 
+
 soon:()=>page(
 
   'Próximamente',
@@ -1991,54 +2821,63 @@ soon:()=>page(
 
 ),
 
+
 notes:()=>page(
 
   'Notas rápidas',
 
   `
 
-  <textarea
-    id="nt"
-    placeholder="Escribe una nota">
-  </textarea>
+    <textarea
+      id="nt"
+      placeholder="Escribe una nota">
+    </textarea>
 
-  <button
-    class="pri"
-    data-addnote>
 
-    Guardar nota
+    <button
+      class="pri"
+      data-addnote>
 
-  </button>
+      Guardar nota
 
-  ${
-    S.notes.map(n=>`
+    </button>
 
-      <div class="note">
 
-        <span>
-          ${esc(n.text)}
-        </span>
+    ${
+      S.notes.map(
+        n=>`
 
-        <button
-          class="x"
-          data-delnote="${n.id}"
-          aria-label="Eliminar">
+          <div class="note">
 
-          ×
+            <span>
+              ${esc(n.text)}
+            </span>
 
-        </button>
 
-      </div>
+            <button
+              class="x"
+              data-delnote="${n.id}"
+              aria-label="Eliminar">
 
-    `).join('')
+              ×
 
-    ||
+            </button>
 
-    '<p class="empty">Aún no hay notas.</p>'
-  }
+          </div>
+
+        `
+      ).join('')
+
+
+      ||
+
+      '<p class="empty">Aún no hay notas.</p>'
+    }
 
   `
+
 ),
+
 
 new:()=>page(
 
@@ -2046,205 +2885,290 @@ new:()=>page(
 
   `
 
-  <input
-    id="ti"
-    placeholder="¿Qué hay que hacer?">
+    <input
+      id="ti"
+      placeholder="¿Qué hay que hacer?">
 
-  ${listSel()}
 
-  <input
-    id="td"
-    type="date"
-    value="${key(new Date())}">
+    ${listSel()}
 
-  <input
-    id="tt"
-    type="time">
 
-  <button
-    class="pri"
-    data-addtodo>
+    <input
+      id="td"
+      type="date"
+      value="${key(new Date())}">
 
-    Agregar to-do
 
-  </button>
+    <input
+      id="tt"
+      type="time">
+
+
+    <button
+      class="pri"
+      data-addtodo>
+
+      Agregar to-do
+
+    </button>
 
   `
+
 ),
+
 
 plan:()=>{
 
   const o=
     overdue().length;
 
+
   const pend=
     S.todos.filter(
       t=>!t.done
     ).length;
+
 
   const hoy=
     today().filter(
       t=>!t.done
     ).length;
 
+
   return page(
 
     'Planificador',
 
+
     `
 
-    <div class="stats">
+      <div class="stats">
 
-      <div class="stat">
-        <b>${pend}</b>
-        <span>Pendientes</span>
-      </div>
 
-      <div class="stat">
-        <b>${hoy}</b>
-        <span>Para hoy</span>
-      </div>
+        <div class="stat">
 
-      <div class="stat">
-        <b class="${o?'late':''}">
-          ${o}
-        </b>
-        <span>Vencidos</span>
-      </div>
+          <b>
+            ${pend}
+          </b>
 
-    </div>
-
-    <div class="dash">
-
-      <section class="panel">
-
-        <h3>
-          Dar seguimiento
-          <span>vencidos</span>
-        </h3>
-
-        ${items(
-          overdue(),
-          'Todo al día.'
-        )}
-
-      </section>
-
-      <section class="panel">
-
-        <h3>
-          Lo más próximo
-          <span>por fecha</span>
-        </h3>
-
-        ${items(
-          upcoming(),
-          'Sin pendientes con fecha.'
-        )}
-
-      </section>
-
-      <section class="panel">
-
-        <h3>
-          Listas
-          <span>% completado</span>
-        </h3>
-
-        ${S.lists.map((l,i)=>{
-
-          const s=
-            stat(l.name);
-
-          return `
-
-          <button
-            class="lst"
-            data-open="${i}">
-
-            <div>
-
-              ${esc(l.name)}
-
-              <span>
-                ${s.done}/${s.total} · ${s.p}%
-              </span>
-
-            </div>
-
-            ${bar(s.p)}
-
-          </button>
-
-          `;
-
-        }).join('')}
-
-      </section>
-
-      <section class="panel">
-
-        <h3>
-          Notas rápidas
           <span>
-            ${S.notes.length}
+            Pendientes
           </span>
-        </h3>
 
-        ${
-          S.notes
-            .slice(0,5)
-            .map(n=>`
+        </div>
 
-              <div class="item">
 
-                <span
-                  style="
-                    white-space:pre-wrap;
-                    min-width:0;
-                    overflow-wrap:anywhere
-                  ">
+        <div class="stat">
 
-                  ${esc(n.text)}
+          <b>
+            ${hoy}
+          </b>
 
-                </span>
+          <span>
+            Para hoy
+          </span>
 
-                <button
-                  class="n2t"
-                  data-n2t="${n.id}">
+        </div>
 
-                  Pasar a to-do
 
-                </button>
+        <div class="stat">
 
-              </div>
+          <b class="${o?'late':''}">
+            ${o}
+          </b>
 
-            `)
-            .join('')
+          <span>
+            Vencidos
+          </span>
 
-          ||
+        </div>
 
-          '<p class="empty">Aún no hay notas.</p>'
-        }
 
-      </section>
+      </div>
 
-    </div>
+
+      <div class="dash">
+
+
+        <section class="panel">
+
+          <h3>
+
+            Dar seguimiento
+
+            <span>
+              vencidos
+            </span>
+
+          </h3>
+
+
+          ${items(
+            overdue(),
+            'Todo al día.'
+          )}
+
+        </section>
+
+
+        <section class="panel">
+
+          <h3>
+
+            Lo más próximo
+
+            <span>
+              por fecha
+            </span>
+
+          </h3>
+
+
+          ${items(
+            upcoming(),
+            'Sin pendientes con fecha.'
+          )}
+
+        </section>
+
+
+        <section class="panel">
+
+          <h3>
+
+            Listas
+
+            <span>
+              % completado
+            </span>
+
+          </h3>
+
+
+          ${
+            S.lists.map(
+              (l,i)=>{
+
+                const s=
+                  stat(l.name);
+
+
+                return `
+
+                  <button
+                    class="lst"
+                    data-open="${i}">
+
+                    <div>
+
+                      ${esc(l.name)}
+
+                      <span>
+                        ${s.done}/${s.total} · ${s.p}%
+                      </span>
+
+                    </div>
+
+
+                    ${bar(s.p)}
+
+                  </button>
+
+                `;
+
+              }
+            ).join('')
+          }
+
+        </section>
+
+
+        <section class="panel">
+
+          <h3>
+
+            Notas rápidas
+
+            <span>
+              ${S.notes.length}
+            </span>
+
+          </h3>
+
+
+          ${
+            S.notes
+
+              .slice(0,5)
+
+              .map(
+                n=>`
+
+                  <div class="item">
+
+                    <span
+                      style="
+                        white-space:pre-wrap;
+                        min-width:0;
+                        overflow-wrap:anywhere
+                      ">
+
+                      ${esc(n.text)}
+
+                    </span>
+
+
+                    <button
+                      class="n2t"
+                      data-n2t="${n.id}">
+
+                      Pasar a to-do
+
+                    </button>
+
+                  </div>
+
+                `
+              )
+
+              .join('')
+
+            ||
+
+            '<p class="empty">Aún no hay notas.</p>'
+          }
+
+        </section>
+
+
+      </div>
 
     `
+
   );
 
 },
 
+
 day:()=>{
 
-  const [y,m,d]=
+  const [
+    y,
+    m,
+    d
+  ]=
     S.day
       .split('-')
       .map(Number);
 
+
   let l=
-    new Date(y,m-1,d)
+    new Date(
+      y,
+      m-1,
+      d
+    )
+
       .toLocaleDateString(
         'es',
         {
@@ -2254,15 +3178,19 @@ day:()=>{
         }
       );
 
+
   l=
     l[0].toUpperCase()+
     l.slice(1);
 
+
   const a=
     S.todos
+
       .filter(
         t=>t.due===S.day
       )
+
       .sort(
         (p,q)=>
           (p.time||'')
@@ -2271,43 +3199,51 @@ day:()=>{
             )
       );
 
+
   return page(
 
     l,
+
 
     items(
       a,
       'No hay pendientes este día.'
     )
 
+
     +
+
 
     `
 
-    <h3 class="sec">
+      <h3 class="sec">
 
-      Nuevo to-do para este día
+        Nuevo to-do para este día
 
-    </h3>
+      </h3>
 
-    <input
-      id="ti"
-      placeholder="¿Qué hay que hacer?">
 
-    ${listSel()}
+      <input
+        id="ti"
+        placeholder="¿Qué hay que hacer?">
 
-    <input
-      id="tt"
-      type="time"
-      aria-label="Hora">
 
-    <button
-      class="pri"
-      data-addday>
+      ${listSel()}
 
-      Agregar to-do
 
-    </button>
+      <input
+        id="tt"
+        type="time"
+        aria-label="Hora">
+
+
+      <button
+        class="pri"
+        data-addday>
+
+        Agregar to-do
+
+      </button>
 
     `
 
@@ -2315,173 +3251,24 @@ day:()=>{
 
 },
 
+
 lists:()=>page(
 
   'Mis listas',
 
-  `
-
-  <div class="add">
-
-    <input
-      id="nl"
-      placeholder="Nueva lista">
-
-    <button
-      data-newlist
-      aria-label="Crear lista">
-
-      +
-
-    </button>
-
-  </div>
-
-  ${
-    S.lists.map((l,i)=>{
-
-      const s=
-        stat(l.name);
-
-      return `
-
-      <button
-        class="lst"
-        data-open="${i}">
-
-        <div>
-
-          ${esc(l.name)}
-
-          <span>
-            ${s.done}/${s.total} · ${s.p}%
-          </span>
-
-        </div>
-
-        ${bar(s.p)}
-
-      </button>
-
-      `;
-
-    }).join('')
-  }
 
   `
-
-),
-
-list:()=>{
-
-  const l=
-    S.lists[S.cur];
-
-  if(!l)
-    return go('lists');
-
-  const s=
-    stat(l.name);
-
-  const gs=[
-    '',
-    ...l.secs
-  ];
-
-  return page(
-
-    esc(l.name),
-
-    `
-
-    <div>
-
-      ${bar(s.p)}
-
-      <p class="sub">
-
-        ${s.done} de ${s.total}
-        completadas · ${s.p}%
-
-      </p>
-
-    </div>
-
-    ${
-
-      gs.map((g,i)=>{
-
-        const a=
-          S.todos.filter(t=>
-            t.list===l.name &&
-            (t.sec||'')===g
-          );
-
-        return (
-
-          (
-            g||
-            l.secs.length||
-            a.length
-          )
-
-            ?`
-
-              <h3 class="sec">
-
-                ${
-                  g
-                    ?esc(g)
-                    :'Sin subtítulo'
-                }
-
-              </h3>
-
-            `
-            :''
-          )
-
-          +
-
-          items(a)
-
-          +
-
-          `
-
-          <div class="add">
-
-            <input
-              placeholder="Agregar tarea">
-
-            <button
-              data-addt="${i}"
-              aria-label="Agregar tarea">
-
-              +
-
-            </button>
-
-          </div>
-
-          `;
-
-      }).join('')
-
-    }
-
-    <h3 class="sec">
-      Nuevo subtítulo
-    </h3>
 
     <div class="add">
 
       <input
-        placeholder="Ej. Esta semana">
+        id="nl"
+        placeholder="Nueva lista">
+
 
       <button
-        data-addsec
-        aria-label="Crear subtítulo">
+        data-newlist
+        aria-label="Crear lista">
 
         +
 
@@ -2489,90 +3276,279 @@ list:()=>{
 
     </div>
 
-    <p style="margin-top:32px">
 
-      <button
-        class="pri"
-        data-go="lists">
+    ${
+      S.lists.map(
+        (l,i)=>{
 
-        Listo
+          const s=
+            stat(l.name);
 
-      </button>
 
-    </p>
+          return `
 
-    <p style="margin-top:28px">
+            <button
+              class="lst"
+              data-open="${i}">
 
-      <button
-        class="n2t"
-        data-dellist>
+              <div>
 
-        Eliminar esta lista
+                ${esc(l.name)}
 
-      </button>
+                <span>
+                  ${s.done}/${s.total} · ${s.p}%
+                </span>
 
-    </p>
+              </div>
 
-    `
-  );
 
-},
+              ${bar(s.p)}
 
-settings:()=>page(
+            </button>
 
-  'Ajustes',
+          `;
 
-  `
-
-  <button
-    class="pri"
-    data-theme>
-
-    Cambiar claro / oscuro
-
-  </button>
-
-  <p style="margin-top:20px">
-
-    <button
-      class="n2t"
-      data-changename>
-
-      Cambiar nombre
-
-    </button>
-
-  </p>
-
-  <p style="margin-top:28px">
-
-    <button
-      class="n2t"
-      data-logout>
-
-      Cerrar sesión
-
-    </button>
-
-  </p>
+        }
+      ).join('')
+    }
 
   `
 
 ),
 
+
+list:()=>{
+
+  const l=
+    S.lists[S.cur];
+
+
+  if(!l)
+    return go('lists');
+
+
+  const s=
+    stat(l.name);
+
+
+  const gs=[
+    '',
+    ...l.secs
+  ];
+
+
+  return page(
+
+    esc(l.name),
+
+
+    `
+
+      <div>
+
+        ${bar(s.p)}
+
+
+        <p class="sub">
+
+          ${s.done} de ${s.total}
+          completadas · ${s.p}%
+
+        </p>
+
+      </div>
+
+
+      ${
+
+        gs.map(
+          (g,i)=>{
+
+            const a=
+              S.todos.filter(
+                t=>
+                  t.list===l.name&&
+                  (t.sec||'')===g
+              );
+
+
+            return (
+
+              (
+
+                g||
+                l.secs.length||
+                a.length
+
+              )
+
+                ?`
+
+                  <h3 class="sec">
+
+                    ${
+                      g
+                        ?esc(g)
+                        :'Sin subtítulo'
+                    }
+
+                  </h3>
+
+                `
+
+                :''
+              )
+
+
+              +
+
+
+              items(a)
+
+
+              +
+
+
+              `
+
+                <div class="add">
+
+                  <input
+                    placeholder="Agregar tarea">
+
+
+                  <button
+                    data-addt="${i}"
+                    aria-label="Agregar tarea">
+
+                    +
+
+                  </button>
+
+                </div>
+
+              `;
+
+          }
+        ).join('')
+
+      }
+
+
+      <h3 class="sec">
+        Nuevo subtítulo
+      </h3>
+
+
+      <div class="add">
+
+        <input
+          placeholder="Ej. Esta semana">
+
+
+        <button
+          data-addsec
+          aria-label="Crear subtítulo">
+
+          +
+
+        </button>
+
+      </div>
+
+
+      <p style="margin-top:32px">
+
+        <button
+          class="pri"
+          data-go="lists">
+
+          Listo
+
+        </button>
+
+      </p>
+
+
+      <p style="margin-top:28px">
+
+        <button
+          class="n2t"
+          data-dellist>
+
+          Eliminar esta lista
+
+        </button>
+
+      </p>
+
+    `
+
+  );
+
+},
+
+
+settings:()=>page(
+
+  'Ajustes',
+
+
+  `
+
+    <button
+      class="pri"
+      data-theme>
+
+      Cambiar claro / oscuro
+
+    </button>
+
+
+    <p style="margin-top:20px">
+
+      <button
+        class="n2t"
+        data-changename>
+
+        Cambiar nombre
+
+      </button>
+
+    </p>
+
+
+    <p style="margin-top:28px">
+
+      <button
+        class="n2t"
+        data-logout>
+
+        Cerrar sesión
+
+      </button>
+
+    </p>
+
+  `
+
+),
+
+
 about:()=>page(
 
   'Acerca de',
 
+
   `
 
-  <p>
+    <p>
 
-    Nova-List es una app de INCOROVA
-    para ordenar notas, pendientes y
-    planes en un solo lugar.
+      Nova-List es una app de INCOROVA
+      para ordenar notas, pendientes y
+      planes en un solo lugar.
 
-  </p>
+    </p>
 
   `
 
@@ -2587,29 +3563,88 @@ about:()=>page(
 
 function render(){
 
-  $('#app').innerHTML=
-    V[S.view]();
+  try{
 
-  window.scrollTo(0,0);
+    $('#app').innerHTML=
+      V[S.view]();
+
+    window.scrollTo(
+      0,
+      0
+    );
+
+  }catch(error){
+
+    console.error(
+      'ERROR RENDER:',
+      error
+    );
+
+
+    $('#app').innerHTML=`
+
+      <div
+        style="
+          padding-top:60px;
+          text-align:center
+        ">
+
+        <h2>
+          Nova-List
+        </h2>
+
+        <p
+          style="
+            color:var(--mut);
+            margin-top:12px
+          ">
+
+          Ocurrió un problema al cargar
+          la interfaz.
+
+        </p>
+
+        <button
+          class="pri"
+          style="margin-top:24px"
+          onclick="location.reload()">
+
+          Recargar
+
+        </button>
+
+      </div>
+
+    `;
+
+  }
+
 }
+
 
 function go(v){
 
-  S.view=v;
+  S.view=
+    v;
 
   render();
 
 }
+
 
 const keep=()=>{
 
   const y=
     window.scrollY;
 
-  $('#app').innerHTML=
-    V[S.view]();
 
-  window.scrollTo(0,y);
+  render();
+
+
+  window.scrollTo(
+    0,
+    y
+  );
 
 };
 
@@ -2625,75 +3660,130 @@ document.addEventListener(
     const t=
       e.target.closest('button');
 
+
     const menu=
       $('#menu');
 
+
     const open=
       menu&&
-      menu.classList.contains('open');
+      menu.classList.contains(
+        'open'
+      );
+
 
     if(
+
       open&&
-      !(t&&t.classList.contains('opt'))
+
+      !(
+
+        t&&
+        t.classList.contains('opt')
+
+      )
+
     ){
 
-      menu.classList.remove('open');
+      menu.classList.remove(
+        'open'
+      );
 
     }
 
-    if(!t)return;
 
-    const D=t.dataset;
+    if(!t)
+      return;
 
-    if(t.id==='googleLogin'){
+
+    const D=
+      t.dataset;
+
+
+    if(
+      t.id==='googleLogin'
+    ){
 
       await signInWithGoogle();
 
       return;
+
     }
 
-    if(t.hasAttribute('data-logout')){
+
+    if(
+      t.hasAttribute(
+        'data-logout'
+      )
+    ){
 
       await signOut();
 
       return;
+
     }
 
-    if(t.hasAttribute('data-changename')){
+
+    if(
+      t.hasAttribute(
+        'data-changename'
+      )
+    ){
 
       await changeName();
 
       return;
+
     }
 
-    if(t.classList.contains('opt')){
+
+    if(
+      t.classList.contains(
+        'opt'
+      )
+    ){
 
       if(!open){
 
-        menu.classList.add('open');
+        menu.classList.add(
+          'open'
+        );
 
         return;
+
       }
 
+
       return go(D.go);
+
     }
+
 
     if(D.go)
       return go(D.go);
 
+
     if(D.day){
 
-      S.day=D.day;
+      S.day=
+        D.day;
 
       return go('day');
+
     }
 
-    if(D.open!==undefined){
 
-      S.cur=+D.open;
+    if(
+      D.open!==undefined
+    ){
+
+      S.cur=
+        +D.open;
 
       return go('list');
+
     }
+
 
     if(D.done){
 
@@ -2702,14 +3792,22 @@ document.addEventListener(
           i=>i.id===D.done
         );
 
-      if(!x)return;
 
-      x.done=!x.done;
+      if(!x)
+        return;
+
+
+      x.done=
+        !x.done;
+
 
       await saveTodo(x);
 
+
       return keep();
+
     }
+
 
     if(D.del){
 
@@ -2718,10 +3816,16 @@ document.addEventListener(
           i=>i.id!==D.del
         );
 
-      await deleteTodo(D.del);
+
+      await deleteTodo(
+        D.del
+      );
+
 
       return keep();
+
     }
+
 
     if(D.delnote){
 
@@ -2730,10 +3834,16 @@ document.addEventListener(
           i=>i.id!==D.delnote
         );
 
-      await deleteNote(D.delnote);
+
+      await deleteNote(
+        D.delnote
+      );
+
 
       return render();
+
     }
+
 
     if(D.n2t){
 
@@ -2742,14 +3852,20 @@ document.addEventListener(
           i=>i.id===D.n2t
         );
 
-      if(!n)return;
+
+      if(!n)
+        return;
+
 
       const todo={
 
         id:crypto.randomUUID(),
 
         title:
-          n.text.slice(0,120),
+          n.text.slice(
+            0,
+            120
+          ),
 
         list:
           S.lists[0]?.name||
@@ -2766,96 +3882,159 @@ document.addEventListener(
 
       };
 
-      S.todos.push(todo);
+
+      S.todos.push(
+        todo
+      );
+
 
       S.notes=
         S.notes.filter(
           i=>i!==n
         );
 
-      await saveTodo(todo);
 
-      await deleteNote(n.id);
+      await saveTodo(
+        todo
+      );
+
+
+      await deleteNote(
+        n.id
+      );
+
 
       return keep();
+
     }
 
-    if(t.hasAttribute('data-addnote')){
+
+    if(
+      t.hasAttribute(
+        'data-addnote'
+      )
+    ){
 
       const v=
-        $('#nt').value.trim();
+        $('#nt')
+          .value
+          .trim();
+
 
       if(!v){
 
         $('#nt').focus();
 
         return;
+
       }
+
 
       const note={
 
         id:crypto.randomUUID(),
+
         text:v
 
       };
 
-      S.notes.unshift(note);
 
-      await saveNote(note);
+      S.notes.unshift(
+        note
+      );
+
+
+      await saveNote(
+        note
+      );
+
 
       return render();
+
     }
 
-    if(t.hasAttribute('data-newlist')){
+
+    if(
+      t.hasAttribute(
+        'data-newlist'
+      )
+    ){
 
       const v=
-        $('#nl').value.trim();
+        $('#nl')
+          .value
+          .trim();
+
 
       if(
+
         !v||
+
         S.lists.some(
           l=>l.name===v
         )
+
       ){
 
         $('#nl').focus();
 
         return;
+
       }
+
 
       const list={
 
         name:v,
+
         secs:[]
 
       };
 
-      await saveList(list);
 
-      S.lists.push(list);
+      await saveList(
+        list
+      );
+
+
+      S.lists.push(
+        list
+      );
+
 
       return render();
+
     }
 
-    if(D.addt!==undefined){
+
+    if(
+      D.addt!==undefined
+    ){
 
       const l=
         S.lists[S.cur];
 
-      if(!l)return;
+
+      if(!l)
+        return;
+
 
       const input=
         t.previousElementSibling;
 
+
       const v=
         input.value.trim();
+
 
       if(!v){
 
         input.focus();
 
         return;
+
       }
+
 
       const todo={
 
@@ -2866,7 +4045,10 @@ document.addEventListener(
         list:l.name,
 
         sec:
-          ['',...l.secs][+D.addt],
+          [
+            '',
+            ...l.secs
+          ][+D.addt],
 
         due:'',
 
@@ -2876,70 +4058,114 @@ document.addEventListener(
 
       };
 
-      S.todos.push(todo);
 
-      await saveTodo(todo);
+      S.todos.push(
+        todo
+      );
+
+
+      await saveTodo(
+        todo
+      );
+
 
       return keep();
+
     }
 
-    if(t.hasAttribute('data-addsec')){
+
+    if(
+      t.hasAttribute(
+        'data-addsec'
+      )
+    ){
 
       const l=
         S.lists[S.cur];
 
-      if(!l)return;
+
+      if(!l)
+        return;
+
 
       const input=
         t.previousElementSibling;
 
+
       const v=
         input.value.trim();
 
+
       if(
+
         !v||
+
         l.secs.includes(v)
+
       ){
 
         input.focus();
 
         return;
+
       }
 
-      l.secs.push(v);
 
-      await saveList(l);
+      l.secs.push(
+        v
+      );
+
+
+      await saveList(
+        l
+      );
+
 
       return keep();
+
     }
 
-    if(t.hasAttribute('data-dellist')){
+
+    if(
+      t.hasAttribute(
+        'data-dellist'
+      )
+    ){
 
       const l=
         S.lists[S.cur];
 
+
       if(
+
         !l||
+
         S.lists.length<2||
+
         !confirm(
           '¿Eliminar "'+
           l.name+
           '" y sus tareas?'
         )
+
       ){
 
         return;
+
       }
+
 
       const oldTodos=
         S.todos.filter(
           x=>x.list===l.name
         );
 
+
       S.todos=
         S.todos.filter(
           x=>x.list!==l.name
         );
+
 
       for(
         const todo of oldTodos
@@ -2951,33 +4177,57 @@ document.addEventListener(
 
       }
 
-      await deleteList(l.id);
+
+      await deleteList(
+        l.id
+      );
+
 
       S.lists.splice(
         S.cur,
         1
       );
 
+
       return go('lists');
+
     }
 
+
     if(
-      t.hasAttribute('data-addtodo')||
-      t.hasAttribute('data-addday')
+
+      t.hasAttribute(
+        'data-addtodo'
+      )
+
+      ||
+
+      t.hasAttribute(
+        'data-addday'
+      )
+
     ){
 
       const v=
-        $('#ti').value.trim();
+        $('#ti')
+          .value
+          .trim();
+
 
       if(!v){
 
         $('#ti').focus();
 
         return;
+
       }
 
+
       const inDay=
-        t.hasAttribute('data-addday');
+        t.hasAttribute(
+          'data-addday'
+        );
+
 
       const todo={
 
@@ -2991,8 +4241,11 @@ document.addEventListener(
         sec:'',
 
         due:
+
           inDay
+
             ?S.day
+
             :(
               $('#td').value||
               key(new Date())
@@ -3005,31 +4258,53 @@ document.addEventListener(
 
       };
 
-      S.todos.push(todo);
 
-      await saveTodo(todo);
+      S.todos.push(
+        todo
+      );
+
+
+      await saveTodo(
+        todo
+      );
+
 
       return inDay
         ?render()
         :go('home');
+
     }
 
-    if(t.hasAttribute('data-theme')){
+
+    if(
+      t.hasAttribute(
+        'data-theme'
+      )
+    ){
 
       const r=
         document.documentElement;
 
-      const d=
-        getComputedStyle(r)
-          .getPropertyValue('--bg')
-          .trim()==='#000';
 
-      r.dataset.theme=
-        d
-          ?'light'
-          :'dark';
+      const current=
+        r.dataset.theme;
+
+
+      if(current==='dark'){
+
+        r.dataset.theme=
+          'light';
+
+      }else{
+
+        r.dataset.theme=
+          'dark';
+
+      }
+
 
       return;
+
     }
 
   }
@@ -3041,49 +4316,81 @@ document.addEventListener(
    ========================================================= */
 
 supabase.auth.onAuthStateChange(
-  async(event,session)=>{
+  (event,session)=>{
 
-    if(session?.user){
+    setTimeout(
+      async()=>{
 
-      S.user=
-        session.user;
+        try{
 
-      $('#auth')
-        .classList
-        .remove('show');
+          if(session?.user){
 
-      if(
-        !getUserName()
-      ){
+            S.user=
+              session.user;
 
-        const ok=
-          await askForName();
 
-        if(!ok)return;
+            $('#auth')
+              .classList
+              .remove('show');
 
-      }
 
-      if(!cloudReady){
+            if(
+              !getUserName()
+            ){
 
-        await loadCloud();
+              const ok=
+                await askForName();
 
-        await migrateLocalData();
 
-      }else{
+              if(!ok)
+                return;
 
-        render();
+            }
 
-      }
 
-    }else{
+            if(!cloudReady){
 
-      S.user=null;
+              await loadCloud();
 
-      $('#auth')
-        .classList
-        .add('show');
+              await migrateLocalData();
 
-    }
+            }else{
+
+              render();
+
+            }
+
+          }else{
+
+            S.user=
+              null;
+
+
+            $('#auth')
+              .classList
+              .add('show');
+
+
+            $('#app')
+              .innerHTML='';
+
+          }
+
+        }catch(error){
+
+          console.error(
+            'AUTH ERROR:',
+            error
+          );
+
+
+          render();
+
+        }
+
+      },
+      0
+    );
 
   }
 );
@@ -3095,38 +4402,70 @@ supabase.auth.onAuthStateChange(
 
 async function init(){
 
-  const {
-    data:{
-      session
+  try{
+
+    const {
+      data:{
+        session
+      }
+    }=
+      await supabase.auth.getSession();
+
+
+    if(session?.user){
+
+      S.user=
+        session.user;
+
+
+      $('#auth')
+        .classList
+        .remove('show');
+
+
+      if(
+        !getUserName()
+      ){
+
+        const ok=
+          await askForName();
+
+
+        if(!ok)
+          return;
+
+      }
+
+
+      await loadCloud();
+
+
+      await migrateLocalData();
+
+
+    }else{
+
+      $('#auth')
+        .classList
+        .add('show');
+
     }
-  }=
-    await supabase.auth.getSession();
 
-  if(session?.user){
 
-    S.user=
-      session.user;
+  }catch(error){
 
-    $('#auth')
-      .classList
-      .remove('show');
+    console.error(
+      'INIT ERROR:',
+      error
+    );
 
-    if(
-      !getUserName()
-    ){
 
-      const ok=
-        await askForName();
-
-      if(!ok)return;
-
-    }
-
-    await loadCloud();
-
-    await migrateLocalData();
-
-  }else{
+    /*
+     * Si Supabase falla,
+     * mostramos la pantalla de login
+     * en lugar de dejar la aplicación
+     * completamente en blanco.
+     */
 
     $('#auth')
       .classList
@@ -3134,8 +4473,17 @@ async function init(){
 
   }
 
+
+  $('#loading')
+    .classList
+    .add('hide');
+
 }
 
+
+/* =========================================================
+   ESCAPE
+   ========================================================= */
 
 document.addEventListener(
   'keydown',
@@ -3153,21 +4501,35 @@ document.addEventListener(
 );
 
 
-setInterval(()=>{
+/* =========================================================
+   ACTUALIZACIÓN DEL SALUDO
+   ========================================================= */
 
-  if(
-    S.view==='home' &&
-    !$('#menu')
-      ?.classList
-      .contains('open')
-  ){
+setInterval(
+  ()=>{
 
-    keep();
+    if(
 
-  }
+      S.view==='home'&&
 
-},60000);
+      !$('#menu')
+        ?.classList
+        .contains('open')
 
+    ){
+
+      keep();
+
+    }
+
+  },
+  60000
+);
+
+
+/* =========================================================
+   START
+   ========================================================= */
 
 init();
 
@@ -3175,3 +4537,4 @@ init();
 
 </body>
 </html>
+```
