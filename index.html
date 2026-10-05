@@ -44,23 +44,19 @@
 }
 
 @media (min-width:700px){
-
   :root{
     --maxw:820px;
     --LW:140px
   }
-
 }
 
 @media (prefers-color-scheme:dark){
-
   :root:not([data-theme="light"]){
     --bg:#000;
     --fg:#fff;
     --mut:#9a9a9a;
     --line:#2b2b2b
   }
-
 }
 
 :root[data-theme="dark"]{
@@ -549,7 +545,6 @@ textarea{
 }
 
 @media (min-width:700px){
-
   .dash{
     grid-template-columns:repeat(2,minmax(0,1fr))
   }
@@ -557,7 +552,6 @@ textarea{
   .wide{
     grid-column:1/-1
   }
-
 }
 
 .panel{
@@ -724,11 +718,9 @@ textarea{
 }
 
 @media (prefers-reduced-motion:reduce){
-
   *{
     transition:none!important
   }
-
 }
 
 </style>
@@ -740,11 +732,8 @@ textarea{
 <div
   id="loading"
   class="loading">
-
   Nova-List
-
 </div>
-
 
 <div
   id="auth"
@@ -803,9 +792,7 @@ textarea{
 
 </div>
 
-
 <div id="app"></div>
-
 
 <nav aria-label="Principal">
 
@@ -814,9 +801,7 @@ textarea{
     <svg viewBox="0 0 24 24">
 
       <path d="M5 4h14v10l-5 6H5z"/>
-
       <path d="M14 20v-6h5"/>
-
       <path d="M8 9h8M8 13h4"/>
 
     </svg>
@@ -825,13 +810,11 @@ textarea{
 
   </button>
 
-
   <button data-go="new">
 
     <svg viewBox="0 0 24 24">
 
       <circle cx="12" cy="12" r="10"/>
-
       <path d="M12 6Q12 12 18 12Q12 12 12 18Q12 12 6 12Q12 12 12 6Z"/>
 
     </svg>
@@ -840,13 +823,11 @@ textarea{
 
   </button>
 
-
   <button data-go="plan">
 
     <svg viewBox="0 0 24 24">
 
       <path d="M4 20l1-4L15 6l3 3L8 19z"/>
-
       <path d="M13 8l3 3"/>
 
       <path
@@ -862,9 +843,7 @@ textarea{
 
 </nav>
 
-
 <script type="module">
-
 
 /* =========================================================
    SUPABASE
@@ -874,14 +853,11 @@ import {
   createClient
 } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-
 const SUPABASE_URL =
   'https://udvxmrbqymhrlaiojzex.supabase.co';
 
-
 const SUPABASE_KEY =
   'sb_publishable_VaSGlZ8OA38jbM9QHCTwZw_eNVq__On';
-
 
 const supabase =
   createClient(
@@ -896,7 +872,6 @@ const supabase =
 
 const $=s=>
   document.querySelector(s);
-
 
 const S={
 
@@ -933,15 +908,12 @@ const S={
 
 };
 
-
 let cloudReady=false;
 
 let askingForName=false;
 
-
 const arrow=
   '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
-
 
 const sd=d=>
   new Date(
@@ -950,23 +922,19 @@ const sd=d=>
     d.getDate()
   );
 
-
 const key=d=>
   d.getFullYear()+'-'+
   String(d.getMonth()+1).padStart(2,'0')+'-'+
   String(d.getDate()).padStart(2,'0');
 
-
 const esc=s=>
   String(s??'').replace(
     /[&<>"]/g,
     c=>({
-
       '&':'&amp;',
       '<':'&lt;',
       '>':'&gt;',
       '"':'&quot;'
-
     }[c])
   );
 
@@ -1001,22 +969,17 @@ const greeting=()=>{
     new Date().getHours();
 
   const text=
-
     h<12
       ?'Buenos días'
-
       :h<19
         ?'Buenas tardes'
-
         :'Buenas noches';
 
   const name=
     getUserName();
 
   return name
-
     ?`${text}, ${esc(name)}`
-
     :text;
 
 };
@@ -1032,7 +995,6 @@ const at=t=>
     (t.time||'23:59')
   ).getTime();
 
-
 const overdue=()=>
   S.todos.filter(
     t=>
@@ -1040,7 +1002,6 @@ const overdue=()=>
       t.due&&
       at(t)<Date.now()
   );
-
 
 const today=()=>
   S.todos.filter(
@@ -1052,7 +1013,6 @@ const today=()=>
         at(t)<Date.now()
       )
   );
-
 
 const soon=()=>{
 
@@ -1081,24 +1041,19 @@ const soon=()=>{
 
 };
 
-
 const upcoming=()=>
   S.todos
-
     .filter(
       t=>
         !t.done&&
         t.due&&
         at(t)>=Date.now()
     )
-
     .sort(
       (a,b)=>
         at(a)-at(b)
     )
-
     .slice(0,6);
-
 
 const stat=n=>{
 
@@ -1128,7 +1083,6 @@ const stat=n=>{
 
 };
 
-
 const bar=p=>`
 
 <div
@@ -1145,7 +1099,6 @@ const bar=p=>`
 </div>
 
 `;
-
 
 const opts=[
 
@@ -1181,7 +1134,6 @@ async function signInWithGoogle(){
         }
 
       });
-
 
     if(error){
 
@@ -1225,12 +1177,9 @@ async function askForName(){
 
   }
 
-
   askingForName=true;
 
-
   let name='';
-
 
   while(!name){
 
@@ -1239,14 +1188,12 @@ async function askForName(){
         '¿Cómo te llamas?'
       );
 
-
     if(name===null){
 
       const continueWithoutName=
         confirm(
           'Necesitas ingresar un nombre para continuar con Nova List.'
         );
-
 
       if(!continueWithoutName){
 
@@ -1258,17 +1205,14 @@ async function askForName(){
 
       }
 
-
       name='';
 
       continue;
 
     }
 
-
     name=
       name.trim();
-
 
     if(!name){
 
@@ -1279,7 +1223,6 @@ async function askForName(){
     }
 
   }
-
 
   try{
 
@@ -1294,7 +1237,6 @@ async function askForName(){
         }
 
       });
-
 
     if(error){
 
@@ -1313,11 +1255,9 @@ async function askForName(){
 
     }
 
-
     S.user=
       data.user||
       S.user;
-
 
   }catch(error){
 
@@ -1328,7 +1268,6 @@ async function askForName(){
     return false;
 
   }
-
 
   askingForName=false;
 
@@ -1346,21 +1285,17 @@ async function changeName(){
   const current=
     getUserName();
 
-
   let name=
     prompt(
       'Escribe tu nuevo nombre:',
       current
     );
 
-
   if(name===null)
     return;
 
-
   name=
     name.trim();
-
 
   if(!name){
 
@@ -1371,7 +1306,6 @@ async function changeName(){
     return;
 
   }
-
 
   try{
 
@@ -1387,7 +1321,6 @@ async function changeName(){
 
       });
 
-
     if(error){
 
       console.error(error);
@@ -1400,11 +1333,9 @@ async function changeName(){
 
     }
 
-
     S.user=
       data.user||
       S.user;
-
 
     render();
 
@@ -1433,7 +1364,6 @@ async function signOut(){
 
   }
 
-
   S.user=null;
 
   S.todos=[];
@@ -1461,7 +1391,6 @@ async function signOut(){
 
   cloudReady=false;
 
-
   $('#app').innerHTML='';
 
   $('#auth')
@@ -1485,10 +1414,8 @@ async function loadCloud(){
 
   }
 
-
   const uid=
     S.user.id;
-
 
   try{
 
@@ -1503,18 +1430,13 @@ async function loadCloud(){
     ]=
       await Promise.all([
 
-
         supabase
-
           .from('todos')
-
           .select('*')
-
           .eq(
             'user_id',
             uid
           )
-
           .order(
             'created_at',
             {
@@ -1522,18 +1444,13 @@ async function loadCloud(){
             }
           ),
 
-
         supabase
-
           .from('notes')
-
           .select('*')
-
           .eq(
             'user_id',
             uid
           )
-
           .order(
             'created_at',
             {
@@ -1541,18 +1458,13 @@ async function loadCloud(){
             }
           ),
 
-
         supabase
-
           .from('lists')
-
           .select('*')
-
           .eq(
             'user_id',
             uid
           )
-
           .order(
             'created_at',
             {
@@ -1560,12 +1472,8 @@ async function loadCloud(){
             }
           )
 
-    ]);
+      ]);
 
-
-    /*
-     * TO-DOS
-     */
 
     if(todosRes.error){
 
@@ -1582,10 +1490,6 @@ async function loadCloud(){
     }
 
 
-    /*
-     * NOTAS
-     */
-
     if(notesRes.error){
 
       console.error(
@@ -1600,10 +1504,6 @@ async function loadCloud(){
 
     }
 
-
-    /*
-     * LISTAS
-     */
 
     if(listsRes.error){
 
@@ -1640,10 +1540,6 @@ async function loadCloud(){
     }
 
 
-    /*
-     * CREAR LISTAS INICIALES
-     */
-
     if(
 
       !listsRes.error&&
@@ -1674,7 +1570,6 @@ async function loadCloud(){
 
       ];
 
-
       const rows=
         initial.map(
           l=>({
@@ -1688,19 +1583,14 @@ async function loadCloud(){
           })
         );
 
-
       const {
         data,
         error
       }=
         await supabase
-
           .from('lists')
-
           .insert(rows)
-
           .select();
-
 
       if(error){
 
@@ -1731,9 +1621,7 @@ async function loadCloud(){
 
     }
 
-
     cloudReady=true;
-
 
   }catch(error){
 
@@ -1744,25 +1632,19 @@ async function loadCloud(){
 
   }
 
-
-  /*
-   * SIEMPRE MOSTRAR LA APP
-   */
-
   render();
 
 }
 
 
 /* =========================================================
-   GUARDAR TODO
+   GUARDAR TO-DO
    ========================================================= */
 
 async function saveTodo(todo){
 
   if(!S.user)
     return;
-
 
   try{
 
@@ -1786,16 +1668,12 @@ async function saveTodo(todo){
 
     };
 
-
     const {
       error
     }=
       await supabase
-
         .from('todos')
-
         .upsert(row);
-
 
     if(error){
 
@@ -1820,28 +1698,22 @@ async function deleteTodo(id){
   if(!S.user)
     return;
 
-
   try{
 
     const {
       error
     }=
       await supabase
-
         .from('todos')
-
         .delete()
-
         .eq(
           'id',
           id
         )
-
         .eq(
           'user_id',
           S.user.id
         );
-
 
     if(error)
       console.error(
@@ -1858,11 +1730,14 @@ async function deleteTodo(id){
 }
 
 
+/* =========================================================
+   NOTAS
+   ========================================================= */
+
 async function saveNote(note){
 
   if(!S.user)
     return;
-
 
   try{
 
@@ -1876,16 +1751,12 @@ async function saveNote(note){
 
     };
 
-
     const {
       error
     }=
       await supabase
-
         .from('notes')
-
         .upsert(row);
-
 
     if(error){
 
@@ -1910,28 +1781,22 @@ async function deleteNote(id){
   if(!S.user)
     return;
 
-
   try{
 
     const {
       error
     }=
       await supabase
-
         .from('notes')
-
         .delete()
-
         .eq(
           'id',
           id
         )
-
         .eq(
           'user_id',
           S.user.id
         );
-
 
     if(error)
       console.error(
@@ -1948,11 +1813,14 @@ async function deleteNote(id){
 }
 
 
+/* =========================================================
+   LISTAS
+   ========================================================= */
+
 async function saveList(list){
 
   if(!S.user)
-    return;
-
+    return false;
 
   try{
 
@@ -1966,25 +1834,18 @@ async function saveList(list){
 
     };
 
-
     if(list.id)
       row.id=list.id;
-
 
     const {
       data,
       error
     }=
       await supabase
-
         .from('lists')
-
         .upsert(row)
-
         .select()
-
         .single();
-
 
     if(error){
 
@@ -1993,18 +1854,23 @@ async function saveList(list){
         error
       );
 
-      return;
+      return false;
 
     }
-
 
     if(data)
       list.id=data.id;
 
+    return true;
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      'SAVE LIST:',
+      error
+    );
+
+    return false;
 
   }
 
@@ -2016,28 +1882,22 @@ async function deleteList(id){
   if(!S.user)
     return;
 
-
   try{
 
     const {
       error
     }=
       await supabase
-
         .from('lists')
-
         .delete()
-
         .eq(
           'id',
           id
         )
-
         .eq(
           'user_id',
           S.user.id
         );
-
 
     if(error)
       console.error(
@@ -2082,14 +1942,11 @@ async function migrateLocalData(){
   if(!S.user)
     return;
 
-
   const local=
     getLocalData();
 
-
   if(!local)
     return;
-
 
   const hasLocal=
 
@@ -2112,24 +1969,19 @@ async function migrateLocalData(){
       local.lists.length
     );
 
-
   if(!hasLocal)
     return;
-
 
   const answer=
     confirm(
       'Encontramos datos guardados anteriormente en este dispositivo. ¿Quieres subirlos a tu cuenta de Nova List?'
     );
 
-
   if(!answer)
     return;
 
-
   const uid=
     S.user.id;
-
 
   if(local.todos?.length){
 
@@ -2145,11 +1997,8 @@ async function migrateLocalData(){
 
           :crypto.randomUUID();
 
-
       await supabase
-
         .from('todos')
-
         .upsert({
 
           id:id,
@@ -2189,11 +2038,8 @@ async function migrateLocalData(){
 
           :crypto.randomUUID();
 
-
       await supabase
-
         .from('notes')
-
         .upsert({
 
           id:id,
@@ -2216,9 +2062,7 @@ async function migrateLocalData(){
     ){
 
       await supabase
-
         .from('lists')
-
         .insert({
 
           user_id:uid,
@@ -2236,9 +2080,7 @@ async function migrateLocalData(){
 
   }
 
-
   localStorage.removeItem('nova');
-
 
   await loadCloud();
 
@@ -2266,22 +2108,15 @@ function head(){
     </div>
 
     ${
-      S.user
+      S.user ? `
 
-        ?`
+        <div class="userbar">
 
-          <div class="userbar">
+          ${greeting()}
 
-            ${esc(
-              getUserName()||
-              'Cuenta conectada'
-            )}
+        </div>
 
-          </div>
-
-        `
-
-        :''
+      ` : ''
     }
 
   </div>
@@ -2292,7 +2127,6 @@ function head(){
     id="menu">
 
     <div class="scrim"></div>
-
 
     ${
       opts.map(
@@ -2325,7 +2159,6 @@ function head(){
       ).join('')
     }
 
-
   </div>
 
 </header>
@@ -2344,14 +2177,11 @@ function calendar(){
   const n=
     new Date();
 
-
   const y=
     n.getFullYear();
 
-
   const m=
     n.getMonth();
-
 
   const first=
     new Date(
@@ -2360,14 +2190,12 @@ function calendar(){
       1
     ).getDay();
 
-
   const dim=
     new Date(
       y,
       m+1,
       0
     ).getDate();
-
 
   const due=
     new Set(
@@ -2376,9 +2204,7 @@ function calendar(){
         .filter(Boolean)
     );
 
-
   let c='';
-
 
   [
     'D',
@@ -2388,12 +2214,10 @@ function calendar(){
     'J',
     'V',
     'S'
-
   ].forEach(
     d=>
       c+=`<b>${d}</b>`
   );
-
 
   for(
     let i=0;
@@ -2405,7 +2229,6 @@ function calendar(){
       '<span></span>';
 
   }
-
 
   for(
     let d=1;
@@ -2421,7 +2244,6 @@ function calendar(){
           d
         )
       );
-
 
     c+=`
 
@@ -2449,7 +2271,6 @@ function calendar(){
 
   }
 
-
   const month=
     n.toLocaleDateString(
       'es',
@@ -2458,7 +2279,6 @@ function calendar(){
         year:'numeric'
       }
     );
-
 
   return `
 
@@ -2522,31 +2342,24 @@ function items(a,empty){
 
             ${esc(t.title)}
 
-
             <small>
 
               ${esc(t.list||'')}
 
               ${
                 t.sec
-
                   ?' › '+esc(t.sec)
-
                   :''
               }
 
-
               ${
                 t.due
-
                   ?' · '+t.due+
-
                     (
                       t.time
                         ?' '+t.time
                         :''
                     )
-
                   :''
               }
 
@@ -2611,6 +2424,10 @@ const page=(t,b)=>
   `;
 
 
+/* =========================================================
+   SELECTOR DE LISTAS
+   ========================================================= */
+
 const listSel=()=>`
 
 <select id="tl">
@@ -2618,13 +2435,124 @@ const listSel=()=>`
   ${
     S.lists.map(
       l=>
-        `<option>${esc(l.name)}</option>`
+        `<option value="${esc(l.name)}">${esc(l.name)}</option>`
     ).join('')
   }
+
+  <option value="__new__">
+    + Nueva lista
+  </option>
 
 </select>
 
 `;
+
+
+/* =========================================================
+   CREAR LISTA DESDE NUEVO TO-DO
+   ========================================================= */
+
+async function createListFromTodo(){
+
+  const select=
+    $('#tl');
+
+  if(!select)
+    return;
+
+  const previousValue=
+    select.value;
+
+  const name=
+    prompt(
+      'Nombre de la nueva lista:'
+    );
+
+  if(name===null){
+
+    select.value=
+      previousValue;
+
+    return;
+
+  }
+
+  const v=
+    name.trim();
+
+  if(!v){
+
+    alert(
+      'El nombre no puede estar vacío.'
+    );
+
+    select.value=
+      previousValue;
+
+    return;
+
+  }
+
+  const existing=
+    S.lists.find(
+      l=>
+        l.name.toLowerCase()===
+        v.toLowerCase()
+    );
+
+  if(existing){
+
+    alert(
+      'Ya existe una lista con ese nombre.'
+    );
+
+    select.value=
+      existing.name;
+
+    return;
+
+  }
+
+  const list={
+
+    name:v,
+
+    secs:[]
+
+  };
+
+  const saved=
+    await saveList(
+      list
+    );
+
+  if(!saved){
+
+    alert(
+      'No se pudo crear la lista.'
+    );
+
+    select.value=
+      previousValue;
+
+    return;
+
+  }
+
+  S.lists.push(
+    list
+  );
+
+  render();
+
+  const newSelect=
+    $('#tl');
+
+  if(newSelect)
+    newSelect.value=
+      v;
+
+}
 
 
 /* =========================================================
@@ -2639,15 +2567,7 @@ home:()=>{
   const o=
     overdue().length;
 
-
   return head()+`
-
-    <div class="greet">
-
-      ${greeting()}
-
-    </div>
-
 
     <div class="row">
 
@@ -2694,10 +2614,8 @@ home:()=>{
 
         Hoy
 
-
         ${
           o
-
             ?`
 
               <b
@@ -2709,12 +2627,10 @@ home:()=>{
               </b>
 
             `
-
             :''
         }
 
       </span>
-
 
       ${arrow}
 
@@ -2743,15 +2659,12 @@ today:()=>{
   const o=
     overdue();
 
-
   const t=
     today();
-
 
   return page(
 
     'Hoy',
-
 
     (
 
@@ -2767,14 +2680,12 @@ today:()=>{
 
           </h3>
 
-
           ${items(o)}
 
         `
 
         :''
     )
-
 
     +
 
@@ -2795,7 +2706,6 @@ today:()=>{
       </h3>
 
     `
-
 
     +
 
@@ -2867,7 +2777,6 @@ notes:()=>page(
         `
       ).join('')
 
-
       ||
 
       '<p class="empty">Aún no hay notas.</p>'
@@ -2921,23 +2830,19 @@ plan:()=>{
   const o=
     overdue().length;
 
-
   const pend=
     S.todos.filter(
       t=>!t.done
     ).length;
-
 
   const hoy=
     today().filter(
       t=>!t.done
     ).length;
 
-
   return page(
 
     'Planificador',
-
 
     `
 
@@ -3051,7 +2956,6 @@ plan:()=>{
                 const s=
                   stat(l.name);
 
-
                 return `
 
                   <button
@@ -3097,9 +3001,7 @@ plan:()=>{
 
           ${
             S.notes
-
               .slice(0,5)
-
               .map(
                 n=>`
 
@@ -3129,7 +3031,6 @@ plan:()=>{
 
                 `
               )
-
               .join('')
 
             ||
@@ -3160,14 +3061,12 @@ day:()=>{
       .split('-')
       .map(Number);
 
-
   let l=
     new Date(
       y,
       m-1,
       d
     )
-
       .toLocaleDateString(
         'es',
         {
@@ -3177,19 +3076,15 @@ day:()=>{
         }
       );
 
-
   l=
     l[0].toUpperCase()+
     l.slice(1);
 
-
   const a=
     S.todos
-
       .filter(
         t=>t.due===S.day
       )
-
       .sort(
         (p,q)=>
           (p.time||'')
@@ -3198,20 +3093,16 @@ day:()=>{
             )
       );
 
-
   return page(
 
     l,
-
 
     items(
       a,
       'No hay pendientes este día.'
     )
 
-
     +
-
 
     `
 
@@ -3255,7 +3146,6 @@ lists:()=>page(
 
   'Mis listas',
 
-
   `
 
     <div class="add">
@@ -3282,7 +3172,6 @@ lists:()=>page(
 
           const s=
             stat(l.name);
-
 
           return `
 
@@ -3321,25 +3210,20 @@ list:()=>{
   const l=
     S.lists[S.cur];
 
-
   if(!l)
     return go('lists');
 
-
   const s=
     stat(l.name);
-
 
   const gs=[
     '',
     ...l.secs
   ];
 
-
   return page(
 
     esc(l.name),
-
 
     `
 
@@ -3359,7 +3243,6 @@ list:()=>{
 
 
       ${
-
         gs.map(
           (g,i)=>{
 
@@ -3369,7 +3252,6 @@ list:()=>{
                   t.list===l.name&&
                   (t.sec||'')===g
               );
-
 
             return (
 
@@ -3396,37 +3278,33 @@ list:()=>{
                 `
 
                 :''
-              )
+            )
+
+            +
+
+            items(a)
+
+            +
+
+            `
+
+              <div class="add">
+
+                <input
+                  placeholder="Agregar tarea">
 
 
-              +
+                <button
+                  data-addt="${i}"
+                  aria-label="Agregar tarea">
 
+                  +
 
-              items(a)
+                </button>
 
+              </div>
 
-              +
-
-
-              `
-
-                <div class="add">
-
-                  <input
-                    placeholder="Agregar tarea">
-
-
-                  <button
-                    data-addt="${i}"
-                    aria-label="Agregar tarea">
-
-                    +
-
-                  </button>
-
-                </div>
-
-              `;
+            `;
 
           }
         ).join('')
@@ -3492,7 +3370,6 @@ settings:()=>page(
 
   'Ajustes',
 
-
   `
 
     <button
@@ -3538,7 +3415,6 @@ about:()=>page(
 
   'Acerca de',
 
-
   `
 
     <p>
@@ -3578,7 +3454,6 @@ function render(){
       'ERROR RENDER:',
       error
     );
-
 
     $('#app').innerHTML=`
 
@@ -3636,9 +3511,7 @@ const keep=()=>{
   const y=
     window.scrollY;
 
-
   render();
-
 
   window.scrollTo(
     0,
@@ -3659,17 +3532,14 @@ document.addEventListener(
     const t=
       e.target.closest('button');
 
-
     const menu=
       $('#menu');
-
 
     const open=
       menu&&
       menu.classList.contains(
         'open'
       );
-
 
     if(
 
@@ -3690,10 +3560,8 @@ document.addEventListener(
 
     }
 
-
     if(!t)
       return;
-
 
     const D=
       t.dataset;
@@ -3752,7 +3620,6 @@ document.addEventListener(
 
       }
 
-
       return go(D.go);
 
     }
@@ -3791,17 +3658,13 @@ document.addEventListener(
           i=>i.id===D.done
         );
 
-
       if(!x)
         return;
-
 
       x.done=
         !x.done;
 
-
       await saveTodo(x);
-
 
       return keep();
 
@@ -3815,11 +3678,9 @@ document.addEventListener(
           i=>i.id!==D.del
         );
 
-
       await deleteTodo(
         D.del
       );
-
 
       return keep();
 
@@ -3833,11 +3694,9 @@ document.addEventListener(
           i=>i.id!==D.delnote
         );
 
-
       await deleteNote(
         D.delnote
       );
-
 
       return render();
 
@@ -3851,10 +3710,8 @@ document.addEventListener(
           i=>i.id===D.n2t
         );
 
-
       if(!n)
         return;
-
 
       const todo={
 
@@ -3881,27 +3738,22 @@ document.addEventListener(
 
       };
 
-
       S.todos.push(
         todo
       );
-
 
       S.notes=
         S.notes.filter(
           i=>i!==n
         );
 
-
       await saveTodo(
         todo
       );
 
-
       await deleteNote(
         n.id
       );
-
 
       return keep();
 
@@ -3919,7 +3771,6 @@ document.addEventListener(
           .value
           .trim();
 
-
       if(!v){
 
         $('#nt').focus();
@@ -3927,7 +3778,6 @@ document.addEventListener(
         return;
 
       }
-
 
       const note={
 
@@ -3937,16 +3787,13 @@ document.addEventListener(
 
       };
 
-
       S.notes.unshift(
         note
       );
 
-
       await saveNote(
         note
       );
-
 
       return render();
 
@@ -3959,28 +3806,40 @@ document.addEventListener(
       )
     ){
 
+      const input=
+        $('#nl');
+
       const v=
-        $('#nl')
+        input
           .value
           .trim();
 
+      if(!v){
 
-      if(
-
-        !v||
-
-        S.lists.some(
-          l=>l.name===v
-        )
-
-      ){
-
-        $('#nl').focus();
+        input.focus();
 
         return;
 
       }
 
+      const duplicate=
+        S.lists.some(
+          l=>
+            l.name.toLowerCase()===
+            v.toLowerCase()
+        );
+
+      if(duplicate){
+
+        alert(
+          'Ya existe una lista con ese nombre.'
+        );
+
+        input.focus();
+
+        return;
+
+      }
 
       const list={
 
@@ -3990,16 +3849,24 @@ document.addEventListener(
 
       };
 
+      const saved=
+        await saveList(
+          list
+        );
 
-      await saveList(
-        list
-      );
+      if(!saved){
 
+        alert(
+          'No se pudo crear la lista.'
+        );
+
+        return;
+
+      }
 
       S.lists.push(
         list
       );
-
 
       return render();
 
@@ -4013,18 +3880,14 @@ document.addEventListener(
       const l=
         S.lists[S.cur];
 
-
       if(!l)
         return;
-
 
       const input=
         t.previousElementSibling;
 
-
       const v=
         input.value.trim();
-
 
       if(!v){
 
@@ -4033,7 +3896,6 @@ document.addEventListener(
         return;
 
       }
-
 
       const todo={
 
@@ -4057,16 +3919,13 @@ document.addEventListener(
 
       };
 
-
       S.todos.push(
         todo
       );
 
-
       await saveTodo(
         todo
       );
-
 
       return keep();
 
@@ -4082,24 +3941,24 @@ document.addEventListener(
       const l=
         S.lists[S.cur];
 
-
       if(!l)
         return;
-
 
       const input=
         t.previousElementSibling;
 
-
       const v=
         input.value.trim();
-
 
       if(
 
         !v||
 
-        l.secs.includes(v)
+        l.secs.some(
+          x=>
+            x.toLowerCase()===
+            v.toLowerCase()
+        )
 
       ){
 
@@ -4109,16 +3968,13 @@ document.addEventListener(
 
       }
 
-
       l.secs.push(
         v
       );
 
-
       await saveList(
         l
       );
-
 
       return keep();
 
@@ -4133,7 +3989,6 @@ document.addEventListener(
 
       const l=
         S.lists[S.cur];
-
 
       if(
 
@@ -4153,18 +4008,15 @@ document.addEventListener(
 
       }
 
-
       const oldTodos=
         S.todos.filter(
           x=>x.list===l.name
         );
 
-
       S.todos=
         S.todos.filter(
           x=>x.list!==l.name
         );
-
 
       for(
         const todo of oldTodos
@@ -4176,17 +4028,14 @@ document.addEventListener(
 
       }
 
-
       await deleteList(
         l.id
       );
-
 
       S.lists.splice(
         S.cur,
         1
       );
-
 
       return go('lists');
 
@@ -4212,7 +4061,6 @@ document.addEventListener(
           .value
           .trim();
 
-
       if(!v){
 
         $('#ti').focus();
@@ -4221,12 +4069,19 @@ document.addEventListener(
 
       }
 
+      const selectedList=
+        $('#tl').value;
+
+      if(selectedList==='__new__'){
+
+        return;
+
+      }
 
       const inDay=
         t.hasAttribute(
           'data-addday'
         );
-
 
       const todo={
 
@@ -4234,8 +4089,7 @@ document.addEventListener(
 
         title:v,
 
-        list:
-          $('#tl').value,
+        list:selectedList,
 
         sec:'',
 
@@ -4257,16 +4111,13 @@ document.addEventListener(
 
       };
 
-
       S.todos.push(
         todo
       );
 
-
       await saveTodo(
         todo
       );
-
 
       return inDay
         ?render()
@@ -4284,10 +4135,8 @@ document.addEventListener(
       const r=
         document.documentElement;
 
-
       const current=
         r.dataset.theme;
-
 
       if(current==='dark'){
 
@@ -4301,10 +4150,33 @@ document.addEventListener(
 
       }
 
-
       return;
 
     }
+
+  }
+);
+
+
+/* =========================================================
+   SELECTOR DE NUEVA LISTA
+   ========================================================= */
+
+document.addEventListener(
+  'change',
+  async e=>{
+
+    if(
+      e.target?.id!=='tl'
+    )
+      return;
+
+    if(
+      e.target.value!=='__new__'
+    )
+      return;
+
+    await createListFromTodo();
 
   }
 );
@@ -4327,11 +4199,9 @@ supabase.auth.onAuthStateChange(
             S.user=
               session.user;
 
-
             $('#auth')
               .classList
               .remove('show');
-
 
             if(
               !getUserName()
@@ -4340,12 +4210,10 @@ supabase.auth.onAuthStateChange(
               const ok=
                 await askForName();
 
-
               if(!ok)
                 return;
 
             }
-
 
             if(!cloudReady){
 
@@ -4364,11 +4232,9 @@ supabase.auth.onAuthStateChange(
             S.user=
               null;
 
-
             $('#auth')
               .classList
               .add('show');
-
 
             $('#app')
               .innerHTML='';
@@ -4381,7 +4247,6 @@ supabase.auth.onAuthStateChange(
             'AUTH ERROR:',
             error
           );
-
 
           render();
 
@@ -4410,17 +4275,14 @@ async function init(){
     }=
       await supabase.auth.getSession();
 
-
     if(session?.user){
 
       S.user=
         session.user;
 
-
       $('#auth')
         .classList
         .remove('show');
-
 
       if(
         !getUserName()
@@ -4429,18 +4291,14 @@ async function init(){
         const ok=
           await askForName();
 
-
         if(!ok)
           return;
 
       }
 
-
       await loadCloud();
 
-
       await migrateLocalData();
-
 
     }else{
 
@@ -4450,7 +4308,6 @@ async function init(){
 
     }
 
-
   }catch(error){
 
     console.error(
@@ -4458,20 +4315,11 @@ async function init(){
       error
     );
 
-
-    /*
-     * Si Supabase falla,
-     * mostramos la pantalla de login
-     * en lugar de dejar la aplicación
-     * completamente en blanco.
-     */
-
     $('#auth')
       .classList
       .add('show');
 
   }
-
 
   $('#loading')
     .classList
@@ -4536,4 +4384,3 @@ init();
 
 </body>
 </html>
-
