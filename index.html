@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,118 +11,673 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet">
 
 <style>
-:root{--bg:#fff;--fg:#000;--mut:#707070;--line:#d9d9d9;--maxw:520px;--LW:clamp(40px,24vw,120px);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (min-width:700px){:root{--maxw:820px;--LW:140px}}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--fg:#fff;--mut:#9a9a9a;--line:#2b2b2b}}
-:root[data-theme="dark"]{--bg:#000;--fg:#fff;--mut:#9a9a9a;--line:#2b2b2b}
-html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
-*{box-sizing:border-box;margin:0}
-body{background:var(--bg);color:var(--fg);font-family:'Manrope',system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
-button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent;text-align:inherit}
-button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
-#app{max-width:var(--maxw);margin:0 auto;padding:28px clamp(16px,5vw,28px) 130px}
-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-h1{font-weight:800;font-size:clamp(28px,7vw,40px);letter-spacing:-.04em;line-height:1}
-.sub{font-size:clamp(12px,3vw,14px);color:var(--mut);margin-top:6px}
-.greet{font-size:clamp(24px,6vw,34px);font-weight:300;letter-spacing:-.02em;margin:clamp(28px,6vw,44px) 0 clamp(20px,5vw,32px)}
-.menu{position:relative;width:34px;height:34px;flex:none;z-index:20}
-.scrim{position:fixed;inset:0;z-index:-1;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .3s}
-.menu.open .scrim{opacity:.95;pointer-events:auto}
-.opt{position:absolute;right:0;top:calc(var(--i)*40px);width:34px;height:34px;display:grid;place-items:center;translate:calc(var(--dx)*1px) 0;transform:translateY(calc(var(--i)*-40px));transition:translate .25s ease,transform .35s ease}
-.menu.open .opt{translate:0 0;transform:none;transition:translate .25s ease,transform .35s ease .25s}
-.opt i{width:6px;height:6px;border-radius:50%;background:var(--fg)}
-.opt .ln{position:absolute;right:24px;top:50%;height:1px;width:var(--LW);background:var(--fg);transform:scaleX(0);transform-origin:right;transition:transform .2s ease;pointer-events:none}
-.menu.open .opt .ln{transform:scaleX(1);transition:transform .4s ease .6s}
-.opt .lb{position:absolute;right:calc(24px + var(--LW) + 10px);top:50%;translate:0 -50%;white-space:nowrap;font-size:clamp(15px,4vw,18px);opacity:0;pointer-events:none;transition:opacity .15s}
-.menu.open .opt .lb{opacity:1;pointer-events:auto;transition:opacity .3s ease 1s}
+:root{
+  --bg:#fff;
+  --fg:#000;
+  --mut:#707070;
+  --line:#d9d9d9;
+  --maxw:520px;
+  --LW:clamp(40px,24vw,120px);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px)
+}
 
-.row{display:flex;gap:clamp(10px,3vw,18px);align-items:stretch}
-.cal{width:50%;min-width:0;border:1px solid var(--fg);border-radius:14px;padding:clamp(6px,1.6vw,14px)}
-.cal h3{font-size:clamp(11px,3vw,15px);font-weight:600;text-align:center;margin-bottom:6px}
-.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;text-align:center;font-size:clamp(9px,2.6vw,14px)}
-.grid b{color:var(--mut);font-weight:400}
-.grid button{aspect-ratio:1;padding:0;border-radius:50%;font-size:inherit;position:relative;text-align:center}
-.grid .today{background:var(--fg);color:var(--bg)}
-.grid .has::after{content:"";position:absolute;bottom:2px;left:50%;width:3px;height:3px;margin-left:-1.5px;border-radius:50%;background:currentColor}
-.ov{flex:1;min-width:0;border:1px solid var(--line);border-radius:14px;padding:clamp(10px,2.5vw,16px);font-size:clamp(12px,3.2vw,15px);display:flex;flex-direction:column;gap:8px}
-.ov p{display:flex;justify-content:space-between;gap:6px}.ov span{color:var(--mut)}
-.ov h3{font-size:inherit;font-weight:600}
-.big{display:flex;justify-content:space-between;align-items:center;width:100%;padding:18px 4px;border-bottom:1px solid var(--line);font-size:clamp(19px,5vw,24px);font-weight:600;letter-spacing:-.02em}
-.big svg{width:22px;height:22px}
-.big:first-of-type{margin-top:22px;border-top:1px solid var(--line)}
-.lbl{position:relative;display:inline-block}
-.bdg{position:absolute;top:-10px;right:-26px;min-width:20px;height:20px;padding:0 6px;border-radius:99px;background:#ff3b30;color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center;letter-spacing:0}
+@media (min-width:700px){
+  :root{
+    --maxw:820px;
+    --LW:140px
+  }
+}
 
-nav{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:10px max(8px,calc((100vw - var(--maxw))/2)) calc(10px + env(safe-area-inset-bottom,0px));z-index:10}
-nav button{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:clamp(10px,2.8vw,13px);padding:4px 6px;flex:1;min-width:0;text-align:center}
-nav svg{width:26px;height:26px}
-svg{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#000;
+    --fg:#fff;
+    --mut:#9a9a9a;
+    --line:#2b2b2b
+  }
+}
 
-.back{font-size:13px;color:var(--mut);margin-bottom:18px;display:inline-flex;gap:6px}
-h2{font-size:clamp(26px,6vw,34px);font-weight:800;letter-spacing:-.03em;margin-bottom:18px}
-.item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
-.chk{width:22px;height:22px;border:1.5px solid var(--fg);border-radius:50%;flex:none;margin-top:1px}
-.chk.on{background:var(--fg)}
-.item small{display:block;color:var(--mut);font-size:12px;margin-top:2px}
-.item .x{margin-left:auto;color:var(--mut);font-size:20px;padding:0 6px}
-.empty{color:var(--mut);padding:14px 0;font-size:14px}
-input,select,textarea{font:inherit;font-size:16px;width:100%;background:none;color:var(--fg);border:0;border-bottom:1px solid var(--fg);padding:12px 0;margin-bottom:16px;border-radius:0;color-scheme:light dark}
-textarea{min-height:90px;resize:vertical}
-.pri{background:var(--fg);color:var(--bg);padding:14px 26px;border-radius:99px;font-weight:600;text-align:center}
-.note{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:10px;white-space:pre-wrap;display:flex;justify-content:space-between;gap:10px}
-.sec{font-size:15px;font-weight:600;margin:28px 0 4px}
-.add{display:flex;align-items:center;gap:10px;margin:6px 0 4px}
-.add input{margin:0;padding:10px 0}
-.add button{width:36px;height:36px;flex:none;border:1px solid var(--fg);border-radius:50%;text-align:center;font-size:20px;line-height:1}
+:root[data-theme="dark"]{
+  --bg:#000;
+  --fg:#fff;
+  --mut:#9a9a9a;
+  --line:#2b2b2b
+}
 
-.bar{height:6px;border-radius:9px;background:var(--line);overflow:hidden;margin-top:8px}
-.bar i{display:block;height:100%;border-radius:9px;transition:width .4s}
-.dash{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
-@media (min-width:700px){.dash{grid-template-columns:repeat(2,minmax(0,1fr))}.wide{grid-column:1/-1}}
-.panel{border:1px solid var(--line);border-radius:14px;padding:16px;min-width:0}
-.panel h3{font-size:14px;font-weight:600;margin-bottom:6px;display:flex;justify-content:space-between}
-.panel h3 span{color:var(--mut);font-weight:400}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.stat{border:1px solid var(--fg);border-radius:14px;padding:12px}
-.stat b{display:block;font-size:clamp(26px,7vw,36px);font-weight:800;letter-spacing:-.04em;line-height:1}
-.stat span{font-size:12px;color:var(--mut)}
-.lst{display:block;width:100%;padding:12px 0;border-bottom:1px solid var(--line)}
-.lst div{display:flex;justify-content:space-between;font-weight:600}.lst span{color:var(--mut);font-weight:400;font-size:13px}
-.n2t{font-size:12px;color:var(--mut);text-decoration:underline;white-space:nowrap}
-.late{color:#ff3b30}
+html{
+  scroll-padding-top:env(safe-area-inset-top,0px);
+  -webkit-text-size-adjust:100%
+}
+
+*{
+  box-sizing:border-box;
+  margin:0
+}
+
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:'Manrope',system-ui,sans-serif;
+  min-height:100vh;
+  overflow-x:hidden
+}
+
+button{
+  font:inherit;
+  color:inherit;
+  background:none;
+  border:0;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  text-align:inherit
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible{
+  outline:2px solid var(--fg);
+  outline-offset:3px
+}
+
+#app{
+  max-width:var(--maxw);
+  margin:0 auto;
+  padding:28px clamp(16px,5vw,28px) 130px
+}
+
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px
+}
+
+h1{
+  font-weight:800;
+  font-size:clamp(28px,7vw,40px);
+  letter-spacing:-.04em;
+  line-height:1
+}
+
+.sub{
+  font-size:clamp(12px,3vw,14px);
+  color:var(--mut);
+  margin-top:6px
+}
+
+.greet{
+  font-size:clamp(24px,6vw,34px);
+  font-weight:300;
+  letter-spacing:-.02em;
+  margin:clamp(28px,6vw,44px) 0 clamp(20px,5vw,32px)
+}
+
+.menu{
+  position:relative;
+  width:34px;
+  height:34px;
+  flex:none;
+  z-index:20
+}
+
+.scrim{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background:var(--bg);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s
+}
+
+.menu.open .scrim{
+  opacity:.95;
+  pointer-events:auto
+}
+
+.opt{
+  position:absolute;
+  right:0;
+  top:calc(var(--i)*40px);
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  translate:calc(var(--dx)*1px) 0;
+  transform:translateY(calc(var(--i)*-40px));
+  transition:translate .25s ease,transform .35s ease
+}
+
+.menu.open .opt{
+  translate:0 0;
+  transform:none;
+  transition:translate .25s ease,transform .35s ease .25s
+}
+
+.opt i{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--fg)
+}
+
+.opt .ln{
+  position:absolute;
+  right:24px;
+  top:50%;
+  height:1px;
+  width:var(--LW);
+  background:var(--fg);
+  transform:scaleX(0);
+  transform-origin:right;
+  transition:transform .2s ease;
+  pointer-events:none
+}
+
+.menu.open .opt .ln{
+  transform:scaleX(1);
+  transition:transform .4s ease .6s
+}
+
+.opt .lb{
+  position:absolute;
+  right:calc(24px + var(--LW) + 10px);
+  top:50%;
+  translate:0 -50%;
+  white-space:nowrap;
+  font-size:clamp(15px,4vw,18px);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .15s
+}
+
+.menu.open .opt .lb{
+  opacity:1;
+  pointer-events:auto;
+  transition:opacity .3s ease 1s
+}
+
+.row{
+  display:flex;
+  gap:clamp(10px,3vw,18px);
+  align-items:stretch
+}
+
+.cal{
+  width:50%;
+  min-width:0;
+  border:1px solid var(--fg);
+  border-radius:14px;
+  padding:clamp(6px,1.6vw,14px)
+}
+
+.cal h3{
+  font-size:clamp(11px,3vw,15px);
+  font-weight:600;
+  text-align:center;
+  margin-bottom:6px
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:2px;
+  text-align:center;
+  font-size:clamp(9px,2.6vw,14px)
+}
+
+.grid b{
+  color:var(--mut);
+  font-weight:400
+}
+
+.grid button{
+  aspect-ratio:1;
+  padding:0;
+  border-radius:50%;
+  font-size:inherit;
+  position:relative;
+  text-align:center
+}
+
+.grid .today{
+  background:var(--fg);
+  color:var(--bg)
+}
+
+.grid .has::after{
+  content:"";
+  position:absolute;
+  bottom:2px;
+  left:50%;
+  width:3px;
+  height:3px;
+  margin-left:-1.5px;
+  border-radius:50%;
+  background:currentColor
+}
+
+.ov{
+  flex:1;
+  min-width:0;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:clamp(10px,2.5vw,16px);
+  font-size:clamp(12px,3.2vw,15px);
+  display:flex;
+  flex-direction:column;
+  gap:8px
+}
+
+.ov p{
+  display:flex;
+  justify-content:space-between;
+  gap:6px
+}
+
+.ov span{
+  color:var(--mut)
+}
+
+.ov h3{
+  font-size:inherit;
+  font-weight:600
+}
+
+.big{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:100%;
+  padding:18px 4px;
+  border-bottom:1px solid var(--line);
+  font-size:clamp(19px,5vw,24px);
+  font-weight:600;
+  letter-spacing:-.02em
+}
+
+.big svg{
+  width:22px;
+  height:22px
+}
+
+.big:first-of-type{
+  margin-top:22px;
+  border-top:1px solid var(--line)
+}
+
+.lbl{
+  position:relative;
+  display:inline-block
+}
+
+.bdg{
+  position:absolute;
+  top:-10px;
+  right:-26px;
+  min-width:20px;
+  height:20px;
+  padding:0 6px;
+  border-radius:99px;
+  background:#ff3b30;
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  display:grid;
+  place-items:center;
+  letter-spacing:0
+}
+
+nav{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  background:var(--bg);
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:space-around;
+  padding:10px max(8px,calc((100vw - var(--maxw))/2)) calc(10px + env(safe-area-inset-bottom,0px));
+  z-index:10
+}
+
+nav button{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+  font-size:clamp(10px,2.8vw,13px);
+  padding:4px 6px;
+  flex:1;
+  min-width:0;
+  text-align:center
+}
+
+nav svg{
+  width:26px;
+  height:26px
+}
+
+svg{
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.5;
+  stroke-linecap:round;
+  stroke-linejoin:round
+}
+
+.back{
+  font-size:13px;
+  color:var(--mut);
+  margin-bottom:18px;
+  display:inline-flex;
+  gap:6px
+}
+
+h2{
+  font-size:clamp(26px,6vw,34px);
+  font-weight:800;
+  letter-spacing:-.03em;
+  margin-bottom:18px
+}
+
+.item{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  padding:12px 0;
+  border-bottom:1px solid var(--line)
+}
+
+.chk{
+  width:22px;
+  height:22px;
+  border:1.5px solid var(--fg);
+  border-radius:50%;
+  flex:none;
+  margin-top:1px
+}
+
+.chk.on{
+  background:var(--fg)
+}
+
+.item small{
+  display:block;
+  color:var(--mut);
+  font-size:12px;
+  margin-top:2px
+}
+
+.item .x{
+  margin-left:auto;
+  color:var(--mut);
+  font-size:20px;
+  padding:0 6px
+}
+
+.empty{
+  color:var(--mut);
+  padding:14px 0;
+  font-size:14px
+}
+
+input,
+select,
+textarea{
+  font:inherit;
+  font-size:16px;
+  width:100%;
+  background:none;
+  color:var(--fg);
+  border:0;
+  border-bottom:1px solid var(--fg);
+  padding:12px 0;
+  margin-bottom:16px;
+  border-radius:0;
+  color-scheme:light dark
+}
+
+textarea{
+  min-height:90px;
+  resize:vertical
+}
+
+.pri{
+  background:var(--fg);
+  color:var(--bg);
+  padding:14px 26px;
+  border-radius:99px;
+  font-weight:600;
+  text-align:center
+}
+
+.note{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px;
+  margin-top:10px;
+  white-space:pre-wrap;
+  display:flex;
+  justify-content:space-between;
+  gap:10px
+}
+
+.sec{
+  font-size:15px;
+  font-weight:600;
+  margin:28px 0 4px
+}
+
+.add{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:6px 0 4px
+}
+
+.add input{
+  margin:0;
+  padding:10px 0
+}
+
+.add button{
+  width:36px;
+  height:36px;
+  flex:none;
+  border:1px solid var(--fg);
+  border-radius:50%;
+  text-align:center;
+  font-size:20px;
+  line-height:1
+}
+
+.bar{
+  height:6px;
+  border-radius:9px;
+  background:var(--line);
+  overflow:hidden;
+  margin-top:8px
+}
+
+.bar i{
+  display:block;
+  height:100%;
+  border-radius:9px;
+  transition:width .4s
+}
+
+.dash{
+  display:grid;
+  gap:14px;
+  grid-template-columns:minmax(0,1fr)
+}
+
+@media (min-width:700px){
+  .dash{
+    grid-template-columns:repeat(2,minmax(0,1fr))
+  }
+
+  .wide{
+    grid-column:1/-1
+  }
+}
+
+.panel{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:16px;
+  min-width:0
+}
+
+.panel h3{
+  font-size:14px;
+  font-weight:600;
+  margin-bottom:6px;
+  display:flex;
+  justify-content:space-between
+}
+
+.panel h3 span{
+  color:var(--mut);
+  font-weight:400
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:14px
+}
+
+.stat{
+  border:1px solid var(--fg);
+  border-radius:14px;
+  padding:12px
+}
+
+.stat b{
+  display:block;
+  font-size:clamp(26px,7vw,36px);
+  font-weight:800;
+  letter-spacing:-.04em;
+  line-height:1
+}
+
+.stat span{
+  font-size:12px;
+  color:var(--mut)
+}
+
+.lst{
+  display:block;
+  width:100%;
+  padding:12px 0;
+  border-bottom:1px solid var(--line)
+}
+
+.lst div{
+  display:flex;
+  justify-content:space-between;
+  font-weight:600
+}
+
+.lst span{
+  color:var(--mut);
+  font-weight:400;
+  font-size:13px
+}
+
+.n2t{
+  font-size:12px;
+  color:var(--mut);
+  text-decoration:underline;
+  white-space:nowrap
+}
+
+.late{
+  color:#ff3b30
+}
 
 .auth{
-position:fixed;
-inset:0;
-background:var(--bg);
-color:var(--fg);
-z-index:100;
-display:none;
-align-items:center;
-justify-content:center;
-padding:28px;
+  position:fixed;
+  inset:0;
+  background:var(--bg);
+  color:var(--fg);
+  z-index:100;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:28px
 }
-.auth.show{display:flex}
-.authbox{width:min(100%,420px);text-align:center}
-.authbox h2{font-size:40px;margin-bottom:8px}
-.authbox p{color:var(--mut);font-size:14px;margin-bottom:30px}
-.google{
-width:100%;
-border:1px solid var(--fg);
-border-radius:999px;
-padding:15px 20px;
-display:flex;
-align-items:center;
-justify-content:center;
-gap:10px;
-font-weight:600;
-}
-.google svg{width:20px;height:20px}
-.authsmall{margin-top:18px!important;font-size:12px!important}
-.userbar{font-size:12px;color:var(--mut);margin-top:8px}
-.logout{font-size:12px;text-decoration:underline;color:var(--mut);margin-top:12px}
 
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.auth.show{
+  display:flex
+}
+
+.authbox{
+  width:min(100%,420px);
+  text-align:center
+}
+
+.authbox h2{
+  font-size:40px;
+  margin-bottom:8px
+}
+
+.authbox p{
+  color:var(--mut);
+  font-size:14px;
+  margin-bottom:30px
+}
+
+.google{
+  width:100%;
+  border:1px solid var(--fg);
+  border-radius:999px;
+  padding:15px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  font-weight:600
+}
+
+.google svg{
+  width:20px;
+  height:20px
+}
+
+.authsmall{
+  margin-top:18px!important;
+  font-size:12px!important
+}
+
+.userbar{
+  font-size:12px;
+  color:var(--mut);
+  margin-top:8px
+}
+
+.logout{
+  font-size:12px;
+  text-decoration:underline;
+  color:var(--mut);
+  margin-top:12px
+}
+
+.namebox{
+  margin-top:20px
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{
+    transition:none!important
+  }
+}
 </style>
 </head>
 
@@ -131,40 +685,64 @@ font-weight:600;
 
 <div id="auth" class="auth">
   <div class="authbox">
+
     <h2>Nova-List</h2>
-    <p>Inicia sesión para guardar tus datos y acceder a ellos desde cualquier dispositivo.</p>
+
+    <p>
+      Inicia sesión para guardar tus datos y acceder
+      a ellos desde cualquier dispositivo.
+    </p>
 
     <button class="google" id="googleLogin">
+
       <svg viewBox="0 0 24 24">
         <path d="M21.8 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.5a4.7 4.7 0 0 1-2 3.1v2.6h3.2c1.9-1.8 3.1-4.4 3.1-7.5z" fill="currentColor" stroke="none"/>
         <path d="M12 22c2.7 0 5-.9 6.7-2.5l-3.2-2.6c-.9.6-2 1-3.5 1-2.7 0-5-1.8-5.8-4.2H2.9v2.7A10 10 0 0 0 12 22z" fill="currentColor" stroke="none"/>
         <path d="M6.2 13.7A6 6 0 0 1 5.9 12c0-.6.1-1.2.3-1.7V7.6H2.9A10 10 0 0 0 2 12c0 1.6.4 3.1 1 4.4l3.2-2.7z" fill="currentColor" stroke="none"/>
         <path d="M12 6.1c1.5 0 2.8.5 3.8 1.5l2.8-2.8C17 3.1 14.7 2 12 2a10 10 0 0 0-9.1 5.6l3.3 2.7C7 7.9 9.3 6.1 12 6.1z" fill="currentColor" stroke="none"/>
       </svg>
+
       Continuar con Google
+
     </button>
 
-    <p class="authsmall">Tus listas, notas y pendientes se guardarán en tu cuenta.</p>
+    <p class="authsmall">
+      Tus listas, notas y pendientes se guardarán en tu cuenta.
+    </p>
+
   </div>
 </div>
 
 <div id="app"></div>
 
 <nav aria-label="Principal">
+
   <button data-go="notes">
-    <svg viewBox="0 0 24 24"><path d="M5 4h14v10l-5 6H5z"/><path d="M14 20v-6h5"/><path d="M8 9h8M8 13h4"/></svg>
+    <svg viewBox="0 0 24 24">
+      <path d="M5 4h14v10l-5 6H5z"/>
+      <path d="M14 20v-6h5"/>
+      <path d="M8 9h8M8 13h4"/>
+    </svg>
     Notas rápidas
   </button>
 
   <button data-go="new">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6Q12 12 18 12Q12 12 12 18Q12 12 6 12Q12 12 12 6Z"/></svg>
+    <svg viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M12 6Q12 12 18 12Q12 12 12 18Q12 12 6 12Q12 12 12 6Z"/>
+    </svg>
     Nuevo to-do
   </button>
 
   <button data-go="plan">
-    <svg viewBox="0 0 24 24"><path d="M4 20l1-4L15 6l3 3L8 19z"/><path d="M13 8l3 3"/><path d="M19.5 2l.9 2 2 .9-2 .9-.9 2-.9-2-2-.9 2-.9z" stroke-width="1.2"/></svg>
+    <svg viewBox="0 0 24 24">
+      <path d="M4 20l1-4L15 6l3 3L8 19z"/>
+      <path d="M13 8l3 3"/>
+      <path d="M19.5 2l.9 2 2 .9-2 .9-.9 2-.9-2-2-.9 2-.9z" stroke-width="1.2"/>
+    </svg>
     Planificador
   </button>
+
 </nav>
 
 <script type="module">
@@ -173,18 +751,21 @@ font-weight:600;
    SUPABASE
    ========================================================= */
 
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import {
+  createClient
+} from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-const SUPABASE_URL = 'https://udvxmrbqymhrlaiojzex.supabase.co';
+const SUPABASE_URL =
+  'https://udvxmrbqymhrlaiojzex.supabase.co';
 
-/*
-   PEGA AQUÍ TU PUBLISHABLE KEY / ANON KEY DE SUPABASE.
+const SUPABASE_KEY =
+  'sb_publishable_VaSGlZ8OA38jbM9QHCTwZw_eNVq__On';
 
-   NO pongas aquí el service_role key.
-*/
-const SUPABASE_KEY = 'sb_publishable_VaSGlZ8OA38jbM9QHCTwZw_eNVq__On';
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabase =
+  createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
 /* =========================================================
@@ -209,78 +790,159 @@ const S={
 
 let cloudReady=false;
 let saving=false;
+let askingForName=false;
 
-const arrow='<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+const arrow=
+  '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
-const sd=d=>new Date(d.getFullYear(),d.getMonth(),d.getDate());
+const sd=d=>
+  new Date(
+    d.getFullYear(),
+    d.getMonth(),
+    d.getDate()
+  );
 
 const key=d=>{
   const x=new Date(d);
+
   return x.getFullYear()+'-'+
     String(x.getMonth()+1).padStart(2,'0')+'-'+
     String(x.getDate()).padStart(2,'0');
 };
 
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({
-  '&':'&amp;',
-  '<':'&lt;',
-  '>':'&gt;',
-  '"':'&quot;'
-}[c]));
+const esc=s=>
+  String(s).replace(/[&<>"]/g,c=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;'
+  }[c]));
 
-const greeting=()=>{
-  const h=new Date().getHours();
-  return h<12?'Buenos días':h<19?'Buenas tardes':'Buenas noches';
+const getUserName=()=>{
+
+  const name=
+    S.user?.user_metadata?.name;
+
+  return name?
+    String(name).trim():
+    '';
 };
 
-const at=t=>new Date(t.due+'T'+(t.time||'23:59')).getTime();
 
-const overdue=()=>S.todos.filter(t=>!t.done&&t.due&&at(t)<Date.now());
+/* =========================================================
+   SALUDO
+   ========================================================= */
 
-const today=()=>S.todos.filter(t=>
-  t.due===key(new Date()) &&
-  !(!t.done&&t.due&&at(t)<Date.now())
-);
+const greeting=()=>{
+
+  const h=new Date().getHours();
+
+  const text=
+    h<12
+      ?'Buenos días'
+      :h<19
+        ?'Buenas tardes'
+        :'Buenas noches';
+
+  const name=getUserName();
+
+  return name
+    ?`${text}, ${esc(name)}`
+    :text;
+};
+
+
+/* =========================================================
+   FECHAS
+   ========================================================= */
+
+const at=t=>
+  new Date(
+    t.due+'T'+(t.time||'23:59')
+  ).getTime();
+
+const overdue=()=>
+  S.todos.filter(
+    t=>!t.done&&
+    t.due&&
+    at(t)<Date.now()
+  );
+
+const today=()=>
+  S.todos.filter(t=>
+    t.due===key(new Date()) &&
+    !(
+      !t.done&&
+      t.due&&
+      at(t)<Date.now()
+    )
+  );
 
 const soon=()=>{
-  const e=sd(new Date()).getTime()+864e5;
-  const l=e+1728e5;
+
+  const e=
+    sd(new Date()).getTime()+864e5;
+
+  const l=
+    e+1728e5;
 
   return S.todos.filter(t=>{
+
     if(!t.due)return false;
 
-    const x=new Date(
-      t.due+'T'+(t.time||'00:00')
-    ).getTime();
+    const x=
+      new Date(
+        t.due+'T'+(t.time||'00:00')
+      ).getTime();
 
     return x>=e&&x<=l;
   });
 };
 
-const upcoming=()=>S.todos
-  .filter(t=>!t.done&&t.due&&at(t)>=Date.now())
-  .sort((a,b)=>at(a)-at(b))
-  .slice(0,6);
+const upcoming()=>
+  S.todos
+    .filter(
+      t=>
+        !t.done&&
+        t.due&&
+        at(t)>=Date.now()
+    )
+    .sort(
+      (a,b)=>at(a)-at(b)
+    )
+    .slice(0,6);
 
 const stat=n=>{
-  const a=S.todos.filter(t=>t.list===n);
-  const d=a.filter(t=>t.done).length;
+
+  const a=
+    S.todos.filter(
+      t=>t.list===n
+    );
+
+  const d=
+    a.filter(
+      t=>t.done
+    ).length;
 
   return{
     total:a.length,
     done:d,
-    p:a.length?Math.round(d/a.length*100):0
+    p:a.length
+      ?Math.round(d/a.length*100)
+      :0
   };
 };
 
 const bar=p=>`
-<div class="bar"
-role="progressbar"
-aria-valuenow="${p}"
-aria-valuemin="0"
-aria-valuemax="100">
-<i style="width:${p}%"></i>
-</div>`;
+<div
+  class="bar"
+  role="progressbar"
+  aria-valuenow="${p}"
+  aria-valuemin="0"
+  aria-valuemax="100">
+  <i style="width:${p}%"></i>
+</div>
+`;
 
 const opts=[
   ['lists','Mis listas',-22],
@@ -295,30 +957,188 @@ const opts=[
 
 async function signInWithGoogle(){
 
-  const {error}=await supabase.auth.signInWithOAuth({
-    provider:'google',
-    options:{
-      redirectTo:window.location.href
-    }
-  });
+  const {error}=
+    await supabase.auth.signInWithOAuth({
+      provider:'google',
+      options:{
+        redirectTo:window.location.href
+      }
+    });
 
   if(error){
-    alert('No se pudo iniciar sesión con Google: '+error.message);
+
+    alert(
+      'No se pudo iniciar sesión con Google: '+
+      error.message
+    );
+
   }
+
 }
+
+
+/* =========================================================
+   NOMBRE DEL USUARIO
+   ========================================================= */
+
+async function askForName(){
+
+  if(
+    askingForName||
+    getUserName()
+  ){
+    return true;
+  }
+
+  askingForName=true;
+
+  let name='';
+
+  while(!name){
+
+    name=prompt(
+      '¿Cómo te llamas?'
+    );
+
+    if(name===null){
+
+      const continueWithoutName=
+        confirm(
+          'Necesitas ingresar un nombre para continuar con Nova List.'
+        );
+
+      if(!continueWithoutName){
+
+        askingForName=false;
+
+        await signOut();
+
+        return false;
+      }
+
+      name='';
+      continue;
+    }
+
+    name=name.trim();
+
+    if(!name){
+
+      alert(
+        'Por favor, escribe tu nombre.'
+      );
+
+    }
+
+  }
+
+  const {data,error}=
+    await supabase.auth.updateUser({
+
+      data:{
+        name:name
+      }
+
+    });
+
+  if(error){
+
+    console.error(error);
+
+    alert(
+      'No se pudo guardar tu nombre.'
+    );
+
+    askingForName=false;
+
+    return false;
+  }
+
+  S.user=data.user;
+
+  askingForName=false;
+
+  return true;
+}
+
+
+/* =========================================================
+   CAMBIAR NOMBRE
+   ========================================================= */
+
+async function changeName(){
+
+  const current=
+    getUserName();
+
+  let name=
+    prompt(
+      'Escribe tu nuevo nombre:',
+      current
+    );
+
+  if(name===null){
+    return;
+  }
+
+  name=name.trim();
+
+  if(!name){
+
+    alert(
+      'El nombre no puede estar vacío.'
+    );
+
+    return;
+  }
+
+  const {data,error}=
+    await supabase.auth.updateUser({
+
+      data:{
+        name:name
+      }
+
+    });
+
+  if(error){
+
+    console.error(error);
+
+    alert(
+      'No se pudo cambiar tu nombre.'
+    );
+
+    return;
+  }
+
+  S.user=data.user;
+
+  render();
+
+}
+
+
+/* =========================================================
+   CERRAR SESIÓN
+   ========================================================= */
 
 async function signOut(){
 
   await supabase.auth.signOut();
 
   S.user=null;
+
   S.todos=[];
   S.notes=[];
+
   S.lists=[
     {name:'Personal',secs:[]},
     {name:'Trabajo',secs:[]},
     {name:'Compras',secs:[]}
   ];
+
+  cloudReady=false;
 
   $('#auth').classList.add('show');
 }
@@ -361,70 +1181,120 @@ async function loadCloud(){
   ]);
 
   if(todosRes.error){
+
     console.error(todosRes.error);
-    alert('Error cargando tus to-dos.');
+
+    alert(
+      'Error cargando tus to-dos.'
+    );
+
     return;
   }
 
   if(notesRes.error){
+
     console.error(notesRes.error);
-    alert('Error cargando tus notas.');
+
+    alert(
+      'Error cargando tus notas.'
+    );
+
     return;
   }
 
   if(listsRes.error){
+
     console.error(listsRes.error);
-    alert('Error cargando tus listas.');
+
+    alert(
+      'Error cargando tus listas.'
+    );
+
     return;
   }
 
-  S.todos=todosRes.data||[];
-  S.notes=notesRes.data||[];
+  S.todos=
+    todosRes.data||[];
 
-  if(listsRes.data&&listsRes.data.length){
-    S.lists=listsRes.data.map(l=>({
-      id:l.id,
-      name:l.name,
-      secs:Array.isArray(l.secs)?l.secs:[]
-    }));
+  S.notes=
+    notesRes.data||[];
+
+  if(
+    listsRes.data&&
+    listsRes.data.length
+  ){
+
+    S.lists=
+      listsRes.data.map(l=>({
+
+        id:l.id,
+        name:l.name,
+        secs:
+          Array.isArray(l.secs)
+            ?l.secs
+            :[]
+
+      }));
+
   }else{
 
-    /*
-      Usuario nuevo:
-      creamos las tres listas iniciales.
-    */
-
     const initial=[
-      {name:'Personal',secs:[]},
-      {name:'Trabajo',secs:[]},
-      {name:'Compras',secs:[]}
+      {
+        name:'Personal',
+        secs:[]
+      },
+      {
+        name:'Trabajo',
+        secs:[]
+      },
+      {
+        name:'Compras',
+        secs:[]
+      }
     ];
 
-    const rows=initial.map(l=>({
-      user_id:uid,
-      name:l.name,
-      secs:l.secs
-    }));
+    const rows=
+      initial.map(l=>({
 
-    const {data,error}=await supabase
-      .from('lists')
-      .insert(rows)
-      .select();
+        user_id:uid,
+        name:l.name,
+        secs:l.secs
+
+      }));
+
+    const {data,error}=
+      await supabase
+        .from('lists')
+        .insert(rows)
+        .select();
 
     if(error){
+
       console.error(error);
-      alert('No se pudieron crear tus listas iniciales.');
+
+      alert(
+        'No se pudieron crear tus listas iniciales.'
+      );
+
       return;
     }
 
-    S.lists=(data||[]).map(l=>({
-      id:l.id,
-      name:l.name,
-      secs:Array.isArray(l.secs)?l.secs:[]
-    }));
+    S.lists=
+      (data||[]).map(l=>({
+
+        id:l.id,
+        name:l.name,
+        secs:
+          Array.isArray(l.secs)
+            ?l.secs
+            :[]
+
+      }));
+
   }
 
   cloudReady=true;
+
   render();
 }
 
@@ -438,6 +1308,7 @@ async function saveTodo(todo){
   if(!S.user)return;
 
   const row={
+
     id:todo.id,
     user_id:S.user.id,
     title:todo.title,
@@ -446,29 +1317,40 @@ async function saveTodo(todo){
     due:todo.due||null,
     time:todo.time||null,
     done:!!todo.done
+
   };
 
-  const {error}=await supabase
-    .from('todos')
-    .upsert(row);
+  const {error}=
+    await supabase
+      .from('todos')
+      .upsert(row);
 
   if(error){
+
     console.error(error);
-    alert('No se pudo guardar el to-do.');
+
+    alert(
+      'No se pudo guardar el to-do.'
+    );
+
   }
+
 }
 
 async function deleteTodo(id){
 
   if(!S.user)return;
 
-  const {error}=await supabase
-    .from('todos')
-    .delete()
-    .eq('id',id)
-    .eq('user_id',S.user.id);
+  const {error}=
+    await supabase
+      .from('todos')
+      .delete()
+      .eq('id',id)
+      .eq('user_id',S.user.id);
 
-  if(error)console.error(error);
+  if(error)
+    console.error(error);
+
 }
 
 async function saveNote(note){
@@ -476,32 +1358,44 @@ async function saveNote(note){
   if(!S.user)return;
 
   const row={
+
     id:note.id,
     user_id:S.user.id,
     text:note.text
+
   };
 
-  const {error}=await supabase
-    .from('notes')
-    .upsert(row);
+  const {error}=
+    await supabase
+      .from('notes')
+      .upsert(row);
 
   if(error){
+
     console.error(error);
-    alert('No se pudo guardar la nota.');
+
+    alert(
+      'No se pudo guardar la nota.'
+    );
+
   }
+
 }
 
 async function deleteNote(id){
 
   if(!S.user)return;
 
-  const {error}=await supabase
-    .from('notes')
-    .delete()
-    .eq('id',id)
-    .eq('user_id',S.user.id);
+  const {error}=
+    await supabase
+      .from('notes')
+      .delete()
+      .eq('id',id)
+      .eq('user_id',S.user.id);
 
-  if(error)console.error(error);
+  if(error)
+    console.error(error);
+
 }
 
 async function saveList(list){
@@ -509,41 +1403,53 @@ async function saveList(list){
   if(!S.user)return;
 
   const row={
+
     user_id:S.user.id,
     name:list.name,
     secs:list.secs||[]
+
   };
 
-  if(list.id)row.id=list.id;
+  if(list.id)
+    row.id=list.id;
 
-  const {data,error}=await supabase
-    .from('lists')
-    .upsert(row)
-    .select()
-    .single();
+  const {data,error}=
+    await supabase
+      .from('lists')
+      .upsert(row)
+      .select()
+      .single();
 
   if(error){
+
     console.error(error);
-    alert('No se pudo guardar la lista.');
+
+    alert(
+      'No se pudo guardar la lista.'
+    );
+
     return;
   }
 
-  if(data){
+  if(data)
     list.id=data.id;
-  }
+
 }
 
 async function deleteList(id){
 
   if(!S.user)return;
 
-  const {error}=await supabase
-    .from('lists')
-    .delete()
-    .eq('id',id)
-    .eq('user_id',S.user.id);
+  const {error}=
+    await supabase
+      .from('lists')
+      .delete()
+      .eq('id',id)
+      .eq('user_id',S.user.id);
 
-  if(error)console.error(error);
+  if(error)
+    console.error(error);
+
 }
 
 
@@ -554,32 +1460,39 @@ async function deleteList(id){
 function getLocalData(){
 
   try{
+
     return JSON.parse(
       localStorage.getItem('nova')||'null'
     );
+
   }catch(e){
+
     return null;
+
   }
+
 }
 
 async function migrateLocalData(){
 
   if(!S.user)return;
 
-  const local=getLocalData();
+  const local=
+    getLocalData();
 
   if(!local)return;
 
   const hasLocal=
-    (local.todos&&local.todos.length) ||
-    (local.notes&&local.notes.length) ||
+    (local.todos&&local.todos.length)||
+    (local.notes&&local.notes.length)||
     (local.lists&&local.lists.length);
 
   if(!hasLocal)return;
 
-  const answer=confirm(
-    'Encontramos datos guardados anteriormente en este dispositivo. ¿Quieres subirlos a tu cuenta de Nova List?'
-  );
+  const answer=
+    confirm(
+      'Encontramos datos guardados anteriormente en este dispositivo. ¿Quieres subirlos a tu cuenta de Nova List?'
+    );
 
   if(!answer)return;
 
@@ -592,20 +1505,26 @@ async function migrateLocalData(){
       const id=
         typeof t.id==='string'&&
         t.id.includes('-')
-        ?t.id
-        :crypto.randomUUID();
+          ?t.id
+          :crypto.randomUUID();
 
-      await supabase.from('todos').upsert({
-        id,
-        user_id:uid,
-        title:t.title||'',
-        list:t.list||'',
-        sec:t.sec||'',
-        due:t.due||null,
-        time:t.time||null,
-        done:!!t.done
-      });
+      await supabase
+        .from('todos')
+        .upsert({
+
+          id,
+          user_id:uid,
+          title:t.title||'',
+          list:t.list||'',
+          sec:t.sec||'',
+          due:t.due||null,
+          time:t.time||null,
+          done:!!t.done
+
+        });
+
     }
+
   }
 
   if(local.notes?.length){
@@ -615,27 +1534,42 @@ async function migrateLocalData(){
       const id=
         typeof n.id==='string'&&
         n.id.includes('-')
-        ?n.id
-        :crypto.randomUUID();
+          ?n.id
+          :crypto.randomUUID();
 
-      await supabase.from('notes').upsert({
-        id,
-        user_id:uid,
-        text:n.text||''
-      });
+      await supabase
+        .from('notes')
+        .upsert({
+
+          id,
+          user_id:uid,
+          text:n.text||''
+
+        });
+
     }
+
   }
 
   if(local.lists?.length){
 
     for(const l of local.lists){
 
-      await supabase.from('lists').insert({
-        user_id:uid,
-        name:l.name||'Sin nombre',
-        secs:Array.isArray(l.secs)?l.secs:[]
-      });
+      await supabase
+        .from('lists')
+        .insert({
+
+          user_id:uid,
+          name:l.name||'Sin nombre',
+          secs:
+            Array.isArray(l.secs)
+              ?l.secs
+              :[]
+
+        });
+
     }
+
   }
 
   localStorage.removeItem('nova');
@@ -652,82 +1586,175 @@ function head(){
 
   return `
 <header>
+
   <div>
+
     <h1>Nova-List</h1>
-    <div class="sub">una app de INCOROVA</div>
+
+    <div class="sub">
+      una app de INCOROVA
+    </div>
+
     ${S.user?`
+
       <div class="userbar">
-        ${esc(S.user.email||'Cuenta conectada')}
+        ${esc(
+          getUserName()||
+          'Cuenta conectada'
+        )}
       </div>
+
     `:''}
+
   </div>
 
-  <div class="menu" id="menu">
+  <div
+    class="menu"
+    id="menu">
+
     <div class="scrim"></div>
 
     ${opts.map((o,i)=>`
+
       <button
         class="opt"
         style="--i:${i};--dx:${o[2]}"
         data-go="${o[0]}"
         aria-label="${o[1]}">
-        <span class="lb">${o[1]}</span>
+
+        <span class="lb">
+          ${o[1]}
+        </span>
+
         <span class="ln"></span>
+
         <i></i>
+
       </button>
+
     `).join('')}
+
   </div>
+
 </header>`;
 }
+
+
+/* =========================================================
+   CALENDARIO
+   ========================================================= */
 
 function calendar(){
 
   const n=new Date();
+
   const y=n.getFullYear();
   const m=n.getMonth();
-  const first=new Date(y,m,1).getDay();
-  const dim=new Date(y,m+1,0).getDate();
 
-  const due=new Set(
-    S.todos.map(t=>t.due).filter(Boolean)
-  );
+  const first=
+    new Date(y,m,1).getDay();
+
+  const dim=
+    new Date(y,m+1,0).getDate();
+
+  const due=
+    new Set(
+      S.todos
+        .map(t=>t.due)
+        .filter(Boolean)
+    );
 
   let c='';
 
-  ['D','L','M','M','J','V','S']
-    .forEach(d=>c+=`<b>${d}</b>`);
+  [
+    'D',
+    'L',
+    'M',
+    'M',
+    'J',
+    'V',
+    'S'
+  ].forEach(
+    d=>c+=`<b>${d}</b>`
+  );
 
-  for(let i=0;i<first;i++)c+='<span></span>';
+  for(
+    let i=0;
+    i<first;
+    i++
+  )
+    c+='<span></span>';
 
-  for(let d=1;d<=dim;d++){
+  for(
+    let d=1;
+    d<=dim;
+    d++
+  ){
 
-    const k=key(new Date(y,m,d));
+    const k=
+      key(
+        new Date(y,m,d)
+      );
 
     c+=`
+
       <button
         data-day="${k}"
         aria-label="Día ${d}"
-        class="${d===n.getDate()?'today':''} ${due.has(k)?'has':''}">
+        class="${
+          d===n.getDate()
+            ?'today'
+            :''
+        } ${
+          due.has(k)
+            ?'has'
+            :''
+        }">
+
         ${d}
-      </button>`;
+
+      </button>
+
+    `;
+
   }
 
   return `
+
   <div class="cal">
+
     <h3>
       ${(m=>m[0].toUpperCase()+m.slice(1))(
-        n.toLocaleDateString('es',{month:'long',year:'numeric'})
+        n.toLocaleDateString(
+          'es',
+          {
+            month:'long',
+            year:'numeric'
+          }
+        )
       )}
     </h3>
 
-    <div class="grid">${c}</div>
-  </div>`;
+    <div class="grid">
+      ${c}
+    </div>
+
+  </div>
+
+  `;
 }
+
+
+/* =========================================================
+   ITEMS
+   ========================================================= */
 
 function items(a,empty){
 
   return a.length
+
     ?a.map(t=>`
+
       <div class="item">
 
         <button
@@ -736,83 +1763,170 @@ function items(a,empty){
           aria-label="Completar">
         </button>
 
-        <div style="${t.done?'text-decoration:line-through;color:var(--mut)':''}">
+        <div
+          style="${
+            t.done
+              ?'text-decoration:line-through;color:var(--mut)'
+              :''
+          }">
+
           ${esc(t.title)}
+
           <small>
+
             ${esc(t.list||'')}
-            ${t.sec?' › '+esc(t.sec):''}
-            ${t.due?' · '+t.due+(t.time?' '+t.time:''):''}
+
+            ${
+              t.sec
+                ?' › '+esc(t.sec)
+                :''
+            }
+
+            ${
+              t.due
+                ?' · '+t.due+
+                  (t.time
+                    ?' '+t.time
+                    :'')
+                :''
+            }
+
           </small>
+
         </div>
 
         <button
           class="x"
           data-del="${t.id}"
           aria-label="Eliminar">
+
           ×
+
         </button>
 
       </div>
+
     `).join('')
 
-    :(empty?`<p class="empty">${empty}</p>`:'');
+    :(empty
+      ?`<p class="empty">${empty}</p>`
+      :'');
 }
 
+
 const page=(t,b)=>
+
   head()+
+
   `<div style="margin-top:28px">
-    <button class="back" data-go="home">← Inicio</button>
+
+    <button
+      class="back"
+      data-go="home">
+      ← Inicio
+    </button>
+
     <h2>${t}</h2>
+
     ${b}
+
   </div>`;
 
+
 const listSel=()=>`
+
 <select id="tl">
+
   ${S.lists.map(l=>
     `<option>${esc(l.name)}</option>`
   ).join('')}
-</select>`;
 
+</select>
+
+`;
+
+
+/* =========================================================
+   VISTAS
+   ========================================================= */
 
 const V={
 
 home:()=>{
 
-  const o=overdue().length;
+  const o=
+    overdue().length;
 
   return head()+`
-    <div class="greet">${greeting()}</div>
+
+    <div class="greet">
+      ${greeting()}
+    </div>
 
     <div class="row">
+
       ${calendar()}
 
       <div class="ov">
-        <h3>Mis listas</h3>
+
+        <h3>
+          Mis listas
+        </h3>
 
         ${S.lists.map(l=>`
+
           <p>
+
             ${esc(l.name)}
-            <span>${stat(l.name).total}</span>
+
+            <span>
+              ${stat(l.name).total}
+            </span>
+
           </p>
+
         `).join('')}
+
       </div>
+
     </div>
 
-    <button class="big" data-go="today">
+    <button
+      class="big"
+      data-go="today">
+
       <span class="lbl">
+
         Hoy
+
         ${o?`
-          <b class="bdg" aria-label="${o} vencidos">
+
+          <b
+            class="bdg"
+            aria-label="${o} vencidos">
+
             ${o>99?'99+':o}
+
           </b>
+
         `:''}
+
       </span>
+
       ${arrow}
+
     </button>
 
-    <button class="big" data-go="soon">
-      Próximamente ${arrow}
+    <button
+      class="big"
+      data-go="soon">
+
+      Próximamente
+
+      ${arrow}
+
     </button>
+
   `;
 },
 
@@ -822,69 +1936,165 @@ today:()=>{
   const t=today();
 
   return page(
+
     'Hoy',
-    (o.length
-      ?`<h3 class="sec late" style="margin-top:0">Vencidos</h3>${items(o)}`
-      :'')
+
+    (
+      o.length
+        ?`
+          <h3
+            class="sec late"
+            style="margin-top:0">
+
+            Vencidos
+
+          </h3>
+
+          ${items(o)}
+        `
+        :''
+    )
+
     +
-    `<h3 class="sec" ${o.length?'':'style="margin-top:0"'}>
+
+    `<h3
+      class="sec"
+      ${
+        o.length
+          ?''
+          :'style="margin-top:0"'
+      }>
+
       Para hoy
+
     </h3>`
+
     +
-    items(t,'No tienes más pendientes para hoy.')
+
+    items(
+      t,
+      'No tienes más pendientes para hoy.'
+    )
+
   );
+
 },
 
 soon:()=>page(
+
   'Próximamente',
-  items(soon(),'Nada vence en las próximas 48 horas.')
+
+  items(
+    soon(),
+    'Nada vence en las próximas 48 horas.'
+  )
+
 ),
 
 notes:()=>page(
+
   'Notas rápidas',
+
   `
-  <textarea id="nt" placeholder="Escribe una nota"></textarea>
-  <button class="pri" data-addnote>Guardar nota</button>
+
+  <textarea
+    id="nt"
+    placeholder="Escribe una nota">
+  </textarea>
+
+  <button
+    class="pri"
+    data-addnote>
+
+    Guardar nota
+
+  </button>
 
   ${
     S.notes.map(n=>`
+
       <div class="note">
-        <span>${esc(n.text)}</span>
+
+        <span>
+          ${esc(n.text)}
+        </span>
+
         <button
           class="x"
           data-delnote="${n.id}"
           aria-label="Eliminar">
+
           ×
+
         </button>
+
       </div>
+
     `).join('')
+
     ||
+
     '<p class="empty">Aún no hay notas.</p>'
   }
+
   `
 ),
 
 new:()=>page(
+
   'Nuevo to-do',
+
   `
-  <input id="ti" placeholder="¿Qué hay que hacer?">
+
+  <input
+    id="ti"
+    placeholder="¿Qué hay que hacer?">
+
   ${listSel()}
-  <input id="td" type="date" value="${key(new Date())}">
-  <input id="tt" type="time">
-  <button class="pri" data-addtodo>Agregar to-do</button>
+
+  <input
+    id="td"
+    type="date"
+    value="${key(new Date())}">
+
+  <input
+    id="tt"
+    type="time">
+
+  <button
+    class="pri"
+    data-addtodo>
+
+    Agregar to-do
+
+  </button>
+
   `
 ),
 
 plan:()=>{
 
-  const o=overdue().length;
-  const pend=S.todos.filter(t=>!t.done).length;
-  const hoy=today().filter(t=>!t.done).length;
+  const o=
+    overdue().length;
+
+  const pend=
+    S.todos.filter(
+      t=>!t.done
+    ).length;
+
+  const hoy=
+    today().filter(
+      t=>!t.done
+    ).length;
 
   return page(
+
     'Planificador',
+
     `
+
     <div class="stats">
+
       <div class="stat">
         <b>${pend}</b>
         <span>Pendientes</span>
@@ -896,30 +2106,46 @@ plan:()=>{
       </div>
 
       <div class="stat">
-        <b class="${o?'late':''}">${o}</b>
+        <b class="${o?'late':''}">
+          ${o}
+        </b>
         <span>Vencidos</span>
       </div>
+
     </div>
 
     <div class="dash">
 
       <section class="panel">
+
         <h3>
           Dar seguimiento
           <span>vencidos</span>
         </h3>
-        ${items(overdue(),'Todo al día.')}
+
+        ${items(
+          overdue(),
+          'Todo al día.'
+        )}
+
       </section>
 
       <section class="panel">
+
         <h3>
           Lo más próximo
           <span>por fecha</span>
         </h3>
-        ${items(upcoming(),'Sin pendientes con fecha.')}
+
+        ${items(
+          upcoming(),
+          'Sin pendientes con fecha.'
+        )}
+
       </section>
 
       <section class="panel">
+
         <h3>
           Listas
           <span>% completado</span>
@@ -927,202 +2153,429 @@ plan:()=>{
 
         ${S.lists.map((l,i)=>{
 
-          const s=stat(l.name);
+          const s=
+            stat(l.name);
 
           return `
-          <button class="lst" data-open="${i}">
+
+          <button
+            class="lst"
+            data-open="${i}">
+
             <div>
+
               ${esc(l.name)}
-              <span>${s.done}/${s.total} · ${s.p}%</span>
+
+              <span>
+                ${s.done}/${s.total} · ${s.p}%
+              </span>
+
             </div>
+
             ${bar(s.p)}
-          </button>`;
+
+          </button>
+
+          `;
+
         }).join('')}
+
       </section>
 
       <section class="panel">
+
         <h3>
           Notas rápidas
-          <span>${S.notes.length}</span>
+          <span>
+            ${S.notes.length}
+          </span>
         </h3>
 
         ${
-          S.notes.slice(0,5).map(n=>`
-            <div class="item">
-              <span style="white-space:pre-wrap;min-width:0;overflow-wrap:anywhere">
-                ${esc(n.text)}
-              </span>
+          S.notes
+            .slice(0,5)
+            .map(n=>`
 
-              <button class="n2t" data-n2t="${n.id}">
-                Pasar a to-do
-              </button>
-            </div>
-          `).join('')
+              <div class="item">
+
+                <span
+                  style="
+                    white-space:pre-wrap;
+                    min-width:0;
+                    overflow-wrap:anywhere
+                  ">
+
+                  ${esc(n.text)}
+
+                </span>
+
+                <button
+                  class="n2t"
+                  data-n2t="${n.id}">
+
+                  Pasar a to-do
+
+                </button>
+
+              </div>
+
+            `)
+            .join('')
+
           ||
+
           '<p class="empty">Aún no hay notas.</p>'
         }
+
       </section>
 
     </div>
+
     `
   );
+
 },
 
 day:()=>{
 
-  const [y,m,d]=S.day.split('-').map(Number);
+  const [y,m,d]=
+    S.day
+      .split('-')
+      .map(Number);
 
-  let l=new Date(y,m-1,d)
-    .toLocaleDateString('es',{
-      weekday:'long',
-      day:'numeric',
-      month:'long'
-    });
+  let l=
+    new Date(y,m-1,d)
+      .toLocaleDateString(
+        'es',
+        {
+          weekday:'long',
+          day:'numeric',
+          month:'long'
+        }
+      );
 
-  l=l[0].toUpperCase()+l.slice(1);
+  l=
+    l[0].toUpperCase()+
+    l.slice(1);
 
-  const a=S.todos
-    .filter(t=>t.due===S.day)
-    .sort((p,q)=>(p.time||'').localeCompare(q.time||''));
+  const a=
+    S.todos
+      .filter(
+        t=>t.due===S.day
+      )
+      .sort(
+        (p,q)=>
+          (p.time||'')
+            .localeCompare(
+              q.time||''
+            )
+      );
 
   return page(
+
     l,
-    items(a,'No hay pendientes este día.')
+
+    items(
+      a,
+      'No hay pendientes este día.'
+    )
+
     +
+
     `
+
     <h3 class="sec">
+
       Nuevo to-do para este día
+
     </h3>
 
-    <input id="ti" placeholder="¿Qué hay que hacer?">
-    ${listSel()}
-    <input id="tt" type="time" aria-label="Hora">
+    <input
+      id="ti"
+      placeholder="¿Qué hay que hacer?">
 
-    <button class="pri" data-addday>
+    ${listSel()}
+
+    <input
+      id="tt"
+      type="time"
+      aria-label="Hora">
+
+    <button
+      class="pri"
+      data-addday>
+
       Agregar to-do
+
     </button>
+
     `
+
   );
+
 },
 
 lists:()=>page(
+
   'Mis listas',
+
   `
+
   <div class="add">
-    <input id="nl" placeholder="Nueva lista">
-    <button data-newlist aria-label="Crear lista">+</button>
+
+    <input
+      id="nl"
+      placeholder="Nueva lista">
+
+    <button
+      data-newlist
+      aria-label="Crear lista">
+
+      +
+
+    </button>
+
   </div>
 
   ${
     S.lists.map((l,i)=>{
 
-      const s=stat(l.name);
+      const s=
+        stat(l.name);
 
       return `
-      <button class="lst" data-open="${i}">
+
+      <button
+        class="lst"
+        data-open="${i}">
+
         <div>
+
           ${esc(l.name)}
-          <span>${s.done}/${s.total} · ${s.p}%</span>
+
+          <span>
+            ${s.done}/${s.total} · ${s.p}%
+          </span>
+
         </div>
+
         ${bar(s.p)}
-      </button>`;
+
+      </button>
+
+      `;
+
     }).join('')
   }
+
   `
+
 ),
 
 list:()=>{
 
-  const l=S.lists[S.cur];
+  const l=
+    S.lists[S.cur];
 
-  if(!l)return go('lists');
+  if(!l)
+    return go('lists');
 
-  const s=stat(l.name);
-  const gs=['',...l.secs];
+  const s=
+    stat(l.name);
+
+  const gs=[
+    '',
+    ...l.secs
+  ];
 
   return page(
+
     esc(l.name),
+
     `
+
     <div>
+
       ${bar(s.p)}
+
       <p class="sub">
-        ${s.done} de ${s.total} completadas · ${s.p}%
+
+        ${s.done} de ${s.total}
+        completadas · ${s.p}%
+
       </p>
+
     </div>
 
     ${
+
       gs.map((g,i)=>{
 
-        const a=S.todos.filter(t=>
-          t.list===l.name &&
-          (t.sec||'')===g
-        );
+        const a=
+          S.todos.filter(t=>
+            t.list===l.name &&
+            (t.sec||'')===g
+          );
 
         return (
-          (g||l.secs.length||a.length
-            ?`<h3 class="sec">${g?esc(g):'Sin subtítulo'}</h3>`
-            :'')
+
+          (
+            g||
+            l.secs.length||
+            a.length
+          )
+
+            ?`
+
+              <h3 class="sec">
+
+                ${
+                  g
+                    ?esc(g)
+                    :'Sin subtítulo'
+                }
+
+              </h3>
+
+            `
+            :''
+          )
+
           +
+
           items(a)
+
           +
+
           `
+
           <div class="add">
-            <input placeholder="Agregar tarea">
+
+            <input
+              placeholder="Agregar tarea">
+
             <button
               data-addt="${i}"
               aria-label="Agregar tarea">
+
               +
+
             </button>
+
           </div>
-          `
-        );
+
+          `;
 
       }).join('')
+
     }
 
-    <h3 class="sec">Nuevo subtítulo</h3>
+    <h3 class="sec">
+      Nuevo subtítulo
+    </h3>
 
     <div class="add">
-      <input placeholder="Ej. Esta semana">
-      <button data-addsec aria-label="Crear subtítulo">+</button>
+
+      <input
+        placeholder="Ej. Esta semana">
+
+      <button
+        data-addsec
+        aria-label="Crear subtítulo">
+
+        +
+
+      </button>
+
     </div>
 
     <p style="margin-top:32px">
-      <button class="pri" data-go="lists">Listo</button>
+
+      <button
+        class="pri"
+        data-go="lists">
+
+        Listo
+
+      </button>
+
     </p>
 
     <p style="margin-top:28px">
-      <button class="n2t" data-dellist>
+
+      <button
+        class="n2t"
+        data-dellist>
+
         Eliminar esta lista
+
       </button>
+
     </p>
+
     `
   );
+
 },
 
 settings:()=>page(
+
   'Ajustes',
+
   `
-  <button class="pri" data-theme>
+
+  <button
+    class="pri"
+    data-theme>
+
     Cambiar claro / oscuro
+
   </button>
 
-  <p style="margin-top:28px">
-    <button class="n2t" data-logout>
-      Cerrar sesión
+  <p style="margin-top:20px">
+
+    <button
+      class="n2t"
+      data-changename>
+
+      Cambiar nombre
+
     </button>
+
   </p>
+
+  <p style="margin-top:28px">
+
+    <button
+      class="n2t"
+      data-logout>
+
+      Cerrar sesión
+
+    </button>
+
+  </p>
+
   `
+
 ),
 
 about:()=>page(
+
   'Acerca de',
+
   `
+
   <p>
-    Nova-List es una app de INCOROVA para ordenar
-    notas, pendientes y planes en un solo lugar.
+
+    Nova-List es una app de INCOROVA
+    para ordenar notas, pendientes y
+    planes en un solo lugar.
+
   </p>
+
   `
+
 )
 
 };
@@ -1134,7 +2587,8 @@ about:()=>page(
 
 function render(){
 
-  $('#app').innerHTML=V[S.view]();
+  $('#app').innerHTML=
+    V[S.view]();
 
   window.scrollTo(0,0);
 }
@@ -1144,15 +2598,19 @@ function go(v){
   S.view=v;
 
   render();
+
 }
 
 const keep=()=>{
 
-  const y=window.scrollY;
+  const y=
+    window.scrollY;
 
-  $('#app').innerHTML=V[S.view]();
+  $('#app').innerHTML=
+    V[S.view]();
 
   window.scrollTo(0,y);
+
 };
 
 
@@ -1160,298 +2618,422 @@ const keep=()=>{
    EVENTOS
    ========================================================= */
 
-document.addEventListener('click',async e=>{
+document.addEventListener(
+  'click',
+  async e=>{
 
-  const t=e.target.closest('button');
-  const menu=$('#menu');
+    const t=
+      e.target.closest('button');
 
-  const open=
-    menu&&menu.classList.contains('open');
+    const menu=
+      $('#menu');
 
-  if(
-    open&&
-    !(t&&t.classList.contains('opt'))
-  ){
-    menu.classList.remove('open');
-  }
-
-  if(!t)return;
-
-  const D=t.dataset;
-
-  if(t.id==='googleLogin'){
-    await signInWithGoogle();
-    return;
-  }
-
-  if(t.hasAttribute('data-logout')){
-    await signOut();
-    return;
-  }
-
-  if(t.classList.contains('opt')){
-
-    if(!open){
-      menu.classList.add('open');
-      return;
-    }
-
-    return go(D.go);
-  }
-
-  if(D.go)return go(D.go);
-
-  if(D.day){
-
-    S.day=D.day;
-
-    return go('day');
-  }
-
-  if(D.open!==undefined){
-
-    S.cur=+D.open;
-
-    return go('list');
-  }
-
-  if(D.done){
-
-    const x=S.todos.find(i=>i.id===D.done);
-
-    if(!x)return;
-
-    x.done=!x.done;
-
-    await saveTodo(x);
-
-    return keep();
-  }
-
-  if(D.del){
-
-    S.todos=S.todos.filter(i=>i.id!==D.del);
-
-    await deleteTodo(D.del);
-
-    return keep();
-  }
-
-  if(D.delnote){
-
-    S.notes=S.notes.filter(i=>i.id!==D.delnote);
-
-    await deleteNote(D.delnote);
-
-    return render();
-  }
-
-  if(D.n2t){
-
-    const n=S.notes.find(i=>i.id===D.n2t);
-
-    if(!n)return;
-
-    const todo={
-      id:crypto.randomUUID(),
-      title:n.text.slice(0,120),
-      list:S.lists[0]?.name||'Personal',
-      sec:'',
-      due:key(new Date()),
-      time:'',
-      done:false
-    };
-
-    S.todos.push(todo);
-    S.notes=S.notes.filter(i=>i!==n);
-
-    await saveTodo(todo);
-    await deleteNote(n.id);
-
-    return keep();
-  }
-
-  if(t.hasAttribute('data-addnote')){
-
-    const v=$('#nt').value.trim();
-
-    if(!v){
-      $('#nt').focus();
-      return;
-    }
-
-    const note={
-      id:crypto.randomUUID(),
-      text:v
-    };
-
-    S.notes.unshift(note);
-
-    await saveNote(note);
-
-    return render();
-  }
-
-  if(t.hasAttribute('data-newlist')){
-
-    const v=$('#nl').value.trim();
+    const open=
+      menu&&
+      menu.classList.contains('open');
 
     if(
-      !v||
-      S.lists.some(l=>l.name===v)
+      open&&
+      !(t&&t.classList.contains('opt'))
     ){
-      $('#nl').focus();
+
+      menu.classList.remove('open');
+
+    }
+
+    if(!t)return;
+
+    const D=t.dataset;
+
+    if(t.id==='googleLogin'){
+
+      await signInWithGoogle();
+
       return;
     }
 
-    const list={
-      name:v,
-      secs:[]
-    };
+    if(t.hasAttribute('data-logout')){
 
-    await saveList(list);
+      await signOut();
 
-    S.lists.push(list);
-
-    return render();
-  }
-
-  if(D.addt!==undefined){
-
-    const l=S.lists[S.cur];
-
-    if(!l)return;
-
-    const input=t.previousElementSibling;
-    const v=input.value.trim();
-
-    if(!v){
-      input.focus();
       return;
     }
 
-    const todo={
-      id:crypto.randomUUID(),
-      title:v,
-      list:l.name,
-      sec:['',...l.secs][+D.addt],
-      due:'',
-      time:'',
-      done:false
-    };
+    if(t.hasAttribute('data-changename')){
 
-    S.todos.push(todo);
+      await changeName();
 
-    await saveTodo(todo);
+      return;
+    }
 
-    return keep();
-  }
+    if(t.classList.contains('opt')){
 
-  if(t.hasAttribute('data-addsec')){
+      if(!open){
 
-    const l=S.lists[S.cur];
+        menu.classList.add('open');
 
-    if(!l)return;
+        return;
+      }
 
-    const input=t.previousElementSibling;
-    const v=input.value.trim();
+      return go(D.go);
+    }
+
+    if(D.go)
+      return go(D.go);
+
+    if(D.day){
+
+      S.day=D.day;
+
+      return go('day');
+    }
+
+    if(D.open!==undefined){
+
+      S.cur=+D.open;
+
+      return go('list');
+    }
+
+    if(D.done){
+
+      const x=
+        S.todos.find(
+          i=>i.id===D.done
+        );
+
+      if(!x)return;
+
+      x.done=!x.done;
+
+      await saveTodo(x);
+
+      return keep();
+    }
+
+    if(D.del){
+
+      S.todos=
+        S.todos.filter(
+          i=>i.id!==D.del
+        );
+
+      await deleteTodo(D.del);
+
+      return keep();
+    }
+
+    if(D.delnote){
+
+      S.notes=
+        S.notes.filter(
+          i=>i.id!==D.delnote
+        );
+
+      await deleteNote(D.delnote);
+
+      return render();
+    }
+
+    if(D.n2t){
+
+      const n=
+        S.notes.find(
+          i=>i.id===D.n2t
+        );
+
+      if(!n)return;
+
+      const todo={
+
+        id:crypto.randomUUID(),
+
+        title:
+          n.text.slice(0,120),
+
+        list:
+          S.lists[0]?.name||
+          'Personal',
+
+        sec:'',
+
+        due:
+          key(new Date()),
+
+        time:'',
+
+        done:false
+
+      };
+
+      S.todos.push(todo);
+
+      S.notes=
+        S.notes.filter(
+          i=>i!==n
+        );
+
+      await saveTodo(todo);
+
+      await deleteNote(n.id);
+
+      return keep();
+    }
+
+    if(t.hasAttribute('data-addnote')){
+
+      const v=
+        $('#nt').value.trim();
+
+      if(!v){
+
+        $('#nt').focus();
+
+        return;
+      }
+
+      const note={
+
+        id:crypto.randomUUID(),
+        text:v
+
+      };
+
+      S.notes.unshift(note);
+
+      await saveNote(note);
+
+      return render();
+    }
+
+    if(t.hasAttribute('data-newlist')){
+
+      const v=
+        $('#nl').value.trim();
+
+      if(
+        !v||
+        S.lists.some(
+          l=>l.name===v
+        )
+      ){
+
+        $('#nl').focus();
+
+        return;
+      }
+
+      const list={
+
+        name:v,
+        secs:[]
+
+      };
+
+      await saveList(list);
+
+      S.lists.push(list);
+
+      return render();
+    }
+
+    if(D.addt!==undefined){
+
+      const l=
+        S.lists[S.cur];
+
+      if(!l)return;
+
+      const input=
+        t.previousElementSibling;
+
+      const v=
+        input.value.trim();
+
+      if(!v){
+
+        input.focus();
+
+        return;
+      }
+
+      const todo={
+
+        id:crypto.randomUUID(),
+
+        title:v,
+
+        list:l.name,
+
+        sec:
+          ['',...l.secs][+D.addt],
+
+        due:'',
+
+        time:'',
+
+        done:false
+
+      };
+
+      S.todos.push(todo);
+
+      await saveTodo(todo);
+
+      return keep();
+    }
+
+    if(t.hasAttribute('data-addsec')){
+
+      const l=
+        S.lists[S.cur];
+
+      if(!l)return;
+
+      const input=
+        t.previousElementSibling;
+
+      const v=
+        input.value.trim();
+
+      if(
+        !v||
+        l.secs.includes(v)
+      ){
+
+        input.focus();
+
+        return;
+      }
+
+      l.secs.push(v);
+
+      await saveList(l);
+
+      return keep();
+    }
+
+    if(t.hasAttribute('data-dellist')){
+
+      const l=
+        S.lists[S.cur];
+
+      if(
+        !l||
+        S.lists.length<2||
+        !confirm(
+          '¿Eliminar "'+
+          l.name+
+          '" y sus tareas?'
+        )
+      ){
+
+        return;
+      }
+
+      const oldTodos=
+        S.todos.filter(
+          x=>x.list===l.name
+        );
+
+      S.todos=
+        S.todos.filter(
+          x=>x.list!==l.name
+        );
+
+      for(
+        const todo of oldTodos
+      ){
+
+        await deleteTodo(
+          todo.id
+        );
+
+      }
+
+      await deleteList(l.id);
+
+      S.lists.splice(
+        S.cur,
+        1
+      );
+
+      return go('lists');
+    }
 
     if(
-      !v||
-      l.secs.includes(v)
+      t.hasAttribute('data-addtodo')||
+      t.hasAttribute('data-addday')
     ){
-      input.focus();
+
+      const v=
+        $('#ti').value.trim();
+
+      if(!v){
+
+        $('#ti').focus();
+
+        return;
+      }
+
+      const inDay=
+        t.hasAttribute('data-addday');
+
+      const todo={
+
+        id:crypto.randomUUID(),
+
+        title:v,
+
+        list:
+          $('#tl').value,
+
+        sec:'',
+
+        due:
+          inDay
+            ?S.day
+            :(
+              $('#td').value||
+              key(new Date())
+            ),
+
+        time:
+          $('#tt').value,
+
+        done:false
+
+      };
+
+      S.todos.push(todo);
+
+      await saveTodo(todo);
+
+      return inDay
+        ?render()
+        :go('home');
+    }
+
+    if(t.hasAttribute('data-theme')){
+
+      const r=
+        document.documentElement;
+
+      const d=
+        getComputedStyle(r)
+          .getPropertyValue('--bg')
+          .trim()==='#000';
+
+      r.dataset.theme=
+        d
+          ?'light'
+          :'dark';
+
       return;
     }
 
-    l.secs.push(v);
-
-    await saveList(l);
-
-    return keep();
   }
-
-  if(t.hasAttribute('data-dellist')){
-
-    const l=S.lists[S.cur];
-
-    if(
-      !l||
-      S.lists.length<2||
-      !confirm('¿Eliminar "'+l.name+'" y sus tareas?')
-    ){
-      return;
-    }
-
-    const oldTodos=S.todos.filter(
-      x=>x.list===l.name
-    );
-
-    S.todos=S.todos.filter(
-      x=>x.list!==l.name
-    );
-
-    for(const todo of oldTodos){
-      await deleteTodo(todo.id);
-    }
-
-    await deleteList(l.id);
-
-    S.lists.splice(S.cur,1);
-
-    return go('lists');
-  }
-
-  if(
-    t.hasAttribute('data-addtodo')||
-    t.hasAttribute('data-addday')
-  ){
-
-    const v=$('#ti').value.trim();
-
-    if(!v){
-      $('#ti').focus();
-      return;
-    }
-
-    const inDay=t.hasAttribute('data-addday');
-
-    const todo={
-      id:crypto.randomUUID(),
-      title:v,
-      list:$('#tl').value,
-      sec:'',
-      due:inDay
-        ?S.day
-        :($('#td').value||key(new Date())),
-      time:$('#tt').value,
-      done:false
-    };
-
-    S.todos.push(todo);
-
-    await saveTodo(todo);
-
-    return inDay
-      ?render()
-      :go('home');
-  }
-
-  if(t.hasAttribute('data-theme')){
-
-    const r=document.documentElement;
-
-    const d=
-      getComputedStyle(r)
-        .getPropertyValue('--bg')
-        .trim()==='#000';
-
-    r.dataset.theme=d?'light':'dark';
-
-    return;
-  }
-
-});
+);
 
 
 /* =========================================================
@@ -1463,9 +3045,23 @@ supabase.auth.onAuthStateChange(
 
     if(session?.user){
 
-      S.user=session.user;
+      S.user=
+        session.user;
 
-      $('#auth').classList.remove('show');
+      $('#auth')
+        .classList
+        .remove('show');
+
+      if(
+        !getUserName()
+      ){
+
+        const ok=
+          await askForName();
+
+        if(!ok)return;
+
+      }
 
       if(!cloudReady){
 
@@ -1483,7 +3079,10 @@ supabase.auth.onAuthStateChange(
 
       S.user=null;
 
-      $('#auth').classList.add('show');
+      $('#auth')
+        .classList
+        .add('show');
+
     }
 
   }
@@ -1500,13 +3099,28 @@ async function init(){
     data:{
       session
     }
-  }=await supabase.auth.getSession();
+  }=
+    await supabase.auth.getSession();
 
   if(session?.user){
 
-    S.user=session.user;
+    S.user=
+      session.user;
 
-    $('#auth').classList.remove('show');
+    $('#auth')
+      .classList
+      .remove('show');
+
+    if(
+      !getUserName()
+    ){
+
+      const ok=
+        await askForName();
+
+      if(!ok)return;
+
+    }
 
     await loadCloud();
 
@@ -1514,33 +3128,50 @@ async function init(){
 
   }else{
 
-    $('#auth').classList.add('show');
+    $('#auth')
+      .classList
+      .add('show');
+
   }
 
 }
 
-document.addEventListener('keydown',e=>{
 
-  if(e.key==='Escape'){
-    $('#menu')?.classList.remove('open');
+document.addEventListener(
+  'keydown',
+  e=>{
+
+    if(e.key==='Escape'){
+
+      $('#menu')
+        ?.classList
+        .remove('open');
+
+    }
+
   }
+);
 
-});
 
 setInterval(()=>{
 
   if(
     S.view==='home' &&
-    !$('#menu')?.classList.contains('open')
+    !$('#menu')
+      ?.classList
+      .contains('open')
   ){
+
     keep();
+
   }
 
 },60000);
 
+
 init();
 
 </script>
+
 </body>
 </html>
-
