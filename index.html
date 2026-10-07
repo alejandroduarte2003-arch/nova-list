@@ -269,6 +269,40 @@ textarea{min-height:90px;resize:vertical}
   <button data-go="new"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6Q12 12 18 12Q12 12 12 18Q12 12 6 12Q12 12 12 6Z"/></svg>Nuevo to-do</button>
   <button data-go="plan"><svg viewBox="0 0 24 24"><path d="M4 20l1-4L15 6l3 3L8 19z"/><path d="M13 8l3 3"/><path d="M19.5 2l.9 2 2 .9-2 .9-.9 2-.9-2-2-.9 2-.9z" stroke-width="1.2"/></svg>Planificador</button>
 </nav>
+
+<style>
+/* Nuevo To-do — formulario */
+.todo-form{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px;margin-top:8px;box-shadow:0 10px 30px var(--sh)}
+.todo-title{font-size:18px!important;font-weight:650!important;line-height:1.4!important;padding:17px 18px!important;border:1px solid var(--line)!important;border-radius:16px!important;background:var(--bg)!important;margin-bottom:18px!important}
+.todo-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.todo-field{position:relative;background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:11px 14px 8px;transition:.2s}
+.todo-field:focus-within{border-color:var(--fg);box-shadow:0 0 0 3px var(--gb)}
+.todo-field label{display:block;font-size:11px;color:var(--mut);font-weight:700;margin-bottom:3px;letter-spacing:.01em}
+.todo-field select,.todo-field input{border:0!important;background:transparent!important;padding:2px 0 4px!important;margin:0!important;border-radius:0!important;width:100%;font-size:14px;font-weight:600;color:var(--fg)}
+.todo-field select:invalid,.todo-field input:invalid{color:var(--mut)}
+.todo-actions{display:flex;align-items:center;gap:12px;margin-top:16px}
+.todo-prio{display:flex;align-items:center;gap:8px;color:var(--mut);font-size:13px;font-weight:600;margin-right:auto}
+.todo-prio input{accent-color:var(--fg)}
+@media(max-width:560px){.todo-fields{grid-template-columns:1fr}.todo-form{padding:16px}.todo-actions{align-items:stretch;flex-direction:column}.todo-prio{margin-right:0}}
+
+/* Planificador */
+.plan-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:6px 0 22px}
+.plan-panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;text-align:left;min-height:118px;position:relative;transition:transform .2s,border-color .2s}
+.plan-panel:hover{transform:translateY(-2px);border-color:var(--fg)}
+.plan-panel b{display:block;font-size:14px;letter-spacing:-.01em;padding-right:18px}.plan-panel small{display:block;color:var(--mut);font-size:12px;line-height:1.4;margin-top:7px}.plan-panel .pnumb{font-size:25px;font-weight:800;letter-spacing:-.04em;margin-top:12px;display:block}.plan-panel .arr{position:absolute;right:13px;top:15px;color:var(--mut);font-size:18px}
+.plan-panel.late .pnumb{color:#b11}
+.plan-panel-detail{background:var(--card);border-radius:20px;padding:16px;margin:-8px 0 22px;border:1px solid var(--line);animation:fadeUp .25s ease}
+.plan-panel-detail .sec{margin-top:0}
+.plan-modes{position:relative;margin:4px 0 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.plan-mode{position:relative;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px 14px 17px;text-align:left;min-height:92px;overflow:hidden}
+.plan-mode b{display:block;font-size:14px}.plan-mode span{display:block;color:var(--mut);font-size:11px;margin-top:5px}
+.plan-star{position:absolute;left:10px;top:9px;width:17px;height:17px;fill:none;stroke:var(--fg);stroke-width:1.3;animation:planStarMove 6s ease-in-out infinite}
+.plan-mode:nth-child(2) .plan-star{animation-delay:2s}.plan-mode:nth-child(3) .plan-star{animation-delay:4s}
+@keyframes planStarMove{0%,100%{transform:translateX(0) rotate(0deg);opacity:.35}50%{transform:translateX(calc(100% + 70px)) rotate(90deg);opacity:1}}
+.plan-notes{margin-top:6px}.plan-notes-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:12px}.plan-notes-head b{font-size:16px}.plan-notes-head span{color:var(--mut);font-size:11px}.plan-note{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:9px}.plan-note-title{font-size:14px;font-weight:700;margin-bottom:5px}.plan-note-text{font-size:12px;color:var(--mut);line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.plan-note-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.plan-convert{margin-top:12px;padding:13px;background:var(--bg);border-radius:15px;border:1px solid var(--line)}
+@media(max-width:620px){.plan-summary{grid-template-columns:1fr 1fr}.plan-panel:last-child{grid-column:1/-1;min-height:100px}.plan-modes{grid-template-columns:1fr}.plan-mode{min-height:72px;padding-left:18px}.plan-star{left:auto;right:14px;top:14px}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+</style>
 <script type="module">
 import {createClient} from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 const sb=createClient('https://udvxmrbqymhrlaiojzex.supabase.co','sb_publishable_VaSGlZ8OA38jbM9QHCTwZw_eNVq__On');
@@ -276,7 +310,7 @@ const sb=createClient('https://udvxmrbqymhrlaiojzex.supabase.co','sb_publishable
 /* ---------- estado y utilidades ---------- */
 const $=s=>document.querySelector(s);
 const DEF=['Personal','Trabajo','Compras'];
-const S={todos:[],notes:[],lists:DEF.map(name=>({name,secs:[]})),view:'home',day:null,cur:0,user:null,conv:null,adding:false,open:null,pm:'week',pref:'',pday:null,fo:false,f:{title:'',day:'',time:'',list:''},wk:null,cal:{y:new Date().getFullYear(),m:new Date().getMonth()},calPick:false,onb:false,fin:false,entry:false,ob:{step:'welcome',n:0,busy:false}};
+const S={todos:[],notes:[],lists:DEF.map(name=>({name,secs:[]})),view:'home',day:null,cur:0,user:null,conv:null,adding:false,open:null,pm:'week',planMode:'day',planFilter:'',planNote:null,pref:'',pday:null,fo:false,f:{title:'',day:'',time:'',list:''},wk:null,cal:{y:new Date().getFullYear(),m:new Date().getMonth()},calPick:false,onb:false,fin:false,entry:false,ob:{step:'welcome',n:0,busy:false}};
 let cloudReady=false;
 const arrow='<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 const sd=d=>new Date(d.getFullYear(),d.getMonth(),d.getDate());
@@ -513,6 +547,15 @@ async function createListFromTodo(){
   S.lists.push(list);render();const ns=$('#tl');if(ns)ns.value=v;
 }
 
+async function createListForPlanNote(n){
+  const name=prompt('Nombre de la nueva lista:');
+  if(name===null||!name.trim())return;
+  const v=name.trim();if(S.lists.some(l=>l.name.toLowerCase()===v.toLowerCase()))return alert('Ya existe una lista con ese nombre.');
+  const list={name:v,secs:[]};if(!await saveList(list))return alert('No se pudo crear la lista.');
+  S.lists.push(list);const due=$('#pnd')?.value||'';const time=$('#pnt')?.value||'';if(!due)return alert('Selecciona la fecha para el to-do.');
+  const lines=noteLines(n),title=(lines.join(' ')||'Nota rápida').trim().slice(0,180);const todo={id:uuid(),title,list:v,sec:'',due,time,done:false,notes:''};S.todos.push(todo);S.planNote=null;keep();if(await saveTodo(todo))flash();
+}
+
 /* ---------- vistas ---------- */
 const V={
 home:()=>{const o=overdue().length,nm=getUserName();
@@ -526,30 +569,44 @@ ws:()=>{const n=S.notes.find(x=>x.id===S.wk?.id);return page(n?'Editar nota':'Nu
 <div id="pick" class="conv" hidden></div>
 <div id="ed" class="ed" contenteditable="true" role="textbox" aria-multiline="true" data-ph="Escribe aquí. Empieza una línea con 1. y se numera sola.">${n?noteHtml(n):''}</div>
 <div class="acts" style="margin-top:20px"><button class="pri" data-savewk>Guardar</button>${n?`<button class="n2t" data-delnote="${n.id}">Eliminar</button>`:''}</div>`,'notes','Notas')},
-new:()=>page('Nuevo to-do',`<input id="ti" placeholder="¿Qué hay que hacer?">${listSel()}<input id="td" type="date" value="${key(new Date())}"><input id="tt" type="time"><button class="pri" data-addtodo>Agregar to-do</button>`),
+new:()=>page('Nuevo to-do',`<div class="todo-form"><input id="ti" class="todo-title" placeholder="¿Qué necesitas hacer?" autocomplete="off"><div class="todo-fields"><div class="todo-field"><label for="tl">Lista</label><select id="tl" required><option value="" disabled selected>Selecciona la lista</option>${S.lists.map(l=>`<option value="${esc(l.name)}">${esc(l.name)}</option>`).join('')}<option value="__new__">+ Crear nueva lista</option></select></div><div class="todo-field"><label for="td">Fecha</label><input id="td" type="date" required aria-label="Selecciona la fecha"></div><div class="todo-field"><label for="tt">Hora</label><input id="tt" type="time" aria-label="Selecciona la hora"></div><div class="todo-field"><label>Prioridad</label><label class="todo-prio"><input id="newPrio" type="checkbox"> Marcar como importante</label></div></div><div class="todo-actions"><button class="pri" data-addtodo>Agregar to-do</button></div></div>`),
 plan:()=>{
-  const r=ref(),wk=S.pm==='week',tk=key(new Date()),F=S.f;let title,body,chips='';
-  if(!F.day)F.day=S.pday||tk;if(!F.list||!S.lists.some(l=>l.name===F.list))F.list=S.lists[0].name;
-  if(wk){const m=mon(r),days=[...Array(7)].map((_,i)=>addD(m,i));
-    title=days[0].toLocaleDateString('es',{day:'numeric',month:'short'})+' – '+days[6].toLocaleDateString('es',{day:'numeric',month:'short',year:'numeric'});
-    chips=days.map((d,i)=>`<button class="chip ${F.day===key(d)?'on':''}" data-fd="${key(d)}">${DN[i].slice(0,3)} ${d.getDate()}</button>`).join('');
-    body=days.map((d,i)=>{const k=key(d),a=todosOn(k),p=a.filter(t=>!t.done).length;return `<section class="wd ${k===tk?'tod':''}"><div class="wh"><b>${DN[i]}<em>${d.getDate()}</em></b><span>${p?p+(p>1?' pendientes':' pendiente'):''}</span><button class="n2t" data-pday="${k}">+ Planear</button></div>${items(a)}</section>`}).join('');
-  }else{const y=r.getFullYear(),mo=r.getMonth(),lead=(new Date(y,mo,1).getDay()+6)%7,dim=new Date(y,mo+1,0).getDate();
-    title=cap(r.toLocaleDateString('es',{month:'long',year:'numeric'}));
-    let c='';for(let i=0;i<lead;i++)c+='<span></span>';
-    for(let d=1;d<=dim;d++){const k=key(new Date(y,mo,d)),n=todosOn(k).filter(t=>!t.done).length;c+=`<button class="md ${k===tk?'tod':''} ${S.pday===k?'sel':''}" data-sel="${k}" aria-label="Día ${d}">${d}${n?`<small>${n}</small>`:''}</button>`}
-    body=`<div class="g7">${['L','M','M','J','V','S','D'].map(x=>`<span>${x}</span>`).join('')}</div><div class="g7">${c}</div>`
-      +(S.pday?`<h3 class="sec">${cap(parseK(S.pday).toLocaleDateString('es',{weekday:'long',day:'numeric',month:'long'}))}</h3>${items(todosOn(S.pday),'Nada planeado este día.')}<button class="n2t" data-pday="${S.pday}" style="margin-top:8px">+ Planear este día</button>`:'<p class="empty">Toca un día para ver y planear. Para compromisos lejanos, avanza de mes con las flechas.</p>');}
-  const form=`<div class="pf" id="pf">
-<div class="st"><i>1</i><div><label for="f1">¿Qué vas a hacer?</label><input id="f1" data-f="title" value="${esc(F.title)}" placeholder="Ej. Entregar el informe"></div></div>
-<div class="st"><i>2</i><div><label>¿Qué día?</label>${chips?`<div class="chips">${chips}</div>`:''}<input type="date" data-f="day" value="${F.day}" aria-label="Fecha"></div></div>
-<div class="st"><i>3</i><div><label for="f3">¿A qué hora? <span style="color:var(--mut);font-weight:400">(opcional)</span></label><input id="f3" type="time" data-f="time" value="${F.time}"></div></div>
-<div class="st"><i>4</i><div><label>¿En qué lista va?</label><div class="chips" style="margin-bottom:0">${S.lists.map(l=>`<button class="chip ${F.list===l.name?'on':''}" data-fl="${esc(l.name)}">${esc(l.name)}</button>`).join('')}</div></div></div>
-<button class="pri" data-planadd>Agregar al planificador</button></div>`;
-  return page('Planificador',`<div class="seg" role="group" aria-label="Vista"><button class="${wk?'on':''}" data-pm="week">Semana</button><button class="${wk?'':'on'}" data-pm="month">Mes</button></div><button class="pri sm" data-fo>${S.fo?'Cerrar':'+ Planear algo'}</button>
-<div class="pn"><button data-pn="-1" aria-label="Anterior">‹</button><b>${title}</b><button data-pn="1" aria-label="Siguiente">›</button><button class="n2t" data-pnow>Hoy</button></div>
-${S.fo?form:''}<div>${body}</div>
-<section class="wsc"><div><b>Espacio de trabajo</b><p>Convierte una nota rápida en un plan detallado: listas numeradas, texto subrayado y pásalo a tus to-do.</p></div><div class="acts" style="margin:0"><button class="pri sm" data-wk="new">+ Nueva nota</button>${S.notes.length?`<button class="n2t" data-go="notes">Mis notas (${S.notes.length})</button>`:''}</div></section>`)},
+  const tk=key(new Date()), todayA=today(), soonA=soon(), lateA=overdue();
+  const filter=S.planFilter||'';
+  let detail='';
+  if(filter==='today') detail=`<div class="plan-panel-detail"><h3 class="sec">Tareas de hoy</h3>${items(todayA,'No tienes tareas pendientes para hoy.')}</div>`;
+  if(filter==='soon') detail=`<div class="plan-panel-detail"><h3 class="sec">Próximas tareas</h3>${items(soonA,'No tienes tareas en las próximas 48 horas.')}</div>`;
+  if(filter==='late') detail=`<div class="plan-panel-detail"><h3 class="sec">Tareas vencidas</h3>${items(lateA,'No tienes tareas vencidas.')}</div>`;
+  const noteCards=S.notes.map(n=>{
+    const l=noteLines(n),title=l[0]||'Nota rápida';
+    const conv=S.planNote===n.id?`<div class="plan-convert"><div class="todo-fields"><div class="todo-field"><label>Lista</label><select id="pnl"><option value="" disabled selected>Selecciona la lista</option>${S.lists.map(x=>`<option value="${esc(x.name)}">${esc(x.name)}</option>`).join('')}<option value="__new__">+ Crear nueva lista</option></select></div><div class="todo-field"><label>Fecha</label><input id="pnd" type="date" required></div><div class="todo-field"><label>Hora</label><input id="pnt" type="time"></div></div><div class="todo-actions"><button class="pri sm" data-noteconvert="${n.id}">Crear to-do</button><button class="n2t" data-close-note>Cancelar</button></div></div>`:'';
+    return `<article class="plan-note"><div class="plan-note-title">${esc(title)}</div>${l.length>1?`<div class="plan-note-text">${esc(l.slice(1).join(' · '))}</div>`:''}<div class="plan-note-actions"><button class="n2t" data-noteconvert-open="${n.id}">Agregar a una lista</button><button class="n2t" data-wk="${n.id}">Abrir nota</button></div>${conv}</article>`;
+  }).join('');
+  return page('Planificador',`
+    <p class="lead">Ordena tu día, tu semana y tu mes. Tus notas rápidas quedan aquí para convertirlas en acciones cuando estés listo.</p>
+    <div class="plan-summary">
+      <button class="plan-panel" data-pfilter="today"><span class="arr">›</span><b>Tareas de hoy</b><span class="pnumb">${todayA.length}</span><small>${todayA.length?'Pendientes para hoy':'Todo despejado por hoy'}</small></button>
+      <button class="plan-panel" data-pfilter="soon"><span class="arr">›</span><b>Próximas tareas</b><span class="pnumb">${soonA.length}</span><small>${soonA.length?'En las próximas 48 horas':'No hay próximas tareas'}</small></button>
+      <button class="plan-panel late" data-pfilter="late"><span class="arr">›</span><b>Tareas vencidas</b><span class="pnumb">${lateA.length}</span><small>${lateA.length?'Requieren atención':'Todo al día'}</small></button>
+    </div>
+    ${detail}
+    <div class="plan-modes">
+      <button class="plan-mode" data-organize="day"><svg class="plan-star" viewBox="0 0 24 24"><path d="M12 2Q12 12 22 12Q12 12 12 22Q12 12 2 12Q12 12 12 2Z"/></svg><b>Organiza tu día</b><span>Qué hacer y cuándo</span></button>
+      <button class="plan-mode" data-organize="week"><svg class="plan-star" viewBox="0 0 24 24"><path d="M12 2Q12 12 22 12Q12 12 12 22Q12 12 2 12Q12 12 12 2Z"/></svg><b>Organiza tu semana</b><span>Distribuye tus pendientes</span></button>
+      <button class="plan-mode" data-organize="month"><svg class="plan-star" viewBox="0 0 24 24"><path d="M12 2Q12 12 22 12Q12 12 12 22Q12 12 2 12Q12 12 12 2Z"/></svg><b>Organiza tu mes</b><span>Visualiza tus objetivos</span></button>
+    </div>
+    ${(()=>{
+      const mode=S.planMode||'day';
+      if(mode==='day')return `<section class="plan-panel-detail"><h3 class="sec">Organiza tu día</h3><p class="lead" style="margin-bottom:12px">Tus pendientes de hoy, en el orden en que necesitan atención.</p>${items(todayA,'No tienes pendientes para hoy.')}<button class="n2t" data-go="new" style="margin-top:8px">+ Crear to-do</button></section>`;
+      if(mode==='week'){
+        const m=mon(new Date());
+        return `<section class="plan-panel-detail"><h3 class="sec">Organiza tu semana</h3>${[...Array(7)].map((_,i)=>{const d=addD(m,i),k=key(d),a=todosOn(k),p=a.filter(x=>!x.done).length;return `<button class="wd" data-day="${k}" style="width:100%;text-align:left;border:0;cursor:pointer"><div class="wh"><b>${DN[i]}<em>${d.getDate()}</em></b><span>${p?p+' pendientes':'Sin pendientes'}</span></div></button>`}).join('')}</section>`;
+      }
+      return `<section class="plan-panel-detail"><h3 class="sec">Organiza tu mes</h3>${calendar()}</section>`;
+    })()}
+    <section class="plan-notes"><div class="plan-notes-head"><div><b>Notas rápidas</b><span> · conviértelas en acciones</span></div><button class="n2t" data-wk="new">+ Nueva</button></div>${noteCards||'<p class="empty">Tus notas rápidas aparecerán aquí.</p>'}</section>
+  `)
+},
 day:()=>{const [y,m,d]=S.day.split('-').map(Number);let l=new Date(y,m-1,d).toLocaleDateString('es',{weekday:'long',day:'numeric',month:'long'});l=l[0].toUpperCase()+l.slice(1);
   const a=S.todos.filter(t=>t.due===S.day).sort((p,q)=>(p.time||'').localeCompare(q.time||''));
   return page(l,items(a,'No hay pendientes este día.')+`<h3 class="sec">Nuevo to-do para este día</h3><input id="ti" placeholder="¿Qué hay que hacer?">${listSel()}<input id="tt" type="time" aria-label="Hora"><button class="pri" data-addday>Agregar to-do</button>`)},
@@ -588,6 +645,18 @@ document.addEventListener('click',async e=>{
   if(D.prio){const x=S.todos.find(i=>i.id===D.prio);if(!x)return;x.prio=!x.prio;keep();await saveTodo(x);return}
   if(has('data-entry-main')){closeEntry();return go('home')}
   if(has('data-entry-note')){closeEntry();S.wk={id:null};return go('ws')}
+  if(D.pfilter){S.planFilter=S.planFilter===D.pfilter?'':D.pfilter;return keep()}
+  if(D.organize){S.planFilter='';S.planMode=D.organize;return keep()}
+  if(D.noteconvertOpen){S.planNote=D.noteconvertOpen;return keep()}
+  if(has('data-close-note')){S.planNote=null;return keep()}
+  if(D.noteconvert){
+    const n=S.notes.find(x=>x.id===D.noteconvert);if(!n)return;
+    const list=$('#pnl')?.value||'',due=$('#pnd')?.value||'',time=$('#pnt')?.value||'';
+    if(list==='__new__'){return createListForPlanNote(n)}
+    if(!list)return $('#pnl')?.focus();if(!due)return $('#pnd')?.focus();
+    const lines=noteLines(n),title=(lines.join(' ')||'Nota rápida').trim().slice(0,180);
+    const todo={id:uuid(),title,list,sec:'',due,time,done:false,notes:''};S.todos.push(todo);S.planNote=null;keep();if(await saveTodo(todo))flash();return;
+  }
   if(t.id==='googleLogin')return signInWithGoogle(false);
   if(t.id==='googleOther')return signInWithGoogle(true);
   if(has('data-logout'))return signOut();
@@ -654,9 +723,10 @@ document.addEventListener('click',async e=>{
   }
   if(has('data-addtodo')||has('data-addday')){
     const v=$('#ti').value.trim();if(!v)return $('#ti').focus();
-    const list=$('#tl').value;if(list==='__new__')return;
+    const list=$('#tl')?.value||'';if(list==='__new__')return createListFromTodo();if(!list)return $('#tl')?.focus();
     const inDay=has('data-addday');
-    const todo={id:uuid(),title:v,list,sec:'',due:inDay?S.day:($('#td').value||key(new Date())),time:$('#tt').value,done:false};
+    const due=inDay?S.day:($('#td')?.value||'');if(!due)return $('#td')?.focus();
+    const todo={id:uuid(),title:v,list,sec:'',due,time:$('#tt')?.value||'',done:false,notes:'',prio:!!$('#newPrio')?.checked};
     S.todos.push(todo);inDay?render():go('home');if(await saveTodo(todo))flash();return;
   }
 });
@@ -694,3 +764,4 @@ sb.auth.onAuthStateChange((ev,session)=>{setTimeout(async()=>{
 setInterval(()=>{if(S.view==='home'&&!S.onb&&!S.fin&&!S.entry&&!$('#menu')?.classList.contains('open'))keep()},60000);
 </script>
 </body>
+</html>
