@@ -195,6 +195,31 @@ textarea{min-height:90px;resize:vertical}
 @keyframes ospin{to{transform:rotate(720deg)}}
 @media (prefers-reduced-motion:reduce){.saved .st{display:none}#app.in{animation:none}.orb{animation:none}.ostar.spin{animation:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* entrada al volver a abrir Nova-List */
+.entry{position:fixed;inset:0;z-index:145;display:flex;align-items:center;justify-content:center;padding:28px;background:var(--bg);animation:entrybg .45s ease both}
+.entry-card{width:min(100%,420px);text-align:center;padding:34px 26px 28px;background:var(--card);border:1px solid var(--gb);border-radius:32px;box-shadow:0 24px 60px var(--sh),inset 0 1px 0 var(--hl);animation:entryin .65s cubic-bezier(.2,.85,.25,1) both}
+.entry.out{animation:entrybgout .26s ease forwards}.entry.out .entry-card{animation:entryout .26s ease forwards}
+.entry-star{width:24px;height:24px;margin:0 auto 20px;stroke-width:1.5}
+.entry-card h2{font-size:clamp(30px,8vw,38px);font-weight:800;letter-spacing:-.045em;line-height:1.05;margin-bottom:12px}
+.entry-card .entry-name{font-weight:500}
+.entry-summary{font-size:15px;line-height:1.55;color:var(--mut);margin:0 auto;max-width:320px}
+.entry-summary b{color:var(--fg);font-weight:700}
+.entry-overdue{font-size:13px;line-height:1.5;color:var(--red);margin-top:8px}
+.entry-actions{margin-top:30px;display:flex;flex-direction:column;gap:16px;align-items:center}
+.entry-main{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:var(--fg);color:var(--bg);padding:15px 22px;border-radius:999px;font-weight:600;text-align:center}
+.entry-main svg{width:18px;height:18px}
+.entry-note{display:inline-flex;align-items:center;gap:8px;padding:4px 2px;color:var(--mut);font-size:12px;font-weight:500}
+.entry-note svg{width:17px;height:17px}
+.entry-note .arr{width:15px;height:15px;transition:transform .2s ease}
+.entry-note:active .arr{transform:translateX(3px)}
+.entry-card>*{animation:entryup .5s cubic-bezier(.2,.8,.2,1) both}
+.entry-card>*:nth-child(1){animation-delay:.08s}.entry-card>*:nth-child(2){animation-delay:.13s}.entry-card>*:nth-child(3){animation-delay:.18s}.entry-card>*:nth-child(4){animation-delay:.23s}.entry-card>*:nth-child(5){animation-delay:.28s}.entry-card>*:nth-child(6){animation-delay:.33s}
+@keyframes entrybg{from{opacity:0}to{opacity:1}}
+@keyframes entryin{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes entrybgout{to{opacity:0}}
+@keyframes entryout{to{opacity:0;transform:translateY(8px) scale(.98)}}
+@keyframes entryup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.entry,.entry-card,.entry-card>*{animation:none!important}.entry-note .arr{transition:none}}
 /* bienvenida diaria */
 .g-scrim{position:fixed;inset:0;z-index:140;background:var(--bg);opacity:0;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);animation:gfade .45s ease forwards}
 .g-scrim.out{animation:gfadeo .35s ease forwards}
@@ -251,7 +276,7 @@ const sb=createClient('https://udvxmrbqymhrlaiojzex.supabase.co','sb_publishable
 /* ---------- estado y utilidades ---------- */
 const $=s=>document.querySelector(s);
 const DEF=['Personal','Trabajo','Compras'];
-const S={todos:[],notes:[],lists:DEF.map(name=>({name,secs:[]})),view:'home',day:null,cur:0,user:null,conv:null,adding:false,open:null,pm:'week',pref:'',pday:null,fo:false,f:{title:'',day:'',time:'',list:''},wk:null,cal:{y:new Date().getFullYear(),m:new Date().getMonth()},calPick:false,onb:false,fin:false,ob:{step:'welcome',n:0,busy:false}};
+const S={todos:[],notes:[],lists:DEF.map(name=>({name,secs:[]})),view:'home',day:null,cur:0,user:null,conv:null,adding:false,open:null,pm:'week',pref:'',pday:null,fo:false,f:{title:'',day:'',time:'',list:''},wk:null,cal:{y:new Date().getFullYear(),m:new Date().getMonth()},calPick:false,onb:false,fin:false,entry:false,ob:{step:'welcome',n:0,busy:false}};
 let cloudReady=false;
 const arrow='<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 const sd=d=>new Date(d.getFullYear(),d.getMonth(),d.getDate());
@@ -324,6 +349,43 @@ async function loadCloud(){
     cloudReady=true;
   }catch(e){console.error('SUPABASE:',e)}
   render();
+  if(S.user?.user_metadata?.onboarded&&!S.onb) setTimeout(showEntry,80);
+}
+
+/* ---------- pantalla de entrada al volver a abrir ---------- */
+function entryScreen(){
+  const name=getUserName()||'de nuevo';
+  const pending=today().length;
+  const late=overdue().length;
+  const ptxt=`${pending} ${pending===1?'pendiente':'pendientes'} para hoy`;
+  return `<div class="entry" id="entry" role="dialog" aria-modal="true" aria-labelledby="entryTitle">
+    <div class="entry-card">
+      <svg class="entry-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3Q12 12 21 12Q12 12 12 21Q12 12 3 12Q12 12 12 3Z"/></svg>
+      <h2 id="entryTitle">Hola, <span class="entry-name">${esc(name)}</span></h2>
+      <p class="entry-summary">Tienes <b>${esc(ptxt)}</b>.</p>
+      ${late?`<p class="entry-overdue">Además, tienes ${late} ${late===1?'tarea vencida':'tareas vencidas'}.</p>`:''}
+      <div class="entry-actions">
+        <button class="entry-main" data-entry-main>Entrar a Nova-List ${arrow}</button>
+        <button class="entry-note" data-entry-note aria-label="Agregar nota rápida">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v10l-5 6H5z"/><path d="M14 20v-6h5"/><path d="M8 9h8M8 13h4"/></svg>
+          <span>Agregar nota rápida</span>
+          <svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+function showEntry(){
+  if(S.entry||S.onb||S.fin||!S.user||!S.user.user_metadata?.onboarded)return;
+  S.entry=true;
+  const old=$('#entry');if(old)old.remove();
+  document.body.insertAdjacentHTML('beforeend',entryScreen());
+}
+function closeEntry(){
+  const el=$('#entry');if(!el)return;
+  el.classList.add('out');
+  setTimeout(()=>el.remove(),260);
+  S.entry=false;
 }
 
 /* ---------- sesión y nombre ---------- */
@@ -355,7 +417,7 @@ async function changeName(){
 }
 async function signOut(){
   try{await sb.auth.signOut()}catch(e){console.error(e)}
-  Object.assign(S,{user:null,todos:[],notes:[],lists:DEF.map(name=>({name,secs:[]})),view:'home',conv:null,onb:false,fin:false,ob:{step:'welcome',n:0,busy:false}});
+  Object.assign(S,{user:null,todos:[],notes:[],lists:DEF.map(name=>({name,secs:[]})),view:'home',conv:null,onb:false,fin:false,entry:false,ob:{step:'welcome',n:0,busy:false}});
   cloudReady=false;$('#onb')?.remove();$('#app').innerHTML='';$('#auth').classList.add('show');
 }
 /* ---------- bienvenida: primer inicio de sesión ---------- */
@@ -524,6 +586,8 @@ document.addEventListener('click',async e=>{
   if(D.ob)return onbAct(D.ob);
   if(D.gdet){S.wk={id:D.gdet};go('ws');return closeGreet()}
   if(D.prio){const x=S.todos.find(i=>i.id===D.prio);if(!x)return;x.prio=!x.prio;keep();await saveTodo(x);return}
+  if(has('data-entry-main')){closeEntry();return go('home')}
+  if(has('data-entry-note')){closeEntry();S.wk={id:null};return go('ws')}
   if(t.id==='googleLogin')return signInWithGoogle(false);
   if(t.id==='googleOther')return signInWithGoogle(true);
   if(has('data-logout'))return signOut();
@@ -627,7 +691,6 @@ sb.auth.onAuthStateChange((ev,session)=>{setTimeout(async()=>{
   catch(e){console.error('INIT:',e);$('#auth').classList.add('show')}
   $('#loading').classList.add('hide');
 })();
-setInterval(()=>{if(S.view==='home'&&!S.onb&&!S.fin&&!$('#menu')?.classList.contains('open'))keep()},60000);
+setInterval(()=>{if(S.view==='home'&&!S.onb&&!S.fin&&!S.entry&&!$('#menu')?.classList.contains('open'))keep()},60000);
 </script>
 </body>
-</html>
