@@ -194,6 +194,35 @@ textarea{min-height:90px;resize:vertical}
 @keyframes ospin{to{transform:rotate(720deg)}}
 @media (prefers-reduced-motion:reduce){.saved .st{display:none}#app.in{animation:none}.orb{animation:none}.ostar.spin{animation:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* bienvenida diaria */
+.g-scrim{position:fixed;inset:0;z-index:140;background:var(--bg);opacity:0;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);animation:gfade .45s ease forwards}
+.g-scrim.out{animation:gfadeo .35s ease forwards}
+.gsheet{position:fixed;left:0;right:0;margin:0 auto;bottom:calc(14px + env(safe-area-inset-bottom,0px));width:min(calc(100% - 28px),460px);max-height:calc(100% - 28px - env(safe-area-inset-top,0px));overflow:auto;z-index:141;background:var(--card);border:1px solid var(--gb);border-radius:32px;padding:26px 22px 20px;box-shadow:0 24px 60px var(--sh),inset 0 1px 0 var(--hl);animation:gin .7s cubic-bezier(.2,.9,.25,1) both}
+.gsheet.out{animation:gout .35s cubic-bezier(.5,0,.8,.4) forwards}
+.gsheet>*{animation:gup .55s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(180ms + var(--i,0)*70ms)}
+.gsheet h2{font-size:clamp(24px,6.5vw,30px);font-weight:800;letter-spacing:-.035em;line-height:1.1;margin:12px 0 14px}
+.gl{display:flex;justify-content:space-between;align-items:center;width:100%;padding:8px 0;font-size:clamp(16px,4.4vw,19px);font-weight:500;letter-spacing:-.01em;text-align:left}
+.gl b{font-weight:800}
+.gl svg{width:18px;height:18px;color:var(--mut);flex:none}
+.gsec{font-size:12px;font-weight:600;color:var(--mut);margin:18px 0 2px}
+.gi{padding:11px 0;transition:opacity .35s}
+.gi .gt{display:block;font-weight:600;font-size:15px;overflow-wrap:anywhere}
+.gi.done{opacity:.35}.gi.done .gt{text-decoration:line-through}
+.gnote{margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}
+.gnote .add svg{width:22px;height:22px;flex:none;color:var(--mut)}
+.gst{font-size:12px;color:var(--mut);min-height:18px;margin-top:6px}
+.gst .n2t{display:inline;padding:0}
+.gsheet .pri{width:100%;margin-top:14px}
+.item .pr{margin-left:auto;color:var(--mut);display:grid;place-items:center}
+.item .pr+.x{margin-left:0}
+.item .pr svg{width:18px;height:18px}
+.item .pr.on{color:var(--fg)}.item .pr.on svg{fill:currentColor}
+@keyframes gfade{to{opacity:.72}}
+@keyframes gfadeo{from{opacity:.72}to{opacity:0}}
+@keyframes gin{from{opacity:0;transform:translateY(60px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes gout{to{opacity:0;transform:translateY(40px) scale(.97)}}
+@keyframes gup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.g-scrim,.gsheet,.gsheet>*{animation-duration:.01s!important;animation-delay:0s!important}}
 </style>
 </head>
 <body>
@@ -239,7 +268,7 @@ const stat=n=>{const a=S.todos.filter(t=>t.list===n),d=a.filter(t=>t.done).lengt
 const bar=p=>`<div class="bar" role="progressbar" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100"><i style="width:${p}%;background:hsl(${p*1.2} 75% 45%)"></i></div>`;
 const fmtD=d=>{const [y,m,x]=d.split('-').map(Number);return new Date(y,m-1,x).toLocaleDateString('es',{day:'numeric',month:'short'})};
 const opts=[['lists','Mis listas',-22],['settings','Ajustes',-11],['about','Acerca de',0]];
-const norm=t=>({...t,sec:t.sec||'',due:t.due||'',time:(t.time||'').slice(0,5),done:!!t.done,notes:t.notes||''});
+const norm=t=>({...t,sec:t.sec||'',due:t.due||'',time:(t.time||'').slice(0,5),done:!!t.done,notes:t.notes||'',prio:!!t.prio});
 const parseK=k=>{const [y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d)};
 const ref=()=>S.pref?parseK(S.pref):sd(new Date());
 const mon=d=>{const x=sd(d);x.setDate(x.getDate()-((x.getDay()+6)%7));return x};
@@ -258,8 +287,10 @@ const run=async p=>{try{const r=await p;if(r.error){console.error(r.error);retur
 const saveTodo=async t=>{if(!S.user)return null;
   const row={id:t.id,user_id:S.user.id,title:t.title,list:t.list,sec:t.sec||'',due:t.due||null,time:t.time||null,done:!!t.done};
   if(t.notes!==undefined)row.notes=t.notes;
+  if(t.prio!==undefined)row.prio=!!t.prio;
   let r=await run(sb.from('todos').upsert(row));
-  if(!r&&'notes' in row){delete row.notes;r=await run(sb.from('todos').upsert(row));if(r)alert('Tu base de datos aún no tiene la columna "notes". El to-do se guardó sin el seguimiento. En Supabase ejecuta:\n\nalter table todos add column notes text;')}
+  if(!r&&('notes' in row||'prio' in row)){delete row.notes;delete row.prio;r=await run(sb.from('todos').upsert(row));
+    if(r&&!S.warned){S.warned=1;alert('Tu base de datos aún no tiene las columnas nuevas. El to-do se guardó sin ellas. En Supabase ejecuta:\n\nalter table todos add column if not exists notes text;\nalter table todos add column if not exists prio boolean default false;')}}
   return r};
 const deleteTodo=id=>S.user&&run(sb.from('todos').delete().eq('id',id).eq('user_id',S.user.id));
 const saveNote=n=>S.user&&run(sb.from('notes').upsert({id:n.id,user_id:S.user.id,text:n.text}));
@@ -316,7 +347,7 @@ async function changeName(){
 async function signOut(){
   try{await sb.auth.signOut()}catch(e){console.error(e)}
   Object.assign(S,{user:null,todos:[],notes:[],lists:DEF.map(name=>({name,secs:[]})),view:'home',conv:null,onb:false,fin:false});
-  cloudReady=false;$('#onb')?.remove();$('#app').innerHTML='';$('#auth').classList.add('show');
+  cloudReady=false;S.greeted=false;$('#onb')?.remove();$('#greet')?.remove();$('#app').innerHTML='';$('#auth').classList.add('show');
 }
 async function migrateLocalData(){
   if(!S.user)return;
@@ -362,7 +393,7 @@ async function onbAct(a){
   }
 }
 async function finishOnb(){
-  if(S.fin)return;S.fin=true;S.onb=false;
+  if(S.fin)return;S.fin=true;S.onb=false;markGreet();
   const orb=$('#orb'),bg=$('#onbBg');if(!orb){S.fin=false;return render(true)}
   const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches,r=orb.getBoundingClientRect(),px=v=>v+'px';
   /* congela la burbuja donde está y la deja flotar libre */
@@ -392,6 +423,42 @@ async function finishOnb(){
   try{const {data}=await sb.auth.updateUser({data:{onboarded:true}});if(data?.user)S.user=data.user}catch(e){console.error(e)}
 }
 
+/* ---------- bienvenida diaria (usuarios que regresan) ---------- */
+const STARI='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3Q12 12 21 12Q12 12 12 21Q12 12 3 12Q12 12 12 3Z"/></svg>';
+const NOTEI='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v10l-5 6H5z"/><path d="M14 20v-6h5"/><path d="M8 9h8M8 13h4"/></svg>';
+const GK=()=>'nova-greet-'+(S.user?.id||'');
+function markGreet(){S.greeted=true;try{localStorage.setItem(GK(),key(new Date()))}catch(e){}}
+function maybeGreet(){
+  if(S.greeted||!S.user||!cloudReady||S.onb||S.fin||$('#greet'))return;
+  let seen='';try{seen=localStorage.getItem(GK())||''}catch(e){}
+  markGreet();if(seen!==key(new Date()))showGreet();
+}
+function countUp(root){
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  root.querySelectorAll('[data-n]').forEach(el=>{const n=+el.dataset.n;if(n<2)return;el.textContent='0';const t0=performance.now()+450;
+    const f=now=>{const p=Math.min(Math.max((now-t0)/700,0),1);el.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)});
+}
+const gItem=t=>`<div class="item gi"><button class="chk" data-gdone="${t.id}" aria-label="Completar"></button><div class="grow"><span class="gt">${esc(t.title)}</span><small class="${isLate(t)?'late':''}">${isLate(t)?'Vencido · ':''}${meta(t)}</small></div></div>`;
+function showGreet(){
+  const k=key(new Date()),n=today().filter(t=>!t.done).length,o=overdue().length,nm=getUserName(),
+    p=S.todos.filter(t=>!t.done&&t.prio&&(!t.due||t.due<=k)).sort((a,b)=>(a.due||'9').localeCompare(b.due||'9'));
+  const g=document.createElement('div');g.id='greet';
+  g.innerHTML=`<button class="g-scrim" data-gx aria-label="Cerrar"></button><div class="gsheet" id="gsheet" role="dialog" aria-label="Resumen del día">
+<div style="--i:0">${STAR}</div>
+<h2 style="--i:1">${hello()}${nm?', '+esc(nm):''}.</h2>
+${n?`<button class="gl" data-gto style="--i:2"><span>Hoy tienes <b data-n="${n}">${n}</b> ${n===1?'tarea':'tareas'}</span>${arrow}</button>`:`<p class="gl" style="--i:2">Hoy no tienes tareas programadas.</p>`}
+${o?`<button class="gl late" data-gto style="--i:3"><span>Tienes <b data-n="${o}">${o}</b> ${o===1?'vencida':'vencidas'}</span>${arrow}</button>`:''}
+${p.length?`<div class="gsec" style="--i:4">Máxima importancia</div><div style="--i:5">${p.slice(0,3).map(gItem).join('')}${p.length>3?`<button class="n2t" data-gto>y ${p.length-3} más</button>`:''}</div>`:''}
+<div class="gnote" style="--i:6"><div class="add">${NOTEI}<input id="gq" placeholder="Nota rápida: escribe un título" maxlength="80" autocomplete="off" aria-label="Título de la nota rápida"><button data-gnote aria-label="Guardar nota">+</button></div><div class="gst" id="gst" role="status"></div></div>
+<button class="pri" data-gx style="--i:7">Empezar el día</button></div>`;
+  document.body.appendChild(g);countUp(g);
+}
+function closeGreet(){
+  const g=$('#greet');if(!g||g.dataset.c)return;g.dataset.c=1;
+  g.querySelector('.gsheet').classList.add('out');g.querySelector('.g-scrim').classList.add('out');
+  setTimeout(()=>g.remove(),360);
+}
+
 /* ---------- componentes ---------- */
 function head(){return `<header><div><h1>Nova-List</h1><div class="sub">una app de INCOROVA</div>${S.view==='home'?`<div class="hi">${hello()}${getUserName()?', '+esc(getUserName()):''}</div>`:''}</div>
 <div class="menu" id="menu"><div class="scrim"></div>${opts.map((o,i)=>`<button class="opt" style="--i:${i};--dx:${o[2]}" data-go="${o[0]}" aria-label="${o[1]}"><span class="lb">${o[1]}</span><span class="ln"></span><i></i></button>`).join('')}</div></header>`}
@@ -410,7 +477,7 @@ function items(a,empty){
   return a.length?a.map(t=>{const op=S.open===t.id;return `<div class="item"><button class="chk ${t.done?'on':''}" data-done="${t.id}" aria-label="Completar"></button>
 <div class="grow"><button class="ttl" data-tg="${t.id}" aria-expanded="${op}" style="${t.done?'text-decoration:line-through;color:var(--mut)':''}">${esc(t.title)}</button><small class="${isLate(t)?'late':''}">${isLate(t)?'Vencido · ':''}${meta(t)}</small>
 ${op?`<div class="dt"><textarea id="sg" placeholder="Seguimiento: avances, notas, próximos pasos…">${esc(t.notes||'')}</textarea><div class="acts" style="margin-top:0"><button class="pri sm" data-sg="${t.id}">Guardar seguimiento</button><button class="n2t" data-fin="${t.id}">Terminar</button></div></div>`:''}</div>
-<button class="x" data-del="${t.id}" aria-label="Eliminar">×</button></div>`}).join(''):(empty?`<p class="empty">${empty}</p>`:'');
+<button class="x pr ${t.prio?'on':''}" data-prio="${t.id}" aria-pressed="${!!t.prio}" aria-label="Importancia máxima">${STARI}</button><button class="x" data-del="${t.id}" aria-label="Eliminar">×</button></div>`}).join(''):(empty?`<p class="empty">${empty}</p>`:'');
 }
 const page=(t,b,bk='home',bl='Inicio')=>head()+`<div><button class="back" data-go="${bk}">← ${bl}</button><h2 class="t">${t}</h2>${b}</div>`;
 const listSel=(id='tl',extra=true)=>`<select id="${id}">${S.lists.map(l=>`<option value="${esc(l.name)}">${esc(l.name)}</option>`).join('')}${extra?'<option value="__new__">+ Nueva lista</option>':''}</select>`;
@@ -496,6 +563,15 @@ document.addEventListener('click',async e=>{
   if(!t)return;
   const D=t.dataset,has=a=>t.hasAttribute(a);
   if(D.ob)return onbAct(D.ob);
+  if(has('data-gx'))return closeGreet();
+  if(has('data-gto')){go('today');return closeGreet()}
+  if(D.gdone){const x=S.todos.find(i=>i.id===D.gdone);if(!x)return;x.done=true;t.classList.add('on');t.closest('.gi')?.classList.add('done');keep();await saveTodo(x);return}
+  if(has('data-gnote')){const inp=$('#gq'),v=inp.value.trim();if(!v)return inp.focus();
+    const note={id:uuid(),text:'<!--h-->'+esc(v)};S.notes.unshift(note);inp.value='';
+    const ok=await saveNote(note);if(ok)flash();
+    $('#gst').innerHTML=ok?`Guardada en Notas rápidas · <button class="n2t" data-gdet="${note.id}">Detallar</button>`:'No se pudo guardar la nota.';return}
+  if(D.gdet){S.wk={id:D.gdet};go('ws');return closeGreet()}
+  if(D.prio){const x=S.todos.find(i=>i.id===D.prio);if(!x)return;x.prio=!x.prio;keep();await saveTodo(x);return}
   if(t.id==='googleLogin')return signInWithGoogle();
   if(has('data-logout'))return signOut();
   if(has('data-changename'))return changeName();
@@ -581,7 +657,7 @@ document.addEventListener('input',e=>{
 document.addEventListener('mousedown',e=>{if(e.target.closest('.tb button'))e.preventDefault()});
 document.addEventListener('change',e=>{if(e.target?.id==='tl'&&e.target.value==='__new__')createListFromTodo()});
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape')$('#menu')?.classList.remove('open');
+  if(e.key==='Escape'){$('#menu')?.classList.remove('open');closeGreet()}
   if(e.key==='Enter'&&e.target.id==='obn')return onbAct('create');
   if(e.key==='Enter'&&e.target.matches('.add input,.cap input'))e.target.nextElementSibling?.click();
 });
@@ -595,6 +671,7 @@ async function start(session){
   S.user=session.user;$('#auth').classList.remove('show');
   if(!getUserName()&&!await askForName())return;
   if(!cloudReady){await loadCloud();await migrateLocalData()}else render();
+  setTimeout(maybeGreet,500);
 }
 sb.auth.onAuthStateChange((ev,session)=>{setTimeout(async()=>{
   try{if(session?.user)await start(session);else{S.user=null;$('#auth').classList.add('show');$('#app').innerHTML=''}}
