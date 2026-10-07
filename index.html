@@ -349,18 +349,6 @@ async function signOut(){
   Object.assign(S,{user:null,todos:[],notes:[],lists:DEF.map(name=>({name,secs:[]})),view:'home',conv:null,onb:false,fin:false});
   cloudReady=false;S.greeted=false;$('#onb')?.remove();$('#greet')?.remove();$('#app').innerHTML='';$('#auth').classList.add('show');
 }
-async function migrateLocalData(){
-  if(!S.user)return;
-  let local=null;try{local=JSON.parse(localStorage.getItem('nova')||'null')}catch(e){}
-  if(!local||!(local.todos?.length||local.notes?.length||local.lists?.length))return;
-  if(!confirm('Encontramos datos guardados anteriormente en este dispositivo. ¿Quieres subirlos a tu cuenta de Nova List?'))return;
-  const uid=S.user.id,id=x=>typeof x==='string'&&x.includes('-')?x:uuid();
-  for(const t of local.todos||[])await sb.from('todos').upsert({id:id(t.id),user_id:uid,title:t.title||'',list:t.list||'',sec:t.sec||'',due:t.due||null,time:t.time||null,done:!!t.done});
-  for(const n of local.notes||[])await sb.from('notes').upsert({id:id(n.id),user_id:uid,text:n.text||''});
-  for(const l of local.lists||[])if(!S.lists.some(x=>x.name===l.name))await sb.from('lists').insert({user_id:uid,name:l.name||'Sin nombre',secs:Array.isArray(l.secs)?l.secs:[]});
-  localStorage.removeItem('nova');await loadCloud();
-}
-
 /* ---------- bienvenida: primer inicio de sesión ---------- */
 const STAR='<svg class="ostar" id="ostar" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3Q12 12 21 12Q12 12 12 21Q12 12 3 12Q12 12 12 3Z"/></svg>';
 const ONB={
@@ -393,7 +381,7 @@ async function onbAct(a){
   }
 }
 async function finishOnb(){
-  if(S.fin)return;S.fin=true;S.onb=false;markGreet();
+  if(S.fin)return;S.fin=true;S.onb=false;
   const orb=$('#orb'),bg=$('#onbBg');if(!orb){S.fin=false;return render(true)}
   const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches,r=orb.getBoundingClientRect(),px=v=>v+'px';
   /* congela la burbuja donde está y la deja flotar libre */
@@ -421,42 +409,6 @@ async function finishOnb(){
   await new Promise(res=>setTimeout(res,(260+rows.length*170+420)*L+20));
   $('#onb')?.remove();S.fin=false;
   try{const {data}=await sb.auth.updateUser({data:{onboarded:true}});if(data?.user)S.user=data.user}catch(e){console.error(e)}
-}
-
-/* ---------- bienvenida diaria (usuarios que regresan) ---------- */
-const STARI='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3Q12 12 21 12Q12 12 12 21Q12 12 3 12Q12 12 12 3Z"/></svg>';
-const NOTEI='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v10l-5 6H5z"/><path d="M14 20v-6h5"/><path d="M8 9h8M8 13h4"/></svg>';
-const GK=()=>'nova-greet-'+(S.user?.id||'');
-function markGreet(){S.greeted=true;try{localStorage.setItem(GK(),key(new Date()))}catch(e){}}
-function maybeGreet(){
-  if(S.greeted||!S.user||!cloudReady||S.onb||S.fin||$('#greet'))return;
-  let seen='';try{seen=localStorage.getItem(GK())||''}catch(e){}
-  markGreet();if(seen!==key(new Date()))showGreet();
-}
-function countUp(root){
-  if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
-  root.querySelectorAll('[data-n]').forEach(el=>{const n=+el.dataset.n;if(n<2)return;el.textContent='0';const t0=performance.now()+450;
-    const f=now=>{const p=Math.min(Math.max((now-t0)/700,0),1);el.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)});
-}
-const gItem=t=>`<div class="item gi"><button class="chk" data-gdone="${t.id}" aria-label="Completar"></button><div class="grow"><span class="gt">${esc(t.title)}</span><small class="${isLate(t)?'late':''}">${isLate(t)?'Vencido · ':''}${meta(t)}</small></div></div>`;
-function showGreet(){
-  const k=key(new Date()),n=today().filter(t=>!t.done).length,o=overdue().length,nm=getUserName(),
-    p=S.todos.filter(t=>!t.done&&t.prio&&(!t.due||t.due<=k)).sort((a,b)=>(a.due||'9').localeCompare(b.due||'9'));
-  const g=document.createElement('div');g.id='greet';
-  g.innerHTML=`<button class="g-scrim" data-gx aria-label="Cerrar"></button><div class="gsheet" id="gsheet" role="dialog" aria-label="Resumen del día">
-<div style="--i:0">${STAR}</div>
-<h2 style="--i:1">${hello()}${nm?', '+esc(nm):''}.</h2>
-${n?`<button class="gl" data-gto style="--i:2"><span>Hoy tienes <b data-n="${n}">${n}</b> ${n===1?'tarea':'tareas'}</span>${arrow}</button>`:`<p class="gl" style="--i:2">Hoy no tienes tareas programadas.</p>`}
-${o?`<button class="gl late" data-gto style="--i:3"><span>Tienes <b data-n="${o}">${o}</b> ${o===1?'vencida':'vencidas'}</span>${arrow}</button>`:''}
-${p.length?`<div class="gsec" style="--i:4">Máxima importancia</div><div style="--i:5">${p.slice(0,3).map(gItem).join('')}${p.length>3?`<button class="n2t" data-gto>y ${p.length-3} más</button>`:''}</div>`:''}
-<div class="gnote" style="--i:6"><div class="add">${NOTEI}<input id="gq" placeholder="Nota rápida: escribe un título" maxlength="80" autocomplete="off" aria-label="Título de la nota rápida"><button data-gnote aria-label="Guardar nota">+</button></div><div class="gst" id="gst" role="status"></div></div>
-<button class="pri" data-gx style="--i:7">Empezar el día</button></div>`;
-  document.body.appendChild(g);countUp(g);
-}
-function closeGreet(){
-  const g=$('#greet');if(!g||g.dataset.c)return;g.dataset.c=1;
-  g.querySelector('.gsheet').classList.add('out');g.querySelector('.g-scrim').classList.add('out');
-  setTimeout(()=>g.remove(),360);
 }
 
 /* ---------- componentes ---------- */
@@ -541,7 +493,7 @@ list:()=>{const l=S.lists[S.cur];if(!l){S.view='lists';return V.lists()}
      return (g||l.secs.length||a.length||ed?`<h3 class="sec">${g?esc(g):'Sin subtítulo'}</h3>`:'')+items(a)+(ed?`<div class="add"><input placeholder="Agregar tarea"><button data-addt="${i}" aria-label="Agregar tarea">+</button></div>`:'')}).join('')
    +(ed?`<h3 class="sec">Nuevo subtítulo</h3><div class="add"><input placeholder="Ej. Esta semana"><button data-addsec aria-label="Crear subtítulo">+</button></div>`:'')
    +`<p style="margin-top:32px"><button class="pri" data-go="lists">Listo</button></p><p style="margin-top:28px"><button class="n2t" data-dellist>Eliminar esta lista</button></p>`)},
-settings:()=>page('Ajustes',`<button class="pri" data-theme>Cambiar claro / oscuro</button><p style="margin-top:22px"><button class="n2t" data-changename>Cambiar nombre</button></p><p style="margin-top:28px"><button class="n2t" data-logout>Cerrar sesión</button></p>`),
+settings:()=>page('Ajustes',`<p style="margin-top:0"><button class="n2t" data-changename>Cambiar nombre</button></p><p style="margin-top:28px"><button class="n2t" data-logout>Cerrar sesión</button></p>`),
 about:()=>page('Acerca de',`<p style="line-height:1.55">Nova-List es una app de INCOROVA para ordenar notas, pendientes y planes en un solo lugar.</p>`)
 };
 
@@ -563,13 +515,6 @@ document.addEventListener('click',async e=>{
   if(!t)return;
   const D=t.dataset,has=a=>t.hasAttribute(a);
   if(D.ob)return onbAct(D.ob);
-  if(has('data-gx'))return closeGreet();
-  if(has('data-gto')){go('today');return closeGreet()}
-  if(D.gdone){const x=S.todos.find(i=>i.id===D.gdone);if(!x)return;x.done=true;t.classList.add('on');t.closest('.gi')?.classList.add('done');keep();await saveTodo(x);return}
-  if(has('data-gnote')){const inp=$('#gq'),v=inp.value.trim();if(!v)return inp.focus();
-    const note={id:uuid(),text:'<!--h-->'+esc(v)};S.notes.unshift(note);inp.value='';
-    const ok=await saveNote(note);if(ok)flash();
-    $('#gst').innerHTML=ok?`Guardada en Notas rápidas · <button class="n2t" data-gdet="${note.id}">Detallar</button>`:'No se pudo guardar la nota.';return}
   if(D.gdet){S.wk={id:D.gdet};go('ws');return closeGreet()}
   if(D.prio){const x=S.todos.find(i=>i.id===D.prio);if(!x)return;x.prio=!x.prio;keep();await saveTodo(x);return}
   if(t.id==='googleLogin')return signInWithGoogle();
@@ -642,10 +587,6 @@ document.addEventListener('click',async e=>{
     const todo={id:uuid(),title:v,list,sec:'',due:inDay?S.day:($('#td').value||key(new Date())),time:$('#tt').value,done:false};
     S.todos.push(todo);inDay?render():go('home');if(await saveTodo(todo))flash();return;
   }
-  if(has('data-theme')){
-    const r=document.documentElement,dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
-    r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('nova-theme',r.dataset.theme)}catch(e){}
-  }
 });
 document.addEventListener('input',e=>{
   const k=e.target.dataset?.f;if(k)S.f[k]=e.target.value;
@@ -657,11 +598,9 @@ document.addEventListener('input',e=>{
 document.addEventListener('mousedown',e=>{if(e.target.closest('.tb button'))e.preventDefault()});
 document.addEventListener('change',e=>{if(e.target?.id==='tl'&&e.target.value==='__new__')createListFromTodo()});
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){$('#menu')?.classList.remove('open');closeGreet()}
   if(e.key==='Enter'&&e.target.id==='obn')return onbAct('create');
   if(e.key==='Enter'&&e.target.matches('.add input,.cap input'))e.target.nextElementSibling?.click();
 });
-try{const th=localStorage.getItem('nova-theme');if(th)document.documentElement.dataset.theme=th}catch(e){}
 
 /* ---------- animación de guardado ---------- */
 function flash(){const el=$('#saved');if(!el)return;el.classList.remove('go');void el.offsetWidth;el.classList.add('go');const r=el.querySelector('.sr');r.textContent='Guardado';setTimeout(()=>r.textContent='',1800)}
@@ -670,8 +609,8 @@ function flash(){const el=$('#saved');if(!el)return;el.classList.remove('go');vo
 async function start(session){
   S.user=session.user;$('#auth').classList.remove('show');
   if(!getUserName()&&!await askForName())return;
-  if(!cloudReady){await loadCloud();await migrateLocalData()}else render();
-  setTimeout(maybeGreet,500);
+  if(!cloudReady){await loadCloud()}else render();
+  
 }
 sb.auth.onAuthStateChange((ev,session)=>{setTimeout(async()=>{
   try{if(session?.user)await start(session);else{S.user=null;$('#auth').classList.add('show');$('#app').innerHTML=''}}
