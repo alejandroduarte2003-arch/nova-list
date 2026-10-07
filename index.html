@@ -98,6 +98,7 @@ textarea{min-height:90px;resize:vertical}
 .google{width:100%;border:1px solid var(--fg);border-radius:999px;padding:15px 20px;display:flex;align-items:center;justify-content:center;gap:10px;font-weight:600}
 .google svg{width:20px;height:20px}
 .authbox .authsmall{margin:18px 0 0;font-size:12px}
+.authbox .authother{display:block;width:100%;margin-top:12px;padding:12px 16px;border:0;color:var(--mut);font-size:13px;text-decoration:underline;text-underline-offset:3px}
 .loading{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:200;font-size:14px;font-weight:800;letter-spacing:-.02em}
 .loading.hide{display:none}
 /* nuevo planificador y notas */
@@ -232,7 +233,8 @@ textarea{min-height:90px;resize:vertical}
   <p>Inicia sesión para guardar tus datos y acceder a ellos desde cualquier dispositivo.</p>
   <button class="google" id="googleLogin">
     <svg viewBox="0 0 24 24"><path d="M21.8 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.5a4.7 4.7 0 0 1-2 3.1v2.6h3.2c1.9-1.8 3.1-4.4 3.1-7.5z" fill="currentColor" stroke="none"/><path d="M12 22c2.7 0 5-.9 6.7-2.5l-3.2-2.6c-.9.6-2 1-3.5 1-2.7 0-5-1.8-5.8-4.2H2.9v2.7A10 10 0 0 0 12 22z" fill="currentColor" stroke="none"/><path d="M6.2 13.7A6 6 0 0 1 5.9 12c0-.6.1-1.2.3-1.7V7.6H2.9A10 10 0 0 0 2 12c0 1.6.4 3.1 1 4.4l3.2-2.7z" fill="currentColor" stroke="none"/><path d="M12 6.1c1.5 0 2.8.5 3.8 1.5l2.8-2.8C17 3.1 14.7 2 12 2a10 10 0 0 0-9.1 5.6l3.3 2.7C7 7.9 9.3 6.1 12 6.1z" fill="currentColor" stroke="none"/></svg>
-    Continuar con Google</button>
+    Iniciar sesión</button>
+  <button class="authother" id="googleOther">Iniciar sesión con otra cuenta</button>
   <p class="authsmall">Tus listas, notas y pendientes se guardarán en tu cuenta.</p>
 </div></div>
 <div id="app"></div>
@@ -250,7 +252,7 @@ const sb=createClient('https://udvxmrbqymhrlaiojzex.supabase.co','sb_publishable
 const $=s=>document.querySelector(s);
 const DEF=['Personal','Trabajo','Compras'];
 const S={todos:[],notes:[],lists:DEF.map(name=>({name,secs:[]})),view:'home',day:null,cur:0,user:null,conv:null,adding:false,open:null,pm:'week',pref:'',pday:null,fo:false,f:{title:'',day:'',time:'',list:''},wk:null,cal:{y:new Date().getFullYear(),m:new Date().getMonth()},calPick:false,onb:false,fin:false,ob:{step:'welcome',n:0,busy:false}};
-let cloudReady=false,asking=false;
+let cloudReady=false;
 const arrow='<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 const sd=d=>new Date(d.getFullYear(),d.getMonth(),d.getDate());
 const key=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
@@ -308,9 +310,16 @@ async function loadCloud(){
     if(!a.error)S.todos=(a.data||[]).map(norm);
     if(!b.error)S.notes=b.data||[];
     if(!c.error){
-      if(c.data?.length){S.lists=c.data.map(mapList);if(!S.fin)S.onb=false}
-      else if(!S.user.user_metadata?.onboarded){S.lists=[];if(!S.onb){S.onb=true;S.ob={step:'welcome',n:0,busy:false}}}
-      else{const r=await sb.from('lists').insert(DEF.map(name=>({user_id:uid,name,secs:[]}))).select();if(!r.error)S.lists=(r.data||[]).map(mapList)}
+      if(c.data?.length)S.lists=c.data.map(mapList);
+      if(!S.user.user_metadata?.onboarded){
+        if(!getUserName())S.ob.step='welcome';
+        else if(!S.lists.length)S.ob.step='list';
+        else S.ob.step='more';
+        if(!S.onb)S.onb=true;
+      }else if(!S.lists.length){
+        const r=await sb.from('lists').insert(DEF.map(name=>({user_id:uid,name,secs:[]}))).select();
+        if(!r.error)S.lists=(r.data||[]).map(mapList);
+      }
     }
     cloudReady=true;
   }catch(e){console.error('SUPABASE:',e)}
@@ -318,23 +327,23 @@ async function loadCloud(){
 }
 
 /* ---------- sesión y nombre ---------- */
-async function signInWithGoogle(){
-  try{const {error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin}});
-    if(error)alert('No se pudo iniciar sesión con Google:\n\n'+error.message)}
-  catch(e){console.error(e);alert('Ocurrió un error al iniciar sesión.')}
+async function signInWithGoogle(other=false){
+  try{
+    const {error}=await sb.auth.signInWithOAuth({
+      provider:'google',
+      options:{redirectTo:window.location.origin,queryParams:other?{prompt:'select_account'}:undefined}
+    });
+    if(error)alert('No se pudo iniciar sesión con Google:\n\n'+error.message)
+  }catch(e){console.error(e);alert('Ocurrió un error al iniciar sesión.')}
 }
-async function askForName(){
-  if(asking||getUserName())return true;
-  asking=true;let name='';
-  while(!name){
-    name=prompt('¿Cómo te llamas?');
-    if(name===null){if(!confirm('Necesitas ingresar un nombre para continuar con Nova List.')){asking=false;await signOut();return false}name='';continue}
-    name=name.trim();if(!name)alert('Por favor, escribe tu nombre.');
-  }
+async function saveOnboardingName(){
+  const inp=$('#obn');if(!inp)return;
+  const name=inp.value.trim();if(!name)return inp.focus();
   const {data,error}=await sb.auth.updateUser({data:{name}});
-  asking=false;
   if(error){console.error(error);alert('No se pudo guardar tu nombre.');return false}
-  S.user=data.user||S.user;return true;
+  S.user=data.user||S.user;
+  if(S.lists.length)finishOnb();else onbStep('list');
+  return true;
 }
 async function changeName(){
   let name=prompt('Escribe tu nuevo nombre:',getUserName());
@@ -346,29 +355,30 @@ async function changeName(){
 }
 async function signOut(){
   try{await sb.auth.signOut()}catch(e){console.error(e)}
-  Object.assign(S,{user:null,todos:[],notes:[],lists:DEF.map(name=>({name,secs:[]})),view:'home',conv:null,onb:false,fin:false});
-  cloudReady=false;S.greeted=false;$('#onb')?.remove();$('#greet')?.remove();$('#app').innerHTML='';$('#auth').classList.add('show');
+  Object.assign(S,{user:null,todos:[],notes:[],lists:DEF.map(name=>({name,secs:[]})),view:'home',conv:null,onb:false,fin:false,ob:{step:'welcome',n:0,busy:false}});
+  cloudReady=false;$('#onb')?.remove();$('#app').innerHTML='';$('#auth').classList.add('show');
 }
 /* ---------- bienvenida: primer inicio de sesión ---------- */
 const STAR='<svg class="ostar" id="ostar" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3Q12 12 21 12Q12 12 12 21Q12 12 3 12Q12 12 12 3Z"/></svg>';
 const ONB={
-  welcome:()=>`<h2>Bienvenido a Nova-List</h2><p>espacio para dar orden a tus TO-DO y cumplir objetivos</p><button class="pri" data-ob="next">Siguiente</button>`,
-  name:()=>`<h2>${S.lists.length?'Una lista más':'Creemos tu primera lista'}</h2><p>¿Cómo se va a llamar? Por ejemplo: Personal, Trabajo o Compras.</p><input id="obn" placeholder="Nombre de la lista" maxlength="40" autocomplete="off" aria-label="Nombre de la lista"><button class="pri" data-ob="create">Crear lista</button>`,
-  more:()=>`<h2>¿Quieres crear más listas?</h2><p>Siempre podrás agregar otras desde Mis listas.</p><div class="obr"><button class="pri" data-ob="yes">Sí</button><button class="ghost" data-ob="later">Luego</button></div>`
+  welcome:()=>`<h2>Bienvenido a Nova-List</h2><p>la app para organizar mejor tus to-do y cumplir objetivos.</p><input id="obn" placeholder="¿Cómo te llamas?" maxlength="40" autocomplete="name" aria-label="Tu nombre"><button class="pri" data-ob="saveName">Continuar</button>`,
+  list:()=>`<h2>${S.ob.n?'Creemos otra lista':'Creemos tu primera lista'}</h2><p>Agrega el nombre de la lista que quieres usar.</p><input id="obn" placeholder="Pon el nombre para tu lista" maxlength="40" autocomplete="off" aria-label="Nombre de la lista"><button class="pri" data-ob="create">Crear lista</button>`,
+  more:()=>`<h2>¿Deseas agregar otra lista?</h2><p>Puedes crear las listas que necesites para organizar tus to-do.</p><div class="obr"><button class="pri" data-ob="add">Agregar nueva lista</button><button class="ghost" data-ob="later">Luego</button></div>`
 };
 function onbMount(){
   if($('#onb'))return;
   const d=document.createElement('div');d.id='onb';d.className='onb';
   d.innerHTML=`<div class="onb-bg" id="onbBg"></div><div class="orb" id="orb" role="dialog" aria-live="polite">${STAR}<div class="orb-body" id="orbBody">${ONB[S.ob.step]()}</div></div>`;
-  document.body.appendChild(d);
+  document.body.appendChild(d);$('#orbBody input')?.focus({preventScroll:true});
 }
 function onbStep(step){
   const b=$('#orbBody');if(!b)return;S.ob.step=step;b.classList.add('out');
-  setTimeout(()=>{const x=$('#orbBody');if(!x)return;x.innerHTML=ONB[step]();x.classList.remove('out');if(step==='name')x.querySelector('input')?.focus({preventScroll:true})},220);
+  setTimeout(()=>{const x=$('#orbBody');if(!x)return;x.innerHTML=ONB[step]();x.classList.remove('out');x.querySelector('input')?.focus({preventScroll:true})},220);
 }
 async function onbAct(a){
   if(S.ob.busy||S.fin)return;
-  if(a==='next'||a==='yes')return onbStep('name');
+  if(a==='saveName')return saveOnboardingName();
+  if(a==='add')return onbStep('list');
   if(a==='later')return finishOnb();
   if(a==='create'){
     const inp=$('#obn');if(!inp)return;const v=inp.value.trim();if(!v)return inp.focus();
@@ -377,17 +387,15 @@ async function onbAct(a){
     if(!await saveList(list)){S.ob.busy=false;alert('No se pudo crear la lista.');return}
     S.lists.push(list);S.ob.n++;flash();
     const st=$('#ostar');if(st){st.classList.remove('spin');void st.offsetWidth;st.classList.add('spin')}
-    setTimeout(()=>{S.ob.busy=false;onbStep('more')},1500);
+    setTimeout(()=>{S.ob.busy=false;onbStep('more')},650);
   }
 }
 async function finishOnb(){
   if(S.fin)return;S.fin=true;S.onb=false;
   const orb=$('#orb'),bg=$('#onbBg');if(!orb){S.fin=false;return render(true)}
   const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches,r=orb.getBoundingClientRect(),px=v=>v+'px';
-  /* congela la burbuja donde está y la deja flotar libre */
   Object.assign(orb.style,{left:px(r.left),top:px(r.top),width:px(r.width),height:px(r.height)});
   orb.classList.add('fly');
-  /* inicio detrás: calendario a la izquierda, cuadro de listas a la derecha */
   S.view='home';S.conv=null;render();
   const ov=$('.ov'),cal=$('.cal'),rows=[...document.querySelectorAll('.ov .r')];
   if(!ov||!cal){S.fin=false;$('#onb')?.remove();return}
@@ -401,7 +409,6 @@ async function finishOnb(){
     {left:px(t.left),top:px(t.top),width:px(t.width),height:px(t.height),borderRadius:'20px'}
   ],{duration:D,easing:'cubic-bezier(.45,.05,.25,1)',fill:'forwards'});
   await a.finished.catch(()=>{});
-  /* la burbuja se vuelve el cuadro de listas y aparecen las listas una por una */
   const L=reduce?0:1;
   ov.style.opacity='';ov.animate([{opacity:0},{opacity:1}],{duration:260*L||1,fill:'both'});
   rows.forEach((x,i)=>{x.style.opacity='';x.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:420*L||1,delay:(260+i*170)*L,easing:'ease-out',fill:'both'})});
@@ -517,7 +524,8 @@ document.addEventListener('click',async e=>{
   if(D.ob)return onbAct(D.ob);
   if(D.gdet){S.wk={id:D.gdet};go('ws');return closeGreet()}
   if(D.prio){const x=S.todos.find(i=>i.id===D.prio);if(!x)return;x.prio=!x.prio;keep();await saveTodo(x);return}
-  if(t.id==='googleLogin')return signInWithGoogle();
+  if(t.id==='googleLogin')return signInWithGoogle(false);
+  if(t.id==='googleOther')return signInWithGoogle(true);
   if(has('data-logout'))return signOut();
   if(has('data-changename'))return changeName();
   if(t.classList.contains('opt')){if(!open){menu.classList.add('open');return}return go(D.go)}
@@ -598,7 +606,7 @@ document.addEventListener('input',e=>{
 document.addEventListener('mousedown',e=>{if(e.target.closest('.tb button'))e.preventDefault()});
 document.addEventListener('change',e=>{if(e.target?.id==='tl'&&e.target.value==='__new__')createListFromTodo()});
 document.addEventListener('keydown',e=>{
-  if(e.key==='Enter'&&e.target.id==='obn')return onbAct('create');
+  if(e.key==='Enter'&&e.target.id==='obn')return onbAct(S.ob.step==='welcome'?'saveName':'create');
   if(e.key==='Enter'&&e.target.matches('.add input,.cap input'))e.target.nextElementSibling?.click();
 });
 
@@ -608,9 +616,7 @@ function flash(){const el=$('#saved');if(!el)return;el.classList.remove('go');vo
 /* ---------- inicio ---------- */
 async function start(session){
   S.user=session.user;$('#auth').classList.remove('show');
-  if(!getUserName()&&!await askForName())return;
   if(!cloudReady){await loadCloud()}else render();
-  
 }
 sb.auth.onAuthStateChange((ev,session)=>{setTimeout(async()=>{
   try{if(session?.user)await start(session);else{S.user=null;$('#auth').classList.add('show');$('#app').innerHTML=''}}
