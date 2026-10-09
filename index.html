@@ -152,6 +152,54 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .sbar button{padding:10px 16px;border-radius:999px;font-size:13px;font-weight:600;text-align:center;background:var(--glass2)}
 .sbar button:disabled{opacity:.35;cursor:default}
 .sbar .dng{background:var(--red);color:#fff}
+/* glass unificado + libro + planificador */
+.ov,.cal,.plan-panel,.pd,.todo-form,.lst,.acc,.mkl,.plan-note,.wd{background:var(--glass);-webkit-backdrop-filter:blur(24px) saturate(190%);backdrop-filter:blur(24px) saturate(190%);border:1px solid var(--gb);box-shadow:0 10px 28px var(--sh),inset 0 1px 0 var(--hl),inset 0 -1px 0 var(--gb)}
+.lst{padding:16px 18px;border-radius:24px;margin-bottom:12px}
+.mkl{display:flex;gap:10px;align-items:center;padding:8px 8px 8px 20px;border-radius:999px;margin-bottom:22px}
+.mkl input{margin:0;border:0;padding:10px 0}
+.add button{width:auto;height:auto;padding:9px 16px;border-radius:999px;font-size:13px;font-weight:600;line-height:1.2;border:0;background:var(--fg);color:var(--bg)}
+.grid .sel{box-shadow:inset 0 0 0 1.5px var(--fg)}
+.acc{border-radius:24px;margin-bottom:12px;overflow:hidden}
+.acc-h{display:flex;width:100%;align-items:center;justify-content:space-between;padding:18px 20px}
+.acc-h b{display:block;font-size:15px}.acc-h small{display:block;color:var(--mut);font-size:12px;margin-top:3px}
+.acc-h i{font-style:normal;font-size:22px;color:var(--mut);transition:transform .35s}
+.acc.open .acc-h i{transform:rotate(90deg)}
+.acc-b{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.2,.8,.2,1)}
+.acc.open .acc-b{grid-template-rows:1fr}
+.acc-in{min-height:0;overflow:hidden;opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .45s}
+.acc.open .acc-in{opacity:1;visibility:visible;transition:opacity .3s .12s,visibility 0s}
+.acc-pad{padding:0 18px 18px}
+.pnv{display:flex;align-items:center;gap:10px;margin-bottom:12px}.pnv b{flex:1;text-align:center;font-size:14px}
+.pnv .gpill{width:40px;height:40px;padding:0;font-size:18px}
+.wstrip{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;scroll-snap-type:x mandatory}
+.wk{flex:1;min-width:46px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 0;border-radius:18px;scroll-snap-align:center;text-align:center}
+.wk small{font-size:10px;color:var(--mut);font-weight:600;text-transform:uppercase}.wk b{font-size:16px}
+.wk i{width:4px;height:4px;border-radius:50%;background:currentColor}
+.wk.tod{box-shadow:inset 0 0 0 1px var(--fg)}.wk.sel{background:var(--fg);color:var(--bg)}.wk.sel small{color:var(--bg);opacity:.7}
+.tl{position:relative;max-height:min(56vh,460px);overflow-y:auto;border-radius:16px}
+.hr{display:flex;gap:12px;min-height:54px;border-top:1px solid var(--line);padding:8px 0}
+.hr>b{width:44px;flex:none;font-size:11px;color:var(--mut);font-weight:600;padding-top:6px}
+.hs{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.slot{align-self:flex-end;width:28px;height:28px;border-radius:50%;border:1px solid var(--line);color:var(--mut);text-align:center;line-height:1;font-size:16px;opacity:.6}
+.tk{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:14px;background:var(--glass2);font-size:14px;margin-bottom:6px}
+.tk span{flex:1;min-width:0;overflow-wrap:anywhere}.tk span.dn{text-decoration:line-through;color:var(--mut)}.tk small{color:var(--mut);font-size:11px}
+.tk .chk{width:20px;height:20px;margin:0}
+.nh{margin-bottom:10px}.nh>small{display:block;font-size:11px;color:var(--mut);font-weight:600;margin-bottom:6px}
+.book{position:relative;height:min(58vh,480px);width:min(100%,380px);margin:6px auto 0;perspective:1600px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.pg{position:absolute;inset:0;transform-origin:left center;backface-visibility:hidden;border-radius:6px 26px 26px 6px;background:linear-gradient(90deg,var(--gb),transparent 9%),var(--card);border:1px solid var(--gb);box-shadow:0 18px 40px var(--sh),inset 0 1px 0 var(--hl);padding:26px 24px 20px 30px;overflow:hidden;display:flex;flex-direction:column;gap:12px;cursor:pointer}
+#pgU:empty{visibility:hidden}
+.pg b{font-size:20px;letter-spacing:-.03em;line-height:1.2;overflow-wrap:anywhere}
+.pg .tx{flex:1;font-size:14px;line-height:1.6;color:var(--mut);white-space:pre-line;overflow:hidden;overflow-wrap:anywhere;-webkit-mask-image:linear-gradient(#000 78%,transparent);mask-image:linear-gradient(#000 78%,transparent)}
+.pg .pnum{font-size:11px;color:var(--mut);text-align:center;letter-spacing:.1em}
+.pg .plus{width:56px;height:56px;border-radius:50%;border:1.5px solid var(--fg);display:grid;place-items:center;font-size:28px;margin:auto auto 0}
+.pg.nw{align-items:center;text-align:center}
+.bnav{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:20px;font-size:13px;color:var(--mut);font-weight:600}
+.bnav .gpill{width:44px;height:44px;padding:0;font-size:20px}.bnav .gpill:disabled{opacity:.3}
+.sheet-bg{position:fixed;inset:0;z-index:19;background:rgba(0,0,0,.28);width:100%}
+.sheet{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(calc(100% - 28px),420px);z-index:20;display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:30px;background:var(--glass);-webkit-backdrop-filter:blur(30px) saturate(190%);backdrop-filter:blur(30px) saturate(190%);border:1px solid var(--gb);box-shadow:0 20px 50px var(--sh),inset 0 1px 0 var(--hl)}
+.sheet>b{padding:8px 10px 4px;font-size:13px;color:var(--mut);overflow-wrap:anywhere}
+.sheet button{padding:15px;border-radius:20px;font-weight:600;text-align:center;background:var(--glass2)}
+.sheet .dng{color:var(--red)}
 /* acceso */
 .auth{position:fixed;inset:0;background:var(--bg);z-index:100;display:none;align-items:center;justify-content:center;padding:28px}
 .auth.show{display:flex}
@@ -222,6 +270,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 <div id="app"></div>
 <div id="saved" class="saved"><svg class="sv1" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3Q12 12 21 12Q12 12 12 21Q12 12 3 12Q12 12 12 3Z"/></svg><svg class="sv2" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr" role="status"></span></div>
 <nav aria-label="Principal">
+  <button data-go="home"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/></svg>Inicio</button>
   <button data-go="notes"><svg viewBox="0 0 24 24"><path d="M5 4h14v10l-5 6H5z"/><path d="M14 20v-6h5"/><path d="M8 9h8M8 13h4"/></svg>Notas rápidas</button>
   <button data-go="new"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6Q12 12 18 12Q12 12 12 18Q12 12 6 12Q12 12 12 6Z"/></svg>Nuevo to-do</button>
   <button data-go="plan"><svg viewBox="0 0 24 24"><path d="M4 20l1-4L15 6l3 3L8 19z"/><path d="M13 8l3 3"/><path d="M19.5 2l.9 2 2 .9-2 .9-.9 2-.9-2-2-.9 2-.9z" stroke-width="1.2"/></svg>Planificador</button>
@@ -234,7 +283,7 @@ const sb=createClient('https://udvxmrbqymhrlaiojzex.supabase.co','sb_publishable
 const $=s=>document.querySelector(s);
 const DEF=['Personal','Trabajo','Compras'];
 const now=new Date();
-const S={todos:[],notes:[],lists:[],view:'home',day:null,cur:0,user:null,adding:false,planMode:'day',planFilter:'',planNote:null,wk:null,cal:{y:now.getFullYear(),m:now.getMonth()},calPick:false,selMode:false,picked:[],onb:false,fin:false,entry:false,ob:{step:'welcome',n:0,busy:false}};
+const S={todos:[],notes:[],lists:[],view:'home',day:null,cur:0,user:null,adding:false,planMode:'day',planFilter:'',planNote:null,wk:null,cal:{y:now.getFullYear(),m:now.getMonth()},calPick:false,hist:[],pday:"",pre:null,nview:"book",bi:0,sheet:null,flip:false,selMode:false,picked:[],onb:false,fin:false,entry:false,ob:{step:'welcome',n:0,busy:false}};
 let cloudReady=false,booting=false;
 const arrow='<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 const STAR='<svg class="ostar" id="ostar" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3Q12 12 21 12Q12 12 12 21Q12 12 3 12Q12 12 12 3Z"/></svg>';
@@ -258,6 +307,9 @@ const norm=t=>({id:t.id,title:t.title||'',list:t.list||'',sec:t.sec||'',due:t.du
 const mapList=l=>({id:l.id,name:l.name,secs:Array.isArray(l.secs)?l.secs:[]});
 const mon=d=>{const x=sd(d);x.setDate(x.getDate()-((x.getDay()+6)%7));return x};
 const addD=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const parseK=k=>{const [y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d)};
+const cap=s=>s[0].toUpperCase()+s.slice(1);
+const NAMES={home:'Inicio',plan:'Planificador',notes:'Notas',lists:'Mis listas',list:'Lista',today:'Hoy',soon:'Próximamente',new:'Nuevo to-do',day:'Día',ws:'Nota',settings:'Ajustes',about:'Acerca de'};
 const DN=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
 const MN=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const todosOn=k=>S.todos.filter(t=>t.due===k).sort((a,b)=>(a.time||'99').localeCompare(b.time||'99'));
@@ -379,20 +431,20 @@ async function finishOnb(){
 function head(){return `<header><div><h1>Nova-List</h1><div class="sub">una app de INCOROVA</div>${S.view==='home'?`<div class="hi">${hello()}${getUserName()?', '+esc(getUserName()):''}</div>`:''}</div>
 <div class="menu" id="menu"><div class="scrim"></div>${opts.map((o,i)=>`<button class="opt" style="--i:${i};--dx:${o[2]}" data-go="${o[0]}" aria-label="${o[1]}"><span class="lb">${o[1]}</span><span class="ln"></span><i></i></button>`).join('')}</div></header>`}
 
-function calendar(){
+function calendar(pick){
   const n=new Date(),{y,m}=S.cal,first=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate();
   const due=new Set(S.todos.map(t=>t.due).filter(Boolean));
   if(S.calPick)return `<div class="cal cp"><div class="ch"><button data-cy="-1" aria-label="Año anterior">‹</button><b>${y}</b><button data-cy="1" aria-label="Año siguiente">›</button></div><div class="mg">${MN.map((x,i)=>`<button data-cmm="${i}" class="${i===m?'on':''}">${x}</button>`).join('')}</div></div>`;
   let c='';['D','L','M','M','J','V','S'].forEach(d=>c+=`<b>${d}</b>`);
   for(let i=0;i<first;i++)c+='<span></span>';
-  for(let d=1;d<=dim;d++){const k=key(new Date(y,m,d)),td=y===n.getFullYear()&&m===n.getMonth()&&d===n.getDate();c+=`<button data-day="${k}" aria-label="Día ${d}" class="${td?'today':''} ${due.has(k)?'has':''}">${d}</button>`}
+  for(let d=1;d<=dim;d++){const k=key(new Date(y,m,d)),td=y===n.getFullYear()&&m===n.getMonth()&&d===n.getDate();c+=`<button ${pick?'data-pd':'data-day'}="${k}" aria-label="Día ${d}" class="${td?'today':''} ${due.has(k)?'has':''} ${pick&&k===(S.pday||key(new Date()))?'sel':''}">${d}</button>`}
   return `<div class="cal"><div class="ch"><button data-cm="-1" aria-label="Mes anterior">‹</button><button class="ct" data-cpick aria-label="Elegir mes y año">${MN[m]} ${y}</button><button data-cm="1" aria-label="Mes siguiente">›</button></div><div class="grid">${c}</div></div>`;
 }
 const meta=t=>`${esc(t.list)}${t.sec?' › '+esc(t.sec):''}${t.due?' · '+fmtD(t.due)+(t.time?' · '+t.time:''):''}`;
 const items=(a,empty)=>a.length?a.map(t=>`<div class="item"><button class="chk ${t.done?'on':''}" data-done="${esc(t.id)}" aria-label="Completar"></button>
 <div class="grow"><span style="${t.done?'text-decoration:line-through;color:var(--mut)':''}">${esc(t.title)}</span><small class="${isLate(t)?'late':''}">${isLate(t)?'Vencido · ':''}${meta(t)}</small></div>
 <button class="x" data-del="${esc(t.id)}" aria-label="Eliminar">×</button></div>`).join(''):(empty?`<p class="empty">${empty}</p>`:'');
-const page=(t,b,bk='home',bl='Inicio')=>head()+`<div><button class="back" data-go="${bk}">← ${bl}</button><h2 class="t">${t}</h2>${b}</div>`;
+const page=(t,b)=>head()+`<div><button class="back" data-back>← ${NAMES[S.hist[S.hist.length-1]]||'Inicio'}</button><h2 class="t">${t}</h2>${b}</div>`;
 const listSel=(id='tl')=>`<div class="todo-field"><label for="${id}">Lista</label><select id="${id}"><option value="" disabled selected>Selecciona la lista</option>${S.lists.map(l=>`<option value="${esc(l.name)}">${esc(l.name)}</option>`).join('')}</select></div>`;
 
 /* ---------- vistas ---------- */
@@ -403,45 +455,54 @@ home:()=>{const o=overdue().length;
 <button class="big" data-go="soon">Próximamente ${arrow}</button>`},
 today:()=>{const o=overdue();return page('Hoy',(o.length?`<h3 class="sec late" style="margin-top:0">Vencidos</h3>${items(o)}`:'')+`<h3 class="sec" ${o.length?'':'style="margin-top:0"'}>Para hoy</h3>`+items(today(),'No tienes más pendientes para hoy.'))},
 soon:()=>page('Próximamente',items(soon(),'Nada vence en las próximas 48 horas.')),
-notes:()=>{const sm=S.selMode,c=S.picked.length,ck='<span class="nchk"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>';
-  return page('Notas rápidas',`<div class="nbar"><button class="pri sm" data-wk="new">+ Nueva nota</button>${S.notes.length?`<button class="gpill" data-selmode>${sm?'Cancelar':'Seleccionar'}</button>`:''}</div>`
+notes:()=>{if(S.nview==='grid')return V.notesGrid();
+  const L=P(),i=Math.min(S.bi,L.length-1);S.bi=i;const cur=L[i];
+  const sheet=S.sheet&&cur?`<button class="sheet-bg" data-sheetx aria-label="Cerrar"></button><div class="sheet" role="dialog"><b>${esc(noteLines(cur)[0]||'Nota')}</b><button data-sopen>Abrir nota</button><button data-stodo>Agregar a to-do</button><button class="dng" data-sdel>Eliminar</button><button data-sheetx>Cancelar</button></div>`:'';
+  return page('Notas rápidas',`<div class="nbar"><button class="pri sm" data-wk="new">+ Nueva nota</button><button class="gpill" data-nview="grid">Índice</button></div>
+<div class="book" id="book"><div class="pg" id="pgU"></div><div class="pg ${cur?'':'nw'}" id="pgT">${pgIn(cur,i,L.length)}</div></div>
+<div class="bnav"><button class="gpill" data-bk="-1" aria-label="Hoja anterior" ${i?'':'disabled'}>‹</button><span>${i+1} / ${L.length}</span><button class="gpill" data-bk="1" aria-label="Hoja siguiente" ${i<L.length-1?'':'disabled'}>›</button></div>
+<p class="lead" style="text-align:center;margin-top:14px">Desliza para pasar la hoja · toca la nota para elegir</p>${sheet}`)},
+notesGrid:()=>{const sm=S.selMode,c=S.picked.length,ck='<span class="nchk"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>';
+  return page('Notas rápidas',`<div class="nbar"><button class="pri sm" data-wk="new">+ Nueva nota</button><button class="gpill" data-nview="book">Libro</button>${S.notes.length?`<button class="gpill" data-selmode>${sm?'Cancelar':'Seleccionar'}</button>`:''}</div>`
   +(S.notes.length?`<div class="ngrid">${S.notes.map(n=>{const l=noteLines(n),on=S.picked.includes(n.id);return `<button class="ncard ${on?'on':''}" ${sm?`data-pick="${esc(n.id)}" aria-pressed="${on}"`:`data-wk="${esc(n.id)}"`}>${sm?ck:''}<b>${esc(l[0]||'Nota vacía')}</b>${l.length>1?`<span class="tx">${esc(l.slice(1).join(' · '))}</span>`:''}</button>`}).join('')}</div>`:'<p class="empty">Aún no hay notas.</p>')
   +(sm?`<div class="sbar" role="toolbar"><span>${c?c+(c===1?' seleccionada':' seleccionadas'):'Elige notas'}</span><button data-selplan ${c===1?'':'disabled'}>Planificador</button><button class="dng" data-seldel ${c?'':'disabled'}>Eliminar</button></div>`:''))},
 ws:()=>{const n=S.notes.find(x=>x.id===S.wk?.id);return page(n?'Editar nota':'Nueva nota',`<textarea id="ed" maxlength="5000" placeholder="Escribe aquí tu nota rápida">${n?esc(noteText(n).trim()):''}</textarea><div class="acts"><button class="pri" data-savewk>Guardar</button>${n?`<button class="n2t" data-toplan="${esc(n.id)}">Pasar al planificador</button><button class="n2t" data-delnote="${esc(n.id)}">Eliminar</button>`:''}</div>`,'notes','Notas')},
-new:()=>page('Nuevo to-do',`<div class="todo-form"><input id="ti" class="todo-title" placeholder="¿Qué necesitas hacer?" maxlength="200" autocomplete="off"><div class="todo-fields">${listSel('tl')}<div class="todo-field"><label for="td">Fecha</label><input id="td" type="date"></div><div class="todo-field"><label for="tt">Hora</label><input id="tt" type="time"></div></div><div class="todo-actions"><button class="pri" data-addtodo>Agregar to-do</button></div></div>`),
+new:()=>page('Nuevo to-do',`<div class="todo-form"><input id="ti" class="todo-title" placeholder="¿Qué necesitas hacer?" maxlength="200" autocomplete="off"><div class="todo-fields">${listSel('tl')}<div class="todo-field"><label for="td">Fecha</label><input id="td" type="date" value="${esc(S.pre?.due||'')}"></div><div class="todo-field"><label for="tt">Hora</label><input id="tt" type="time" value="${esc(S.pre?.time||'')}"></div></div><div class="todo-actions"><button class="pri" data-addtodo>Agregar to-do</button></div></div>`),
 plan:()=>{
-  const A={today:today(),soon:soon(),late:overdue()},f=S.planFilter,m=S.planMode;
+  const A={today:today(),soon:soon(),late:overdue()},f=S.planFilter,m=S.planMode,tk=key(new Date()),pk=S.pday||tk,pd=parseK(pk);
   const T={today:'Tareas de hoy',soon:'Próximas tareas',late:'Tareas vencidas'};
   const E={today:'No tienes tareas para hoy.',soon:'Nada en las próximas 48 horas.',late:'No tienes tareas vencidas.'};
   const sub={today:['Pendientes para hoy','Todo despejado por hoy'],soon:['En las próximas 48 horas','No hay próximas tareas'],late:['Requieren atención','Todo al día']};
   const panel=k=>`<button class="plan-panel ${k==='late'?'late':''} ${f===k?'on':''}" data-pfilter="${k}"><b>${T[k]}</b><span class="pnumb">${A[k].length}</span><small>${sub[k][A[k].length?0:1]}</small></button>`;
   const detail=f?`<section class="pd"><h3 class="sec" style="margin-top:0">${T[f]}</h3>${items(A[f],E[f])}</section>`:'';
-  const modes=[['day','Organiza tu día','Qué hacer y cuándo'],['week','Organiza tu semana','Distribuye tus pendientes'],['month','Organiza tu mes','Visualiza tus objetivos']];
-  let body='';
-  if(m==='day')body=`<h3 class="sec" style="margin-top:0">Tu día</h3>${items(A.today,'No tienes pendientes para hoy.')}<button class="n2t" data-go="new" style="margin-top:8px">+ Crear to-do</button>`;
-  else if(m==='week'){const mo=mon(new Date()),tk=key(new Date());
-    body=`<h3 class="sec" style="margin-top:0">Tu semana</h3>`+[...Array(7)].map((_,i)=>{const d=addD(mo,i),k=key(d),p=todosOn(k).filter(x=>!x.done).length;return `<button class="wd ${k===tk?'tod':''}" data-day="${k}"><div class="wh"><b>${DN[i]}<em>${d.getDate()}</em></b><span>${p?p+(p===1?' pendiente':' pendientes'):'Sin pendientes'}</span></div></button>`}).join('')}
-  else body=`<h3 class="sec" style="margin-top:0">Tu mes</h3><div class="plan-cal">${calendar()}</div>`;
-  const cards=S.notes.map(n=>{const l=noteLines(n);
-    const conv=S.planNote===n.id?`<div class="plan-convert"><div class="todo-fields">${listSel('pnl')}<div class="todo-field"><label for="pnd">Fecha</label><input id="pnd" type="date"></div><div class="todo-field"><label for="pnt">Hora</label><input id="pnt" type="time"></div></div><div class="todo-actions"><button class="pri sm" data-noteconvert="${esc(n.id)}">Crear to-do</button><button class="n2t" data-close-note>Cancelar</button></div></div>`:'';
-    return `<article class="plan-note" id="pn-${esc(n.id)}"><div class="plan-note-title">${esc(l[0]||'Nota rápida')}</div>${l.length>1?`<div class="plan-note-text">${esc(l.slice(1).join(' · '))}</div>`:''}<div class="plan-note-actions"><button class="n2t" data-noteopen="${esc(n.id)}">Agregar a una lista</button><button class="n2t" data-wk="${esc(n.id)}">Abrir nota</button></div>${conv}</article>`}).join('');
-  return page('Planificador',`<p class="lead">Ordena tu día, tu semana y tu mes. Tus notas rápidas quedan aquí para convertirlas en acciones.</p>
-  <div class="plan-summary">${panel('today')}${panel('soon')}${panel('late')}</div>${detail}
-  <div class="plan-modes">${modes.map(x=>`<button class="plan-mode ${m===x[0]?'on':''}" data-organize="${x[0]}"><b>${x[1]}</b><span>${x[2]}</span></button>`).join('')}</div>
-  <section class="pd">${body}</section>
-  <h3 class="sec">Notas rápidas</h3>${cards||'<p class="empty">Tus notas rápidas aparecerán aquí.</p>'}`)
+  const nn=S.notes.find(x=>x.id===S.planNote);
+  const conv=nn?`<section class="pd" id="pn-${esc(nn.id)}"><h3 class="sec" style="margin-top:0">Agregar a to-do</h3><p class="lead" style="margin-bottom:12px">${esc(noteLines(nn)[0]||'Nota rápida')}</p><div class="todo-fields">${listSel('pnl')}<div class="todo-field"><label for="pnd">Fecha</label><input id="pnd" type="date" value="${esc(pk)}"></div><div class="todo-field"><label for="pnt">Hora</label><input id="pnt" type="time"></div></div><div class="todo-actions"><button class="pri sm" data-noteconvert="${esc(nn.id)}">Crear to-do</button><button class="n2t" data-close-note>Cancelar</button></div></section>`:'';
+  const dl=cap(pd.toLocaleDateString('es',{weekday:'long',day:'numeric',month:'long'}));
+  const nav=(n,l)=>`<div class="pnv"><button class="gpill" data-pdn="-${n}" aria-label="Anterior">‹</button><b>${l}</b><button class="gpill" data-pdn="${n}" aria-label="Siguiente">›</button></div>`;
+  const nowB=pk!==tk?`<button class="n2t" data-pdt style="margin-bottom:10px">Ir a hoy</button>`:'';
+  const task=t=>`<div class="tk"><button class="chk ${t.done?'on':''}" data-done="${esc(t.id)}" aria-label="Completar"></button><span class="${t.done?'dn':''}">${esc(t.title)}</span><small>${t.time||''}</small></div>`;
+  const dayT=todosOn(pk),nh=dayT.filter(t=>!t.time);
+  let hrs='';for(let h=0;h<24;h++){const H=String(h).padStart(2,'0');hrs+=`<div class="hr" data-h="${h}"><b>${H}:00</b><div class="hs">${dayT.filter(t=>t.time&&t.time.slice(0,2)===H).map(task).join('')}<button class="slot" data-slot="${H}" aria-label="Agregar a las ${H}:00">+</button></div></div>`}
+  const bDay=nav(1,dl)+nowB+(nh.length?`<div class="nh"><small>Sin hora</small>${nh.map(task).join('')}</div>`:'')+`<div class="tl">${hrs}</div>`;
+  const dayList=`<h3 class="sec">${dl}</h3>${items(dayT,'No hay pendientes este día.')}<button class="n2t" data-slot="" style="margin-top:8px">+ Agregar to-do</button>`;
+  const mo=mon(pd),strip=[...Array(7)].map((_,i)=>{const d=addD(mo,i),k=key(d),n=todosOn(k).filter(x=>!x.done).length;return `<button class="wk ${k===pk?'sel':''} ${k===tk?'tod':''}" data-pd="${k}"><small>${DN[i].slice(0,3)}</small><b>${d.getDate()}</b>${n?'<i></i>':''}</button>`}).join('');
+  const bWeek=nav(7,'Semana del '+mo.getDate()+' '+MN[mo.getMonth()])+nowB+`<div class="wstrip">${strip}</div>`+dayList;
+  const bMonth=calendar(true)+dayList;
+  const acc=(k,t,s,b)=>`<section class="acc ${m===k?'open':''}" data-acc="${k}"><button class="acc-h" data-organize="${k}" aria-expanded="${m===k}"><span><b>${t}</b><small>${s}</small></span><i>›</i></button><div class="acc-b"><div class="acc-in"><div class="acc-pad">${b}</div></div></div></section>`;
+  return page('Planificador',conv+`<div class="plan-summary">${panel('today')}${panel('soon')}${panel('late')}</div>${detail}`
+    +acc('day','Organiza tu día','Cronograma hora por hora',bDay)+acc('week','Organiza tu semana','Desplázate entre los días',bWeek)+acc('month','Organiza tu mes','Calendario minimalista',bMonth))
 },
 day:()=>{const [y,m,d]=S.day.split('-').map(Number);let l=new Date(y,m-1,d).toLocaleDateString('es',{weekday:'long',day:'numeric',month:'long'});l=l[0].toUpperCase()+l.slice(1);
   return page(l,items(todosOn(S.day),'No hay pendientes este día.')+`<h3 class="sec">Nuevo to-do para este día</h3><div class="todo-form"><input id="ti" class="todo-title" placeholder="¿Qué hay que hacer?" maxlength="200"><div class="todo-fields">${listSel('tl')}<div class="todo-field"><label for="tt">Hora</label><input id="tt" type="time"></div></div><div class="todo-actions"><button class="pri" data-addday>Agregar to-do</button></div></div>`)},
-lists:()=>page('Mis listas',`<div class="add"><input id="nl" placeholder="Nueva lista" maxlength="40"><button data-newlist aria-label="Crear lista">+</button></div>`+S.lists.map((l,i)=>{const s=stat(l.name);return `<button class="lst" data-ol="${i}"><div>${esc(l.name)}<span>${s.done}/${s.total} · ${s.p}%</span></div>${bar(s.p)}</button>`}).join('')),
+lists:()=>page('Mis listas',`<div class="mkl"><input id="nl" placeholder="Nombre de la nueva lista" maxlength="40" aria-label="Nombre de la lista"><button class="pri sm" data-newlist>Crear lista</button></div>`+S.lists.map((l,i)=>{const s=stat(l.name);return `<button class="lst" data-ol="${i}"><div>${esc(l.name)}<span>${s.done}/${s.total} · ${s.p}%</span></div>${bar(s.p)}</button>`}).join('')),
 list:()=>{const l=S.lists[S.cur];if(!l){S.view='lists';return V.lists()}
   const s=stat(l.name),gs=['',...l.secs],ed=S.adding;
   return page(esc(l.name),`<div>${bar(s.p)}<p class="sub" style="text-transform:none;letter-spacing:0;font-size:13px">${s.done} de ${s.total} completadas · ${s.p}%</p></div><button class="pri sm" data-adding style="margin-top:18px">${ed?'Cerrar':'+ Nueva tarea'}</button>`
    +(!ed&&!s.total?'<p class="empty" style="margin-top:14px">Aún no hay tareas. Toca "Nueva tarea" para empezar.</p>':'')
    +gs.map((g,i)=>{const a=S.todos.filter(t=>t.list===l.name&&(t.sec||'')===g);
-     return (g||l.secs.length||a.length||ed?`<h3 class="sec">${g?esc(g):'Sin subtítulo'}</h3>`:'')+items(a)+(ed?`<div class="add"><input placeholder="Agregar tarea" maxlength="200"><button data-addt="${i}" aria-label="Agregar tarea">+</button></div>`:'')}).join('')
-   +(ed?`<h3 class="sec">Nuevo subtítulo</h3><div class="add"><input placeholder="Ej. Esta semana" maxlength="40"><button data-addsec aria-label="Crear subtítulo">+</button></div>`:'')
-   +`<p style="margin-top:32px"><button class="pri" data-go="lists">Listo</button></p><p style="margin-top:28px"><button class="n2t" data-dellist>Eliminar esta lista</button></p>`)},
+     return (g||l.secs.length||a.length||ed?`<h3 class="sec">${g?esc(g):'Sin subtítulo'}</h3>`:'')+items(a)+(ed?`<div class="add"><input placeholder="Agregar tarea" maxlength="200"><button data-addt="${i}" aria-label="Agregar tarea">Agregar</button></div>`:'')}).join('')
+   +(ed?`<h3 class="sec">Nuevo subtítulo</h3><div class="add"><input placeholder="Ej. Esta semana" maxlength="40"><button data-addsec aria-label="Crear subtítulo">Crear</button></div>`:'')
+   +`<p style="margin-top:32px"><button class="pri" data-back>Listo</button></p><p style="margin-top:28px"><button class="n2t" data-dellist>Eliminar esta lista</button></p>`)},
 settings:()=>page('Ajustes',`<p><button class="n2t" data-changename>Cambiar nombre</button></p><p style="margin-top:28px"><button class="n2t" data-logout>Cerrar sesión</button></p>`),
 about:()=>page('Acerca de',`<p style="line-height:1.55">Nova-List es una app de INCOROVA para ordenar notas, pendientes y planes en un solo lugar.</p>`)
 };
@@ -450,11 +511,14 @@ function render(anim){
   if(S.onb){onbMount();return}
   try{$('#app').innerHTML=(V[S.view]||V.home)();window.scrollTo(0,0);if(anim){const a=$('#app');a.classList.remove('in');void a.offsetWidth;a.classList.add('in')}}
   catch(e){console.error('RENDER:',e);$('#app').innerHTML='<div style="padding-top:60px;text-align:center"><h2>Nova-List</h2><p style="color:var(--mut);margin-top:12px">Ocurrió un problema al cargar la interfaz.</p><button class="pri" style="margin-top:24px" onclick="location.reload()">Recargar</button></div>'}
-  const grp={notes:'notes',ws:'notes',new:'new',plan:'plan'}[S.view];
+  const grp={home:'home',notes:'notes',ws:'notes',new:'new',plan:'plan'}[S.view];
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===grp));
+  tlScroll();
 }
-const go=v=>{S.view=v;S.adding=false;S.planNote=null;S.selMode=false;S.picked=[];render(true)};
-const toPlan=id=>{S.selMode=false;S.picked=[];S.adding=false;S.view='plan';S.planNote=id;render(true);setTimeout(()=>document.getElementById('pn-'+id)?.scrollIntoView({block:'center',behavior:'smooth'}),60)};
+const clr=()=>{S.adding=false;S.planNote=null;S.selMode=false;S.picked=[];S.sheet=null;S.pre=null};
+const go=(v,reset)=>{if(reset||v==='home')S.hist=[];else if(v!==S.view){S.hist.push(S.view);if(S.hist.length>20)S.hist.shift()}S.view=v;clr();render(true)};
+const back=()=>{S.view=S.hist.pop()||'home';clr();render(true)};
+const toPlan=id=>{S.hist.push(S.view);clr();S.view='plan';S.planNote=id;render(true);setTimeout(()=>document.getElementById('pn-'+id)?.scrollIntoView({block:'center',behavior:'smooth'}),60)};
 const keep=()=>{const y=window.scrollY;render();window.scrollTo(0,y)};
 async function addTodo(todo){S.todos.push(todo);const ok=await saveTodo(todo);if(ok)flash()}
 
@@ -471,6 +535,19 @@ document.addEventListener('click',async e=>{
   if(t.id==='googleOther')return signInWithGoogle(true);
   if(has('data-logout'))return signOut();
   if(has('data-changename'))return changeName();
+  if(has('data-back'))return back();
+  if(D.nview){S.nview=D.nview;S.selMode=false;S.picked=[];return keep()}
+  if(D.bk)return flip(+D.bk);
+  if(has('data-sheetx')){S.sheet=null;return keep()}
+  if(has('data-sopen')){S.wk={id:S.sheet};return go('ws')}
+  if(has('data-stodo'))return toPlan(S.sheet);
+  if(has('data-sdel')){const id=S.sheet;if(!id||!confirm('¿Eliminar esta nota?'))return;S.notes=S.notes.filter(n=>n.id!==id);S.sheet=null;keep();if(S.user)await deleteNote(id);return}
+  if(D.organize){S.planMode=S.planMode===D.organize?'':D.organize;document.querySelectorAll('.acc').forEach(a=>{const o=a.dataset.acc===S.planMode;a.classList.toggle('open',o);a.querySelector('.acc-h')?.setAttribute('aria-expanded',o)});if(S.planMode==='day')setTimeout(tlScroll,480);return}
+  const sync=k=>{S.pday=k;const d=parseK(k);S.cal={y:d.getFullYear(),m:d.getMonth()};keep()};
+  if(D.pd)return sync(D.pd);
+  if(D.pdn){const d=parseK(S.pday||key(new Date()));d.setDate(d.getDate()+(+D.pdn));return sync(key(d))}
+  if(has('data-pdt'))return sync(key(new Date()));
+  if(D.slot!==undefined){S.hist.push(S.view);clr();S.pre={due:S.pday||key(new Date()),time:D.slot?D.slot+':00':''};S.view='new';return render(true)}
   if(has('data-selmode')){S.selMode=!S.selMode;S.picked=[];return keep()}
   if(D.pick){const i=S.picked.indexOf(D.pick);i<0?S.picked.push(D.pick):S.picked.splice(i,1);return keep()}
   if(has('data-selplan')){return S.picked.length===1?toPlan(S.picked[0]):undefined}
@@ -480,7 +557,7 @@ document.addEventListener('click',async e=>{
     S.notes=S.notes.filter(n=>!ids.includes(n.id));S.selMode=false;S.picked=[];keep();
     if(S.user)await run(sb.from('notes').delete().in('id',ids).eq('user_id',S.user.id));return}
   if(t.classList.contains('opt')){if(!open){menu.classList.add('open');return}return go(D.go)}
-  if(D.go)return go(D.go);
+  if(D.go)return go(D.go,!!t.closest('nav'));
   if(D.day){S.day=D.day;return go('day')}
   if(D.ol!==undefined){S.cur=+D.ol;return go('list')}
   if(D.done){const x=S.todos.find(i=>i.id===D.done);if(!x)return;x.done=!x.done;keep();await saveTodo(x);return}
@@ -504,10 +581,10 @@ document.addEventListener('click',async e=>{
   if(has('data-savewk')){
     const text=($('#ed')?.value||'').trim();if(!text)return $('#ed')?.focus();
     const id=S.wk?.id||uuid(),note={id,text},i=S.notes.findIndex(n=>n.id===id);
-    if(i>=0)S.notes[i]=note;else S.notes.unshift(note);
-    go('notes');if(await saveNote(note))flash();return;
+    if(i>=0)S.notes[i]=note;else{S.notes.unshift(note);S.bi=0}
+    back();if(await saveNote(note))flash();return;
   }
-  if(D.delnote){S.notes=S.notes.filter(i=>i.id!==D.delnote);go('notes');await deleteNote(D.delnote);return}
+  if(D.delnote){S.notes=S.notes.filter(i=>i.id!==D.delnote);back();await deleteNote(D.delnote);return}
   if(has('data-newlist')){
     const inp=$('#nl'),v=inp.value.trim();if(!v)return inp.focus();
     if(S.lists.some(l=>l.name.toLowerCase()===v.toLowerCase())){notify('Ya existe una lista con ese nombre.');return inp.focus()}
@@ -536,15 +613,39 @@ document.addEventListener('click',async e=>{
     const list=$('#tl')?.value||'';if(!list)return $('#tl')?.focus();
     const due=inDay?S.day:($('#td')?.value||'');if(!due)return $('#td')?.focus();
     const todo={id:uuid(),title:v.slice(0,200),list,sec:'',due,time:$('#tt')?.value||'',done:false};
-    inDay?(S.todos.push(todo),render()):(go('home'));
-    if(inDay){if(await saveTodo(todo))flash()}else await addTodo(todo);
+    S.todos.push(todo);inDay?render():back();
+    if(await saveTodo(todo))flash();
     return;
   }
 });
 document.addEventListener('keydown',e=>{
   if(e.key==='Enter'&&e.target.id==='obn')return onbAct(S.ob.step==='welcome'?'saveName':'create');
-  if(e.key==='Enter'&&e.target.matches('.add input'))e.target.nextElementSibling?.click();
+  if(e.key==='Enter'&&e.target.matches('.add input,.mkl input'))e.target.nextElementSibling?.click();
 });
+
+/* ---------- libro de notas ---------- */
+const P=()=>[...S.notes,null];
+const pgIn=(n,i,t)=>{if(!n)return '<div class="plus">+</div><b>Nueva nota</b><span class="tx" style="flex:none">Toca para escribir</span><span class="pnum">'+(i+1)+'</span>';
+  const l=noteLines(n);return `<b>${esc(l[0]||'Nota vacía')}</b><span class="tx">${esc(l.slice(1).join('\n'))}</span><span class="pnum">${i+1} / ${t}</span>`};
+const tlScroll=()=>{if(S.view!=='plan'||S.planMode!=='day')return;const tl=$('.tl'),r=tl?.querySelector('[data-h="'+Math.max(0,new Date().getHours()-1)+'"]');if(tl&&r&&(!S.pday||S.pday===key(new Date())))tl.scrollTop=r.offsetTop};
+function flip(dir){
+  const L=P(),n=S.bi+dir;if(S.flip||n<0||n>=L.length)return;
+  const T=$('#pgT'),U=$('#pgU');if(!T||!U||!T.animate)return;S.flip=true;
+  const fin=()=>{S.bi=n;S.flip=false;keep()},o={duration:650,easing:'cubic-bezier(.5,0,.2,1)',fill:'both'};
+  let a;
+  if(dir>0){U.className='pg'+(L[n]?'':' nw');U.innerHTML=pgIn(L[n],n,L.length);
+    a=T.animate([{transform:'rotateY(0)',opacity:1},{transform:'rotateY(-150deg)',opacity:0}],o)}
+  else{U.className='pg'+(L[S.bi]?'':' nw');U.innerHTML=pgIn(L[S.bi],S.bi,L.length);T.className='pg'+(L[n]?'':' nw');T.innerHTML=pgIn(L[n],n,L.length);
+    a=T.animate([{transform:'rotateY(-150deg)',opacity:0},{transform:'rotateY(0)',opacity:1}],o)}
+  a.finished.then(fin,fin);
+}
+let px=null;
+document.addEventListener('pointerdown',e=>{px=e.target.closest('#book')?{x:e.clientX,y:e.clientY}:null});
+document.addEventListener('pointercancel',()=>{px=null});
+document.addEventListener('pointerup',e=>{if(!px)return;const dx=e.clientX-px.x,dy=e.clientY-px.y;px=null;if(S.flip||S.view!=='notes')return;
+  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy))return flip(dx<0?1:-1);
+  if(Math.abs(dx)<10&&Math.abs(dy)<10){const c=P()[S.bi];if(!c){S.wk={id:null};return go('ws')}S.sheet=c.id;keep()}});
+document.addEventListener('keydown',e=>{if(S.view==='notes'&&S.nview==='book'&&!e.target.matches('input,textarea,select')){if(e.key==='ArrowRight')flip(1);if(e.key==='ArrowLeft')flip(-1)}});
 
 /* ---------- inicio ---------- */
 async function start(session){
