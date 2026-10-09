@@ -213,7 +213,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .wdg .n2t{margin:0 0 14px 18px}
 .edbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:22px;font-size:13px;color:var(--mut);font-weight:600}
 .edbar div{display:flex;gap:8px}
-.edit .wdg{animation:wig .32s ease-in-out infinite alternate}
+.edit .wdg{animation:wig .32s ease-in-out infinite alternate;cursor:grab;touch-action:none}\n.edit .wdg.dragging{opacity:.55;transform:scale(.97);z-index:8;animation:none;cursor:grabbing}\n.edit .wdg.drop-target{outline:2px dashed var(--fg);outline-offset:3px}
 .edit .wdg:nth-child(2n){animation-delay:-.16s}
 @keyframes wig{from{transform:rotate(-.7deg)}to{transform:rotate(.7deg)}}
 .edit .wdg>*:not(.wctl){pointer-events:none}
@@ -486,7 +486,7 @@ home:()=>{const ed=S.edit,o=overdue().length,hl=homeLists(),bd=o?`<b class="bdg"
    today:()=>`<button class="wbody wl" data-go="today"><span class="lbl">Hoy${bd}</span><em>${today().length}</em></button>`,
    soon:()=>`<button class="wbody wl" data-go="soon"><span>Próximamente</span><em>${soon().length}</em></button>`
   };
-  const ctl=i=>`<div class="wctl"><button data-wmv="${i}" data-d="-1" aria-label="Mover antes" ${i?'':'disabled'}>‹</button><button data-wmv="${i}" data-d="1" aria-label="Mover después" ${i<S.layout.length-1?'':'disabled'}>›</button><button data-wsz="${i}" aria-label="Cambiar tamaño">⤢</button></div>`;
+  const ctl=i=>`<div class="wctl"><button data-wsz="${i}" aria-label="Expandir o reducir panel" title="Expandir o reducir">⤢</button></div>`;
   const ch=S.pickL?`<button class="sheet-bg" data-pickx aria-label="Cerrar"></button><div class="sheet" role="dialog"><b>Elige hasta 5 listas para tu panel (${S.homeIds.length}/5)</b>${S.lists.map(l=>`<button class="srow" data-hl="${esc(l.id)}">${esc(l.name)}<i>${S.homeIds.includes(l.id)?'✓':''}</i></button>`).join('')}<button class="pri" data-pickx>Listo</button></div>`:'';
   return head()+(ed?`<div class="edbar"><span>Mueve y ajusta tus paneles</span><div><button class="gpill" data-hreset>Restablecer</button><button class="gpill" data-hdone>Listo</button></div></div>`:'')
    +`<div class="hgrid ${ed?'edit':''}">${S.layout.map((w,i)=>`<div class="wdg w-${w.k} ${w.s==='W'?'w2':''}">${ed?ctl(i):''}${W[w.k]()}</div>`).join('')}</div>`+ch},
@@ -700,6 +700,37 @@ function saveHome(){clearTimeout(hT);hT=setTimeout(async()=>{if(!S.user)return;
 let lp=null;
 document.addEventListener('pointerdown',e=>{const w=S.view==='home'&&!S.edit&&e.target.closest('.wdg');if(!w)return;
   lp={x:e.clientX,y:e.clientY,t:setTimeout(()=>{lp=null;S.edit=true;S.noClick=true;setTimeout(()=>S.noClick=false,600);if(navigator.vibrate)navigator.vibrate(12);keep()},520)}});
+document.addEventListener('pointerdown',e=>{
+  const w=e.target.closest('.wdg');
+  if(S.view!=='home'||!S.edit||!w||e.target.closest('.wctl'))return;
+  dragPanel=w;dragStart={x:e.clientX,y:e.clientY};dragMoved=false;
+  w.setPointerCapture?.(e.pointerId);
+});
+document.addEventListener('pointermove',e=>{
+  if(!dragPanel||!dragStart)return;
+  if(Math.abs(e.clientX-dragStart.x)+Math.abs(e.clientY-dragStart.y)>8){
+    dragMoved=true;dragPanel.classList.add('dragging');
+    const under=document.elementFromPoint(e.clientX,e.clientY)?.closest('.wdg');
+    document.querySelectorAll('.wdg.drop-target').forEach(x=>x.classList.remove('drop-target'));
+    if(under&&under!==dragPanel)under.classList.add('drop-target');
+  }
+});
+function finishPanelDrag(e){
+  if(!dragPanel)return;
+  const from=Array.from(document.querySelectorAll('.hgrid .wdg')).indexOf(dragPanel);
+  const target=dragMoved?document.elementFromPoint(e.clientX,e.clientY)?.closest('.wdg'):null;
+  const to=target?Array.from(document.querySelectorAll('.hgrid .wdg')).indexOf(target):-1;
+  dragPanel.classList.remove('dragging');
+  document.querySelectorAll('.wdg.drop-target').forEach(x=>x.classList.remove('drop-target'));
+  dragPanel=null;dragStart=null;
+  if(dragMoved){
+    S.noClick=true;setTimeout(()=>S.noClick=false,350);
+    if(from>=0&&to>=0&&from!==to){const item=S.layout.splice(from,1)[0];S.layout.splice(to,0,item);saveHome();keep()}
+  }
+  dragMoved=false;
+}
+document.addEventListener('pointerup',finishPanelDrag);
+document.addEventListener('pointercancel',e=>{if(dragPanel){dragPanel.classList.remove('dragging');document.querySelectorAll('.wdg.drop-target').forEach(x=>x.classList.remove('drop-target'));dragPanel=null;dragStart=null;dragMoved=false}});
 document.addEventListener('contextmenu',e=>{if(e.target.closest('.wdg,.lw'))e.preventDefault()});
 /* eliminar lista */
 async function delList(i,sw){const l=S.lists[i];if(!l)return false;
