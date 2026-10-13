@@ -1021,6 +1021,48 @@ function ensurePushButton() {
   document.body.appendChild(button);
 }
 
+/* ---------- PRUEBA MANUAL DE NOVA PUSH ---------- */
+async function novaTestPush() {
+  try {
+    if (!S.user) {
+      alert("Inicia sesión en Nova List primero.");
+      return;
+    }
+
+    const { data: sessionData, error: sessionError } =
+      await sb.auth.getSession();
+
+    if (sessionError) throw sessionError;
+
+    const accessToken = sessionData.session?.access_token;
+
+    if (!accessToken) {
+      alert("No se encontró una sesión activa.");
+      return;
+    }
+
+    const { data, error } = await sb.functions.invoke("nova-push", {
+      body: {
+        title: "Nova List",
+        body: "¡Las notificaciones están funcionando!",
+        url: "/"
+      }
+    });
+
+    if (error) {
+      console.error("NOVA PUSH TEST:", error);
+      alert("Error al llamar a nova-push: " + error.message);
+      return;
+    }
+
+    console.log("Resultado de nova-push:", data);
+    alert("Resultado del envío:\n" + JSON.stringify(data, null, 2));
+  } catch (error) {
+    console.error("NOVA PUSH TEST:", error);
+    alert("Error: " + (error?.message || "Error desconocido"));
+  }
+}
+
 /* ---------- inicio ---------- */
 async function start(session){
   const same=S.user?.id===session.user.id;
