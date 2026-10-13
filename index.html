@@ -883,12 +883,152 @@ const endDrag=async cancel=>{if(lp){clearTimeout(lp.t);lp=null}if(!dg)return;con
 document.addEventListener('pointerup',()=>endDrag(false));
 document.addEventListener('pointercancel',()=>endDrag(true));
 
+/* ---------- NOTIFICACIONES PUSH NOVA LIST ---------- */
+
+const NOVA_VAPID_PUBLIC_KEY =
+  "BDdWJbxvfBNnzcRpXIw0GHaiV06RKEcIh5npeATGW1OTFSJVW9NjRfezMSxXTPTt79nxC79-k_iklbE_DrFCFHA";
+
+function novaUrlBase64ToUint8Array(base64String) {
+  const padding = "=".repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/-/g, "+")
+    .replace(/_/g, "/");
+
+  const raw = atob(base64);
+  return Uint8Array.from(raw, (char) => char.charCodeAt(0));
+}
+
+function ensurePushButton() {
+  if (document.getElementById("novaPushButton")) return;
+
+  const button = document.createElement("button");
+  button.id = "novaPushButton";
+  button.type = "button";
+  button.textContent = "Activar notificaciones";
+
+  Object.assign(button.style, {
+    position: "fixed",
+    right: "16px",
+    bottom: "calc(90px + env(safe-area-inset-bottom))",
+    zIndex: "9999",
+    padding: "12px 16px",
+    border: "1px solid #222",
+    borderRadius: "24px",
+    background: "#111",
+    color: "#fff",
+    fontSize: "13px",
+    fontWeight: "600",
+    cursor: "pointer",
+    boxShadow: "0 4px 16px rgba(0,0,0,.15)"
+  });
+
+  button.addEventListener("click", async () => {
+    const originalText = "Activar notificaciones";
+
+    try {
+      if (!S.user?.id) {
+        alert("Inicia sesión en Nova List primero.");
+        return;
+      }
+
+      if (
+        !("serviceWorker" in navigator) ||
+        !("PushManager" in window) ||
+        !("Notification" in window)
+      ) {
+        alert(
+          "Este navegador no admite notificaciones push. " +
+          "En iPhone, abre Nova List desde su icono en la pantalla de inicio."
+        );
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "Configurando...";
+
+      const registration =
+        await navigator.serviceWorker.register("/sw.js");
+
+      await navigator.serviceWorker.ready;
+
+      let permission = Notification.permission;
+
+      if (permission !== "granted") {
+        permission = await Notification.requestPermission();
+      }
+
+      if (permission !== "granted") {
+        throw new Error(
+          "No se concedió el permiso. Revisa los permisos de notificación del navegador."
+        );
+      }
+
+      let subscription =
+        await registration.pushManager.getSubscription();
+
+      if (!subscription) {
+        subscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey:
+            novaUrlBase64ToUint8Array(NOVA_VAPID_PUBLIC_KEY)
+        });
+      }
+
+      const subscriptionData = subscription.toJSON();
+
+      const { data: existing, error: readError } = await sb
+        .from("push_subscriptions")
+        .select("id, subscription")
+        .eq("user_id", S.user.id);
+
+      if (readError) throw readError;
+
+      const alreadySaved = (existing || []).some(
+        (item) =>
+          item.subscription?.endpoint === subscriptionData.endpoint
+      );
+
+      if (!alreadySaved) {
+        const { error: saveError } = await sb
+          .from("push_subscriptions")
+          .insert({
+            user_id: S.user.id,
+            subscription: subscriptionData
+          });
+
+        if (saveError) throw saveError;
+      }
+
+      button.textContent = "Notificaciones activadas";
+
+      alert(
+        "El dispositivo quedó registrado para recibir notificaciones de Nova List."
+      );
+    } catch (error) {
+      console.error("NOVA PUSH:", error);
+
+      alert(
+        "No se pudieron activar las notificaciones.\n\n" +
+        (error?.message || "Error desconocido")
+      );
+
+      button.textContent = originalText;
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  document.body.appendChild(button);
+}
+
 /* ---------- inicio ---------- */
 async function start(session){
   const same=S.user?.id===session.user.id;
   S.user=session.user;$('#auth').classList.remove('show');
   if(same&&(cloudReady||booting))return;
-  booting=true;try{await loadCloud()}finally{booting=false}
+    booting=true;
+  try{await loadCloud()}finally{booting=false}
+  ensurePushButton();
 }
 sb.auth.onAuthStateChange((ev,session)=>{setTimeout(async()=>{
   try{if(session?.user)await start(session);else if(ev==='SIGNED_OUT'){S.user=null;cloudReady=false;$('#auth').classList.add('show');$('#app').innerHTML=''}}
