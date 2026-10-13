@@ -1019,6 +1019,31 @@ function ensurePushButton() {
   });
 
   document.body.appendChild(button);
+
+  
+  const testButton = document.createElement("button");
+  testButton.id = "novaTestPushButton";
+  testButton.type = "button";
+  testButton.textContent = "Probar notificación";
+
+  Object.assign(testButton.style, {
+    position: "fixed",
+    right: "16px",
+    bottom: "calc(145px + env(safe-area-inset-bottom))",
+    zIndex: "9999",
+    padding: "12px 16px",
+    border: "1px solid #222",
+    borderRadius: "24px",
+    background: "#fff",
+    color: "#111",
+    fontSize: "13px",
+    fontWeight: "600",
+    cursor: "pointer"
+  });
+
+  testButton.addEventListener("click", novaTestPush);
+  document.body.appendChild(testButton);
+
 }
 
 /* ---------- PRUEBA MANUAL DE NOVA PUSH ---------- */
