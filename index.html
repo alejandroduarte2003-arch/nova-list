@@ -966,14 +966,19 @@ function ensurePushButton() {
       let subscription =
         await registration.pushManager.getSubscription();
 
-      if (!subscription) {
-        subscription = await registration.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey:
-            novaUrlBase64ToUint8Array(NOVA_VAPID_PUBLIC_KEY)
-        });
-      }
+     let subscription =
+  await registration.pushManager.getSubscription();
 
+if (subscription) {
+  await subscription.unsubscribe();
+  subscription = null;
+}
+
+subscription = await registration.pushManager.subscribe({
+  userVisibleOnly: true,
+  applicationServerKey:
+    novaUrlBase64ToUint8Array(NOVA_VAPID_PUBLIC_KEY)
+});
       const subscriptionData = subscription.toJSON();
 
       const { data: existing, error: readError } = await sb
