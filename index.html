@@ -1090,13 +1090,46 @@ async function novaTestPush() {
   }
 }
 
+function openTaskFromNotification(){
+  const taskId = new URLSearchParams(window.location.search).get('task');
+
+  if (!taskId || !S.user || !cloudReady) return;
+
+  const task = S.todos.find(t => String(t.id) === taskId);
+  if (!task) return;
+
+  const listIndex = S.lists.findIndex(l => l.name === task.list);
+  if (listIndex < 0) return;
+
+  S.cur = listIndex;
+  S.hist = ['home'];
+  S.view = 'list';
+  clr();
+  render(true);
+
+  setTimeout(() => {
+    const element = document.getElementById('task-' + taskId);
+
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+
+      element.style.outline = '2px solid var(--accent)';
+      element.style.borderRadius = '12px';
+    }
+  }, 400);
+}
+  
 /* ---------- inicio ---------- */
 async function start(session){
   const same=S.user?.id===session.user.id;
   S.user=session.user;$('#auth').classList.remove('show');
   if(same&&(cloudReady||booting))return;
     booting=true;
-  try{await loadCloud()}finally{booting=false}
+ try{await loadCloud()}finally{booting=false}
+  openTaskFromNotification();
   ensurePushButton();
 }
 sb.auth.onAuthStateChange((ev,session)=>{setTimeout(async()=>{
