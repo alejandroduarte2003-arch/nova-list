@@ -285,7 +285,31 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 @keyframes orbfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @keyframes ospin{to{transform:rotate(720deg)}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important;transition:none!important}}
+.w-txt{font-size:13px;line-height:1.5;color:var(--mut);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:6;overflow:hidden;white-space:pre-line;overflow-wrap:anywhere}
+.srt{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+#app:has(.hgrid){-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.skinbtn{padding:10px 18px;border:1px solid var(--fg);border-radius:99px;font-weight:600;font-size:14px}
+.skinbtn.on{background:var(--fg);color:var(--bg)}
+/* ===== TEMA RETRO (Macintosh) ===== */
+:root[data-skin="retro"]:not([data-x]){--bg:#fff;--fg:#000;--mut:#333;--line:#000;--card:#fff;--glass:#fff;--glass2:#fff;--gb:#000;--hl:transparent;--sh:#000;--red:#000;--rf:Chicago,ChicagoFLF,Geneva,Monaco,"Courier New",monospace;color-scheme:light}
+:root[data-skin="retro"] body,:root[data-skin="retro"] button,:root[data-skin="retro"] input,:root[data-skin="retro"] select,:root[data-skin="retro"] textarea{font-family:var(--rf);letter-spacing:0;-webkit-font-smoothing:none}
+:root[data-skin="retro"] *{border-radius:0!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+:root[data-skin="retro"] body::before{background:repeating-conic-gradient(#000 0 25%,#fff 0 50%) 0 0/4px 4px;opacity:.13}
+:root[data-skin="retro"] h1{font-weight:700;border:2px solid #000;display:inline-block;padding:4px 12px;background:repeating-linear-gradient(0deg,#fff 0 2px,#000 2px 3px) 0 0/100% 7px no-repeat,#fff;padding-top:10px;box-shadow:3px 3px 0 #000}
+:root[data-skin="retro"] h2.t{border-bottom:2px solid #000;padding-bottom:6px}
+:root[data-skin="retro"] .ov,:root[data-skin="retro"] .cal,:root[data-skin="retro"] .plan-panel,:root[data-skin="retro"] .pd,:root[data-skin="retro"] .todo-form,:root[data-skin="retro"] .lst,:root[data-skin="retro"] .acc,:root[data-skin="retro"] .mkl,:root[data-skin="retro"] .plan-note,:root[data-skin="retro"] .wd,:root[data-skin="retro"] .wdg:not(.w-cal),:root[data-skin="retro"] .ncard,:root[data-skin="retro"] .pg,:root[data-skin="retro"] .sheet,:root[data-skin="retro"] .gpill,:root[data-skin="retro"] .sbar,:root[data-skin="retro"] nav,:root[data-skin="retro"] textarea,:root[data-skin="retro"] .orb,:root[data-skin="retro"] .entry-card,:root[data-skin="retro"] .toast,:root[data-skin="retro"] .saved,:root[data-skin="retro"] .ghost,:root[data-skin="retro"] .google,:root[data-skin="retro"] .skinbtn,:root[data-skin="retro"] .tk{background:#fff!important;border:2px solid #000!important;box-shadow:3px 3px 0 #000!important;color:#000}
+:root[data-skin="retro"] nav button{color:#000}:root[data-skin="retro"] nav button.on{background:#000!important;color:#fff}:root[data-skin="retro"] .nav-liquid{display:none!important}
+:root[data-skin="retro"] .pri,:root[data-skin="retro"] .skinbtn.on,:root[data-skin="retro"] .mg button.on,:root[data-skin="retro"] .grid .today,:root[data-skin="retro"] .chk.on,:root[data-skin="retro"] .wk.sel,:root[data-skin="retro"] .entry-main,:root[data-skin="retro"] .sbar .dng,:root[data-skin="retro"] .bdg{background:#000!important;color:#fff!important}
+:root[data-skin="retro"] button:active{filter:invert(1)}
+:root[data-skin="retro"] input,:root[data-skin="retro"] select,:root[data-skin="retro"] textarea{border:2px solid #000!important;background:#fff;color:#000;color-scheme:light}
+:root[data-skin="retro"] .todo-field input,:root[data-skin="retro"] .todo-field select,:root[data-skin="retro"] .mkl input,:root[data-skin="retro"] .add input,:root[data-skin="retro"] .orb input{border:0!important}
+:root[data-skin="retro"] .bar{height:12px;border:2px solid #000;background:#fff}
+:root[data-skin="retro"] .bar i{background:repeating-linear-gradient(90deg,#000 0 2px,#fff 2px 4px)!important}
+:root[data-skin="retro"] .item small.late,:root[data-skin="retro"] .late{text-decoration:underline}
+:root[data-skin="retro"] .sheet-bg{background:repeating-conic-gradient(#000 0 25%,transparent 0 50%) 0 0/2px 2px;opacity:.55}
+:root[data-skin="retro"] .chk{border:2px solid #000}
 </style>
+<script>try{document.documentElement.dataset.skin=localStorage.getItem('nova_skin')||'modern'}catch(e){}</script>
 </head>
 <body>
 <div id="loading" class="loading">Nova-List</div>
@@ -483,11 +507,11 @@ const items=(a,empty)=>a.length?a.map(t=>`<div class="item" id="task-${esc(t.id)
 <div class="grow"><span style="${t.done?'text-decoration:line-through;color:var(--mut)':''}">${esc(t.title)}</span><small class="${isLate(t)?'late':''}">${isLate(t)?'Vencido · ':''}${meta(t)}</small></div>
 <button class="x" data-del="${esc(t.id)}" aria-label="Eliminar">×</button></div>`).join(''):(empty?`<p class="empty">${empty}</p>`:'');
 const page=(t,b)=>head()+`<div><button class="back" data-back>← ${NAMES[S.hist[S.hist.length-1]]||'Inicio'}</button><h2 class="t">${t}</h2>${b}</div>`;
-const listSel=(id='tl',allowCreate=false)=>`<div class="todo-field"><label for="${id}">Lista</label><select id="${id}"><option value="" disabled selected>Selecciona la lista</option>${S.lists.map(l=>`<option value="${esc(l.name)}">${esc(l.name)}</option>`).join('')}</select>${allowCreate?`<button type="button" class="n2t" data-toggle-newlist style="margin-top:8px">+ Crear nueva lista</button><div id="newlist-inline" hidden style="margin-top:10px"><input id="newlist-name" maxlength="40" placeholder="Nombre de la lista" style="margin:0 0 8px"><button type="button" class="gpill" data-create-inline-list>Guardar lista</button></div>`:''}</div>`;
+const listSel=(id='tl',allowCreate=false)=>`<div class="todo-field"><label for="${id}">Lista</label><select id="${id}"><option value="" disabled ${S.pre?.list?'':'selected'}>Selecciona la lista</option>${S.lists.map(l=>`<option value="${esc(l.name)}"${S.pre?.list===l.name?' selected':''}>${esc(l.name)}</option>`).join('')}</select>${allowCreate?`<button type="button" class="n2t" data-toggle-newlist style="margin-top:8px">+ Crear nueva lista</button><div id="newlist-inline" hidden style="margin-top:10px"><input id="newlist-name" maxlength="40" placeholder="Nombre de la lista" style="margin:0 0 8px"><button type="button" class="gpill" data-create-inline-list>Guardar lista</button></div>`:''}</div>`;
 
 /* ---------- vistas ---------- */
 const V={
-home:()=>{const ed=S.edit,o=overdue().length,hl=homeLists(),bd=o?`<b class="bdg" aria-label="${o} vencidos">${o>99?'99+':o}</b>`:'';
+home:()=>{const ed=S.edit,o=overdue().length,hl=homeLists(),bd=o?`<span class="bdg" data-late role="link" aria-label="Ver ${o} tareas vencidas">${o>99?'99+':o}</span>`:'';
   const W={
    cal:()=>calendar(),
    lists:()=>`<button class="wbody" data-go="lists" aria-label="Abrir mis listas"><span class="h">Mis listas<span aria-hidden="true">›</span></span>${hl.map(l=>`<span class="r">${esc(l.name)}<em>${stat(l.name).total}</em></span>`).join('')}</button>`+(S.lists.length>5?`<button class="n2t" data-pickl>Elegir listas (${hl.length}/5)</button>`:''),
@@ -497,12 +521,24 @@ home:()=>{const ed=S.edit,o=overdue().length,hl=homeLists(),bd=o?`<b class="bdg"
    stats:()=>{const a=today(),done=a.filter(t=>t.done).length,p=a.length?Math.round(done/a.length*100):0;return `<div class="wbody"><span class="h">Rendimiento de hoy</span><strong class="wstat">${done}/${a.length}</strong><span class="w-caption">${a.length?p+'% de las tareas de hoy completadas':'Agrega tareas para medir tu progreso'}</span>${bar(p)}</div>`},
    tips:()=>{const pending=today().filter(t=>!t.done).length,late=overdue().length;const tip=late?'Empieza por una tarea vencida y define el siguiente paso concreto.':pending>2?'Elige las 3 tareas más importantes y trabaja en una antes de revisar mensajes.':pending?'Completa tu pendiente principal y reserva unos minutos para planificar mañana.':'Revisa tus objetivos y prepara la primera tarea del siguiente día.';return `<div class="wbody"><span class="h">Recomendación del día</span><span class="w-tip">${tip}</span><span class="w-caption">Sugerencia automática según tus pendientes</span></div>`}
   };
+  W.note=w=>{const n=S.notes.find(x=>x.id===w.id);if(!n)return '';const l=noteLines(n);
+    return `<button class="wbody" data-wk="${esc(n.id)}"><span class="h"><span>${esc(l[0]||'Nota')}</span><span aria-hidden="true">›</span></span><span class="w-txt">${esc(l.slice(1).join('\n'))}</span></button>`};
+  W.task=w=>{const t=S.todos.find(x=>x.id===w.id);if(!t)return '';
+    const li=S.lists.findIndex(l=>l.name===t.list),s=stat(t.list),late=isLate(t),more=S.todos.filter(x=>x.list===t.list&&!x.done&&x.id!==t.id).slice(0,3);
+    return `<div class="wbody"><div class="h"><span style="${t.done?'text-decoration:line-through;color:var(--mut)':''}">${esc(t.title)}</span><button class="chk ${t.done?'on':''}" data-done="${esc(t.id)}" aria-label="Completar"></button></div>
+    <span class="w-caption ${late?'late':''}">${t.done?'Completada':late?'Vencida':'Pendiente'}${t.due?' · '+fmtD(t.due)+(t.time?' · '+t.time:''):' · Sin fecha'}</span>
+    <button class="r" data-ol="${li}"><span>${esc(t.list)}${t.sec?' › '+esc(t.sec):''}</span><em>${s.done}/${s.total} · ${s.p}%</em></button>${bar(s.p)}
+    ${more.map(x=>`<span class="w-caption">• ${esc(x.title)}</span>`).join('')}</div>`};
   const ctl=i=>`<div class="wctl"><button data-wsz="${i}" aria-label="Expandir o reducir panel" title="Expandir o reducir">⤢</button><button data-wremove="${i}" aria-label="Quitar panel" title="Quitar panel">×</button></div>`;
   const available=[['cal','Calendario'],['lists','Mis listas'],['today','Hoy'],['soon','Próximamente'],['clock','Reloj'],['stats','Estadísticas del día'],['tips','Recomendación del día']];
-  const addSheet=S.addPanel?`<button class="sheet-bg" data-addpanel-close aria-label="Cerrar"></button><div class="sheet" role="dialog"><b>Agregar panel</b>${available.filter(([k])=>!S.layout.some(w=>w.k===k)).map(([k,n])=>`<button class="srow" data-addpanel="${k}">${n}<i>+</i></button>`).join('')}<button data-addpanel-close>Cancelar</button></div>`:'';
+  const addSheet=S.addPanel?(()=>{const sub=S.addPanel,row=(a,t)=>`<button class="srow" ${a}><span class="srt">${esc(t)}</span><i>+</i></button>`;
+    const rows=sub==='note'?S.notes.filter(n=>!S.layout.some(w=>w.k==='note'&&w.id===n.id)).map(n=>row('data-addnote="'+esc(n.id)+'"',noteLines(n)[0]||'Nota vacía')).join('')||'<p class="empty">No hay notas para agregar.</p>'
+     :sub==='task'?S.todos.filter(t=>!S.layout.some(w=>w.k==='task'&&w.id===t.id)).map(t=>row('data-addtask="'+esc(t.id)+'"',t.title+' · '+t.list)).join('')||'<p class="empty">No hay tareas para agregar.</p>'
+     :available.filter(([k])=>!S.layout.some(w=>w.k===k)).map(([k,n])=>`<button class="srow" data-addpanel="${k}">${n}<i>+</i></button>`).join('')+`<button class="srow" data-addpanel-sub="note">Nota rápida<i>›</i></button><button class="srow" data-addpanel-sub="task">Tarea específica<i>›</i></button>`;
+    return `<button class="sheet-bg" data-addpanel-close aria-label="Cerrar"></button><div class="sheet" role="dialog"><b>${sub===true?'Agregar panel':'Elige '+(sub==='note'?'una nota':'una tarea')}</b>${rows}${sub===true?'':'<button data-addpanel-open>← Volver</button>'}<button data-addpanel-close>Cancelar</button></div>`})():'';
   const ch=S.pickL?`<button class="sheet-bg" data-pickx aria-label="Cerrar"></button><div class="sheet" role="dialog"><b>Elige hasta 5 listas para tu panel (${S.homeIds.length}/5)</b>${S.lists.map(l=>`<button class="srow" data-hl="${esc(l.id)}">${esc(l.name)}<i>${S.homeIds.includes(l.id)?'✓':''}</i></button>`).join('')}<button class="pri" data-pickx>Listo</button></div>`:'';
   return head()+(ed?`<div class="edbar"><span>Mueve y ajusta tus paneles</span><div><button class="gpill" data-hreset>Restablecer</button><button class="gpill" data-hdone>Listo</button></div></div>`:'')
-   +`<div class="hgrid ${ed?'edit':''}">${S.layout.map((w,i)=>W[w.k]?`<div class="wdg w-${w.k} ${w.s==='W'?'w2':''}" data-widget="${w.k}">${ed?ctl(i):''}${W[w.k]()}</div>`:'').join('')}</div>`+(ed?`<button class="gpill w-add" data-addpanel-open>+ Agregar panel</button>`:'')+ch+addSheet},
+   +`<div class="hgrid ${ed?'edit':''}">${S.layout.map((w,i)=>{const c=W[w.k]?W[w.k](w):'';return c?`<div class="wdg w-${w.k} ${w.s==='W'?'w2':''}" data-widget="${esc(wkey(w))}">${ed?ctl(i):''}${c}</div>`:''}).join('')}</div>`+(ed?`<button class="gpill w-add" data-addpanel-open>+ Agregar panel</button>`:'')+ch+addSheet},
 today:()=>{const o=overdue();return page('Hoy',(o.length?`<h3 class="sec late" style="margin-top:0">Vencidos</h3>${items(o)}`:'')+`<h3 class="sec" ${o.length?'':'style="margin-top:0"'}>Para hoy</h3>`+items(today(),'No tienes más pendientes para hoy.'))},
 soon:()=>page('Próximamente',items(soon(),'Nada vence en las próximas 48 horas.')),
 notes:()=>{if(S.nview==='grid')return V.notesGrid();
@@ -551,7 +587,7 @@ list:()=>{const l=S.lists[S.cur];if(!l){S.view='lists';return V.lists()}
    +(!ed&&!s.total?'<p class="empty" style="margin-top:14px">Aún no hay tareas. Toca "Nueva tarea" para empezar.</p>':'')
    +items(a)+(ed?`<div class="add"><input placeholder="Agregar tarea" maxlength="200"><button data-addt="0" aria-label="Agregar tarea">Agregar</button></div>`:'')
    +`<p style="margin-top:32px"><button class="pri" data-back>Listo</button></p><p style="margin-top:28px"><button class="n2t" data-dellist>Eliminar esta lista</button></p>`)},
-settings:()=>page('Ajustes',`<p><button class="n2t" data-changename>Cambiar nombre</button></p><p style="margin-top:28px"><button class="n2t" data-logout>Cerrar sesión</button></p>`),
+settings:()=>{const sk=document.documentElement.dataset.skin||'modern';return page('Ajustes',`<p><button class="n2t" data-changename>Cambiar nombre</button></p><h3 class="sec">Apariencia</h3><p class="lead">Elige cómo se ve Nova-List. Se guarda en tu cuenta.</p><div class="acts" style="margin-top:0"><button class="skinbtn${sk==='modern'?' on':''}" data-skin="modern">Moderna</button><button class="skinbtn${sk==='retro'?' on':''}" data-skin="retro">Retro (Macintosh)</button></div><p style="margin-top:28px"><button class="n2t" data-logout>Cerrar sesión</button></p>`)},
 about:()=>page('Acerca de',`<p style="line-height:1.55">Nova-List es una app de INCOROVA para ordenar notas, pendientes y planes en un solo lugar.</p>`)
 };
 
@@ -588,6 +624,7 @@ document.addEventListener('click',async e=>{
   if(!t)return;
   const D=t.dataset,has=a=>t.hasAttribute(a);
   if(S.noClick&&t.closest('.lw,.wdg'))return;
+  if(e.target.closest('[data-late]')){S.planFilter='late';S.planMode='';return go('plan')}
   if(has('data-hdone')){S.edit=false;S.addPanel=false;return keep()}
   if(has('data-hreset')){S.layout=DEFL.map(d=>({...d}));S.homeIds=[];S.addPanel=false;saveHome();return keep()}
    if(has('data-addpanel-open')){S.addPanel=true;return keep()}
@@ -599,6 +636,9 @@ document.addEventListener('click',async e=>{
   if(D.hl){const i=S.homeIds.indexOf(D.hl);if(i>=0)S.homeIds.splice(i,1);else{if(S.homeIds.length>=5)return notify('Máximo 5 listas en el panel.');S.homeIds.push(D.hl)}saveHome();return keep()}
   if(D.wmv!==undefined){const i=+D.wmv,j=i+(+D.d);if(j<0||j>=S.layout.length)return;[S.layout[i],S.layout[j]]=[S.layout[j],S.layout[i]];saveHome();return keep()}
   if(D.wsz!==undefined){const w=S.layout[+D.wsz];if(!w)return;w.s=w.s==='W'?'S':'W';saveHome();return keep()}
+  if(D.skin){applySkin(D.skin,true);return keep()}
+  if(D.addpanelSub){S.addPanel=D.addpanelSub;return keep()}
+  if(D.addnote||D.addtask){const k=D.addnote?'note':'task',id=D.addnote||D.addtask;if(!S.layout.some(w=>w.k===k&&w.id===id)){S.layout.push({k,id,s:'W'});saveHome()}S.addPanel=false;return keep()}
   if(D.ob)return onbAct(D.ob);
   if(has('data-entry-main')){closeEntry();return go('home')}
   if(has('data-entry-note')){closeEntry();S.wk={id:null};return go('ws')}
@@ -662,7 +702,7 @@ document.addEventListener('click',async e=>{
     const list={name:v,secs:[]};if(!await saveList(list))return;
     S.lists.push(list);if(S.homeIds.length&&S.homeIds.length<5){S.homeIds.push(list.id);saveHome()}flash();return floatList(list);
   }
-  if(has('data-adding')){S.adding=!S.adding;return keep()}
+  if(has('data-adding')){const l=S.lists[S.cur];S.hist.push(S.view);clr();S.pre={list:l?l.name:''};S.view='new';return render(true)}
   if(D.addt!==undefined){
     const l=S.lists[S.cur];if(!l)return;const inp=t.previousElementSibling,v=inp.value.trim();if(!v)return inp.focus();
     keep();return addTodo({id:uuid(),title:v,list:l.name,sec:['',...l.secs][+D.addt]||'',due:'',time:'',done:false});
@@ -721,15 +761,34 @@ document.addEventListener('pointerup',e=>{if(!px)return;const dx=e.clientX-px.x,
 document.addEventListener('keydown',e=>{if(S.view==='notes'&&S.nview==='book'&&!e.target.matches('input,textarea,select')){if(e.key==='ArrowRight')flip(1);if(e.key==='ArrowLeft')flip(-1)}});
 
 /* ---------- panel personalizable ---------- */
-function initHome(){const md=S.user?.user_metadata||{};
-  let L=Array.isArray(md.home_layout)?md.home_layout.filter(w=>w&&['cal','lists','today','soon','clock','stats','tips'].includes(w.k)).map(w=>({k:w.k,s:w.s==='W'?'W':'S'})):[];
-  L=L.filter((w,i)=>L.findIndex(x=>x.k===w.k)===i);DEFL.forEach(d=>{if(!L.some(w=>w.k===d.k))L.push({...d})});
-  S.layout=L;S.homeIds=Array.isArray(md.home_lists)?md.home_lists.filter(x=>typeof x==='string').slice(0,5):[];const validNav=['home','notes','new','plan'];let no=Array.isArray(md.home_nav_order)?md.home_nav_order.filter(x=>validNav.includes(x)):[];validNav.forEach(x=>{if(!no.includes(x))no.push(x)});S.navOrder=no}
-const homeLists=()=>{const v=S.homeIds.map(id=>S.lists.find(l=>l.id===id)).filter(Boolean).slice(0,5);return v.length?v:S.lists.slice(0,5)};
+const BASE=['cal','lists','today','soon','clock','stats','tips'];
+const wkey=w=>w.id?w.k+':'+w.id:w.k;
+function applySkin(v,save){
+  if(!['modern','retro'].includes(v))v='modern';
+  document.documentElement.dataset.skin=v;
+  try{localStorage.setItem('nova_skin',v)}catch(e){}
+  if(save&&S.user)sb.auth.updateUser({data:{skin:v}}).then(r=>{if(r.error)notify('No se pudo guardar el tema.');else if(r.data?.user)S.user=r.data.user});
+}
+function initHome(){
+  const md=S.user?.user_metadata||{};let loc=null;
+  try{loc=JSON.parse(localStorage.getItem('nova_home_'+S.user.id))}catch(e){}
+  const useLoc=loc&&loc.t>(md.home_t||0),src=useLoc?{l:loc.layout,i:loc.ids,n:loc.nav}:{l:md.home_layout,i:md.home_lists,n:md.home_nav_order};
+  let L=Array.isArray(src.l)?src.l.filter(w=>w&&(BASE.includes(w.k)||(['note','task'].includes(w.k)&&typeof w.id==='string'))).map(w=>({k:w.k,s:w.s==='W'?'W':'S',...(w.id?{id:w.id}:{})})):null;
+  L=L?L.filter((w,i)=>L.findIndex(x=>wkey(x)===wkey(w))===i):DEFL.map(d=>({...d}));
+  S.layout=L;S.homeIds=Array.isArray(src.i)?src.i.filter(x=>typeof x==='string').slice(0,5):[];
+  const validNav=['home','notes','new','plan'];let no=Array.isArray(src.n)?src.n.filter(x=>validNav.includes(x)):[];
+  validNav.forEach(x=>{if(!no.includes(x))no.push(x)});S.navOrder=no;
+  let sk=md.skin;if(!sk){try{sk=localStorage.getItem('nova_skin')}catch(e){}}applySkin(sk||'modern',false);
+  if(useLoc)saveHome();
+}const homeLists=()=>{const v=S.homeIds.map(id=>S.lists.find(l=>l.id===id)).filter(Boolean).slice(0,5);return v.length?v:S.lists.slice(0,5)};
 let hT;
-function saveHome(){clearTimeout(hT);hT=setTimeout(async()=>{if(!S.user)return;
-  try{const {data,error}=await sb.auth.updateUser({data:{home_layout:S.layout,home_lists:S.homeIds,home_nav_order:S.navOrder}});if(error)throw error;if(data?.user)S.user=data.user}
-  catch(e){console.error(e);notify('No se pudo guardar tu personalización.')}},500)}
+function saveHome(){
+  if(!S.user)return;
+  const t=Date.now();
+  try{localStorage.setItem('nova_home_'+S.user.id,JSON.stringify({layout:S.layout,ids:S.homeIds,nav:S.navOrder,t}))}catch(e){}
+  clearTimeout(hT);hT=setTimeout(async()=>{if(!S.user)return;
+    try{const {data,error}=await sb.auth.updateUser({data:{home_layout:S.layout,home_lists:S.homeIds,home_nav_order:S.navOrder,home_t:t}});if(error)throw error;if(data?.user)S.user=data.user}
+    catch(e){console.error(e);notify('No se pudo guardar tu personalización.')}},500)}
 /* Pulsación larga y reordenamiento fluido de paneles */
 let lp=null,dragPanel=null,dragPlaceholder=null,dragStart=null,dragMoved=false,dragPointerId=null;
 const panelGrid=()=>document.querySelector('.hgrid.edit');
@@ -738,11 +797,12 @@ function animatePanelFlow(before){
   before.forEach((r,el)=>{if(!el.isConnected||el.classList.contains('dragging'))return;const n=el.getBoundingClientRect(),dx=r.left-n.left,dy=r.top-n.top;if(dx||dy){el.animate([{transform:`translate(${dx}px,${dy}px)`},{transform:'translate(0,0)'}],{duration:380,easing:'cubic-bezier(.16,1,.3,1)'});}});
 }
 document.addEventListener('pointerdown',e=>{
-  const w=S.view==='home'&&!S.edit&&e.target.closest('.hgrid .wdg');if(!w)return;
+  if(S.view!=='home'||S.edit||S.onb||S.entry||S.pickL||S.addPanel||e.target.closest('nav,.menu,.sheet,.sheet-bg,.entry,.onb,.auth,input,textarea,select'))return;
   clearTimeout(lp?.t);lp={x:e.clientX,y:e.clientY,t:setTimeout(()=>{lp=null;S.edit=true;S.noClick=true;setTimeout(()=>S.noClick=false,500);if(navigator.vibrate)navigator.vibrate(12);keep()},480)};
 },{passive:true});
 document.addEventListener('pointermove',e=>{if(lp&&(Math.abs(e.clientX-lp.x)+Math.abs(e.clientY-lp.y)>12)){clearTimeout(lp.t);lp=null;}},{passive:true});
 document.addEventListener('pointerup',()=>{if(lp){clearTimeout(lp.t);lp=null;}});
+document.addEventListener('pointercancel',()=>{if(lp){clearTimeout(lp.t);lp=null;}});
 function startPanelDrag(e){
   const w=e.target.closest('.hgrid.edit .wdg');if(S.view!=='home'||!S.edit||!w||e.target.closest('.wctl'))return;
   if(e.pointerType==='mouse'&&e.button!==0)return;
@@ -796,7 +856,7 @@ function finishPanelDrag(e){
     const done=()=>{
       if(!ph.isConnected)return;
       ph.replaceWith(w);resetDraggedStyles(w);
-      S.layout=[...grid.querySelectorAll('.wdg[data-widget]')].map(el=>{const item=S.layout.find(x=>x.k===el.dataset.widget);return item?{...item}:null}).filter(Boolean);
+      S.layout=[...grid.querySelectorAll('.wdg[data-widget]')].map(el=>{const item=S.layout.find(x=>wkey(x)===el.dataset.widget);return item?{...item}:null}).filter(Boolean);
       saveHome();S.noClick=true;setTimeout(()=>S.noClick=false,450);dragPanel=null;dragPlaceholder=null;dragStart=null;dragPointerId=null;dragMoved=false;keep();
     };
     w.addEventListener('transitionend',function onEnd(ev){if(ev.propertyName!=='left')return;w.removeEventListener('transitionend',onEnd);done()});setTimeout(done,390);
@@ -850,7 +910,7 @@ if(mainNav){
   mainNav.addEventListener('pointerleave',()=>{if(!navDragBtn)moveNavLiquid(mainNav.querySelector('button.on'),true)});
   window.addEventListener('resize',()=>moveNavLiquid(mainNav.querySelector('button.on'),false));
 }
-document.addEventListener('contextmenu',e=>{if(e.target.closest('.wdg,.lw,nav'))e.preventDefault()});
+document.addEventListener('contextmenu',e=>{if((e.target.closest('.wdg,.lw,nav')||S.view==='home')&&!e.target.closest('input,textarea'))e.preventDefault()});
 /* eliminar lista */
 async function delList(i,sw){const l=S.lists[i];if(!l)return false;
   if(S.lists.length<2){notify('Debes conservar al menos una lista.');return false}
@@ -902,7 +962,23 @@ function novaUrlBase64ToUint8Array(base64String) {
   return Uint8Array.from(raw, (char) => char.charCodeAt(0));
 }
 
-function ensurePushButton() {
+async function novaPushActive() {
+  if (!("serviceWorker" in navigator && "PushManager" in window && "Notification" in window) || Notification.permission !== "granted") return false;
+  try {
+    const reg = await navigator.serviceWorker.register("/sw.js");
+    await navigator.serviceWorker.ready;
+    const sub = await reg.pushManager.getSubscription();
+    if (!sub) return false;
+    const k = sub.options && sub.options.applicationServerKey;
+    if (!k) return true;
+    const a = new Uint8Array(k), b = novaUrlBase64ToUint8Array(NOVA_VAPID_PUBLIC_KEY);
+    return a.length === b.length && a.every((v, i) => v === b[i]);
+  } catch (e) { return false; }
+}
+
+async function ensurePushButton() {
+  if (document.getElementById("novaPushButton")) return;
+  if (await novaPushActive()) return;
   if (document.getElementById("novaPushButton")) return;
 
   const button = document.createElement("button");
@@ -1005,7 +1081,7 @@ subscription = await registration.pushManager.subscribe({
         if (saveError) throw saveError;
       }
 
-      button.textContent = "Notificaciones activadas";
+      button.remove();
 
       alert(
         "El dispositivo quedó registrado para recibir notificaciones de Nova List."
@@ -1027,72 +1103,9 @@ subscription = await registration.pushManager.subscribe({
   document.body.appendChild(button);
 
   
-  const testButton = document.createElement("button");
-  testButton.id = "novaTestPushButton";
-  testButton.type = "button";
-  testButton.textContent = "Probar notificación";
-
-  Object.assign(testButton.style, {
-    position: "fixed",
-    right: "16px",
-    bottom: "calc(145px + env(safe-area-inset-bottom))",
-    zIndex: "9999",
-    padding: "12px 16px",
-    border: "1px solid #222",
-    borderRadius: "24px",
-    background: "#fff",
-    color: "#111",
-    fontSize: "13px",
-    fontWeight: "600",
-    cursor: "pointer"
-  });
-
-  testButton.addEventListener("click", novaTestPush);
-  document.body.appendChild(testButton);
 
 }
 
-/* ---------- PRUEBA MANUAL DE NOVA PUSH ---------- */
-async function novaTestPush() {
-  try {
-    if (!S.user) {
-      alert("Inicia sesión en Nova List primero.");
-      return;
-    }
-
-    const { data: sessionData, error: sessionError } =
-      await sb.auth.getSession();
-
-    if (sessionError) throw sessionError;
-
-    const accessToken = sessionData.session?.access_token;
-
-    if (!accessToken) {
-      alert("No se encontró una sesión activa.");
-      return;
-    }
-
-    const { data, error } = await sb.functions.invoke("nova-push", {
-      body: {
-        title: "Nova List",
-        body: "¡Las notificaciones están funcionando!",
-        url: "/"
-      }
-    });
-
-    if (error) {
-      console.error("NOVA PUSH TEST:", error);
-      alert("Error al llamar a nova-push: " + error.message);
-      return;
-    }
-
-    console.log("Resultado de nova-push:", data);
-    alert("Resultado del envío:\n" + JSON.stringify(data, null, 2));
-  } catch (error) {
-    console.error("NOVA PUSH TEST:", error);
-    alert("Error: " + (error?.message || "Error desconocido"));
-  }
-}
 
 function openTaskFromNotification(){
   const taskId = new URLSearchParams(window.location.search).get('task');
