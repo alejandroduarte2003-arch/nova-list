@@ -475,7 +475,7 @@ function calendar(pick){
   return `<div class="cal"><div class="ch"><button data-cm="-1" aria-label="Mes anterior">‹</button><button class="ct" data-cpick aria-label="Elegir mes y año">${MN[m]} ${y}</button><button data-cm="1" aria-label="Mes siguiente">›</button></div><div class="grid">${c}</div></div>`;
 }
 const meta=t=>`${esc(t.list)}${t.sec?' › '+esc(t.sec):''}${t.due?' · '+fmtD(t.due)+(t.time?' · '+t.time:''):''}`;
-const items=(a,empty)=>a.length?a.map(t=>`<div class="item"><button class="chk ${t.done?'on':''}" data-done="${esc(t.id)}" aria-label="Completar"></button>
+const items=(a,empty)=>a.length?a.map(t=>`<div class="item" id="task-${esc(t.id)}"><button class="chk ${t.done?'on':''}" data-done="${esc(t.id)}" aria-label="Completar"></button>
 <div class="grow"><span style="${t.done?'text-decoration:line-through;color:var(--mut)':''}">${esc(t.title)}</span><small class="${isLate(t)?'late':''}">${isLate(t)?'Vencido · ':''}${meta(t)}</small></div>
 <button class="x" data-del="${esc(t.id)}" aria-label="Eliminar">×</button></div>`).join(''):(empty?`<p class="empty">${empty}</p>`:'');
 const page=(t,b)=>head()+`<div><button class="back" data-back>← ${NAMES[S.hist[S.hist.length-1]]||'Inicio'}</button><h2 class="t">${t}</h2>${b}</div>`;
