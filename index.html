@@ -383,7 +383,11 @@ async function loadCloud(){
     }
   }catch(e){console.error(e);notify('Error de conexión.')}
   cloudReady=true;render();
-  if(S.user?.user_metadata?.onboarded&&!S.onb)setTimeout(showEntry,80);
+if(
+  S.user?.user_metadata?.onboarded &&
+  !S.onb &&
+  !new URLSearchParams(window.location.search).has('task')
+) setTimeout(showEntry,80);
 }
 
 /* ---------- entrada al volver a abrir ---------- */
